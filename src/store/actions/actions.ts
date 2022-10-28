@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType } from '../../const/const';
-import { CameraType } from '../../types/types';
+import { ProductType } from '../../types/types';
 
-export const loadCameras = createAction(
-  ActionType.LoadCameras,
-  (cameras: CameraType[]) => ({
+export const loadProducts = createAction(
+  ActionType.LoadProducts,
+  (products: ProductType[]) => ({
     payload: {
-      cameras,
+      products,
     },
   }),
 );

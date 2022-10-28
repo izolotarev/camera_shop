@@ -1,10 +1,17 @@
 export enum ActionType {
-  LoadCameras = 'CAMERAS/LOAD_CAMERAS',
+  LoadProducts = 'PRODUCTS/LOAD_PRODUCTS',
   RedirectToRoute = 'USER/REDIRECT',
 }
 
+export const AppRoute = {
+  ROOT: '/',
+  PRODUCTS: '/cameras',
+  BASKET: '/basket',
+  NOT_FOUND: '/not-found',
+};
+
 export const APIRoute = {
-  CAMERAS: '/cameras',
+  PRODUCTS: '/cameras',
   PROMO: '/promo',
   REVIEWS: '/reviews',
 };

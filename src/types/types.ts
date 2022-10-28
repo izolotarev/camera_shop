@@ -3,14 +3,14 @@ import { Action } from 'redux';
 import { ThunkAction} from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 
-export type CameraState = {
-  cameras: CameraType[];
-  camerasLoaded: boolean;
-  promo?: CameraType;
+export type ProductState = {
+  products: ProductType[];
+  productsLoaded: boolean;
+  promo?: ProductType;
   isPromoLoaded: boolean;
 }
 
-export type CameraType = {
+export type ProductType = {
   id: number,
   name: string,
   vendorCode: string,

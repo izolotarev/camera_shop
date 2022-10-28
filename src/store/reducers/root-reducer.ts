@@ -1,14 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { camerasData } from './cameras/cameras-reducer';
+import { productsData } from './products/products-reducer';
 
 
 export enum NameSpace {
-  cameras = 'CAMERAS',
+  products = 'PRODUCTS',
   reviews = 'REVIEWS',
 }
 
 export const rootReducer = combineReducers({
-  [NameSpace.cameras]: camerasData,
+  [NameSpace.products]: productsData,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
