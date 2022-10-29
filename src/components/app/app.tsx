@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
-import { getProducts, getProductsLoadingStatus } from '../../store/reducers/products/products-selector';
+import { getProducts, getProductsLoadingStatus, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
 import Basket from '../basket/basket';
 import Catalog from '../catalog/catalog';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -10,8 +10,9 @@ import Product from '../product/product';
 function App(): JSX.Element {
   const products = useSelector(getProducts);
   const productsLoaded = useSelector(getProductsLoadingStatus);
+  const isPromoLoaded = useSelector(getPromoLoadingStatus);
 
-  if (!productsLoaded) {
+  if (!isPromoLoaded || !productsLoaded) {
     return (
       <LoadingScreen />
     );

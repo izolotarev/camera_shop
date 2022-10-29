@@ -6,7 +6,7 @@ import { AxiosInstance } from 'axios';
 export type ProductState = {
   products: ProductType[];
   productsLoaded: boolean;
-  promo?: ProductType;
+  promo?: PromoType;
   isPromoLoaded: boolean;
 }
 
@@ -25,6 +25,15 @@ export type ProductType = {
   previewImgWebp: string,
   previewImgWebp2x: string,
   reviewCount: number
+}
+
+export type PromoType = {
+  id: number,
+  name: string,
+  previewImg: string,
+  previewImg2x: string,
+  previewImgWebp: string,
+  previewImgWebp2x: string
 }
 
 export type State = RootState;

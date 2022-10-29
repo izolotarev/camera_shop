@@ -1,5 +1,6 @@
 export enum ActionType {
   LoadProducts = 'PRODUCTS/LOAD_PRODUCTS',
+  LoadPromo = 'PRODUCTS/LOAD_PROMO',
   RedirectToRoute = 'USER/REDIRECT',
 }
 
