@@ -15,3 +15,5 @@ export const APIRoute = {
   PROMO: '/promo',
   REVIEWS: '/reviews',
 };
+
+export const MAX_PRODUCT_RATING = 5;
