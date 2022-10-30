@@ -6,6 +6,7 @@ export enum ActionType {
 
 export const AppRoute = {
   ROOT: '/',
+  CATALOG: '/catalog',
   PRODUCTS: '/cameras',
   BASKET: '/basket',
   NOT_FOUND: '/not-found',
@@ -18,3 +19,4 @@ export const APIRoute = {
 };
 
 export const MAX_PRODUCT_RATING = 5;
+export const NUMBER_OF_ELEMENTS_PER_PAGE = 9;

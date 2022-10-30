@@ -1,19 +1,30 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const/const';
+import { Link, useParams } from 'react-router-dom';
+import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { getPromo } from '../../store/reducers/products/products-selectors';
 import { ProductType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
+import Pagination from '../pagination/pagination';
 import ProductList from '../product-list/product-list';
 
 type CatalogProps = {
   products: ProductType[];
 }
 
+type CatalogParams = {
+  id:string;
+}
+
 function Catalog({products}:CatalogProps):JSX.Element {
+  const params = useParams<CatalogParams>();
+  let pageId = parseInt(params.id ?? '', 10);
+  if (isNaN(pageId)) { pageId = 1; }
+
+  const productsOnPage = products.slice((pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE, (pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE + NUMBER_OF_ELEMENTS_PER_PAGE);
+
   const promo = useSelector(getPromo);
   const promoId = promo?.id ?? 0;
 
@@ -154,19 +165,8 @@ function Catalog({products}:CatalogProps):JSX.Element {
                       </div>
                     </form>
                   </div>
-                  <ProductList products={products}/>
-                  <div className="pagination">
-                    <ul className="pagination__list">
-                      <li className="pagination__item"><a className="pagination__link pagination__link--active" href="1">1</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link" href="2">2</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link" href="3">3</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link pagination__link--text" href="2">Далее</a>
-                      </li>
-                    </ul>
-                  </div>
+                  <ProductList products={productsOnPage}/>
+                  <Pagination numberOfElements={products.length} initPage={pageId}/>
                 </div>
               </div>
             </div>

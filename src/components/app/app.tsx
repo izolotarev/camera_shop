@@ -20,7 +20,8 @@ function App(): JSX.Element {
 
   return (
     <Routes>
-      <Route path={AppRoute.ROOT} element={<Catalog products={products}/>}/>
+      <Route path={`${AppRoute.ROOT}`} element={<Catalog products={products}/>}/>
+      <Route path={`${AppRoute.CATALOG}/page_:id`} element={<Catalog products={products}/>}/>
       <Route path={`${AppRoute.PRODUCTS}/:id`} element={<Product/>}/>
       <Route path={AppRoute.BASKET} element={<Basket/>}/>
     </Routes>
