@@ -1,5 +1,8 @@
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
+import { useAppDispatch } from '../../hooks/hooks';
+import { selectProductAddToBasket } from '../../store/actions/actions';
 import { ProductType } from '../../types/types';
 import RatingStar from '../rating-star/rating-star';
 
@@ -9,6 +12,13 @@ type ProductProps = {
 
 function ProductCard({product}:ProductProps): JSX.Element {
   const {id, name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, rating, price, reviewCount } = product;
+
+  const dispatch = useAppDispatch();
+
+  const handleBuyClick = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    dispatch(selectProductAddToBasket(product));
+  };
 
   return (
     <div className="product-card">
@@ -29,7 +39,7 @@ function ProductCard({product}:ProductProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button">Купить
+        <button className="btn btn--purple product-card__btn" type="button" onClick={handleBuyClick}>Купить
         </button>
         <Link className="btn btn--transparent" to={{pathname: `${AppRoute.PRODUCTS}/${id}`}}>Подробнее</Link>
       </div>

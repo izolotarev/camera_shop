@@ -1,6 +1,8 @@
 export enum ActionType {
   LoadProducts = 'PRODUCTS/LOAD_PRODUCTS',
   LoadPromo = 'PRODUCTS/LOAD_PROMO',
+  SelectProduct = 'PRODUCTS/SELECT_PRODUCT_TO_ADD_TO_BASKET',
+  ClearProductAddToBasket = 'PRODUCTS/CLEAR_PRODUCT_TO_ADD_TO_BASKET',
   RedirectToRoute = 'USER/REDIRECT',
 }
 

@@ -1,5 +1,5 @@
-import { MouseEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { MouseEvent, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 
 type PaginationProps = {
@@ -11,11 +11,24 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
   const numberOfPages = Math.ceil(numberOfElements / NUMBER_OF_ELEMENTS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(initPage);
 
+  const navigate = useNavigate();
+
+  useEffect(
+    () => {
+      if (currentPage > numberOfPages) {
+        setCurrentPage(1);
+        navigate(`${AppRoute.CATALOG}/page_1`);
+      }
+    },
+    [currentPage],
+  );
+
   const pages = [];
 
   for (let i = 1; i < numberOfPages + 1; i++) {
     pages.push(
-      <li key={i} className="pagination__item"><Link className={`pagination__link ${i === currentPage ? 'pagination__link--active' : ''}`} to={`${AppRoute.CATALOG}/page_${i}`}>{i}</Link>
+      <li key={i} className="pagination__item">
+        <Link className={`pagination__link ${i === currentPage ? 'pagination__link--active' : ''}`} to={`${AppRoute.CATALOG}/page_${i}`}>{i}</Link>
       </li>
     );
   }
@@ -37,7 +50,8 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
             {
               currentPage !== 1
                 ?
-                <li className="pagination__item"><Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage - 1}`}>Назад</Link>
+                <li className="pagination__item">
+                  <Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage - 1}`}>Назад</Link>
                 </li>
                 :
                 null
@@ -48,7 +62,8 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
             {
               currentPage !== numberOfPages
                 ?
-                <li className="pagination__item"><Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage + 1}`}>Далее</Link>
+                <li className="pagination__item">
+                  <Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage + 1}`}>Далее</Link>
                 </li>
                 :
                 null

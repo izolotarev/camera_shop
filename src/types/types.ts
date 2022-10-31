@@ -8,6 +8,7 @@ export type ProductState = {
   productsLoaded: boolean;
   promo?: PromoType;
   isPromoLoaded: boolean;
+  productToAddtoBasket?: ProductType;
 }
 
 export type ProductType = {

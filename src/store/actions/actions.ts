@@ -19,3 +19,14 @@ export const loadPromo = createAction(
     },
   }),
 );
+
+export const selectProductAddToBasket = createAction(
+  ActionType.SelectProduct,
+  (product: ProductType) => ({
+    payload: {
+      product,
+    }
+  })
+);
+
+export const clearProductAddToBasket = createAction(ActionType.ClearProductAddToBasket);

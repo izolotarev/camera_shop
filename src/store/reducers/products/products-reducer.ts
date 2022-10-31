@@ -1,13 +1,14 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
-import { loadProducts, loadPromo } from '../../actions/actions';
+import { clearProductAddToBasket, loadProducts, loadPromo, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
   productsLoaded: false,
   promo: undefined,
   isPromoLoaded: false,
+  productToAddtoBasket: undefined,
 };
 
 export const productsData = createReducer(initialState, (builder) => {
@@ -19,5 +20,11 @@ export const productsData = createReducer(initialState, (builder) => {
     .addCase(loadPromo, (state, action) => {
       state.promo = action.payload.promo;
       state.isPromoLoaded = true;
+    })
+    .addCase(selectProductAddToBasket, (state, action) => {
+      state.productToAddtoBasket = action.payload.product;
+    })
+    .addCase(clearProductAddToBasket, (state, action) => {
+      state.productToAddtoBasket = initialState.productToAddtoBasket;
     });
 });
