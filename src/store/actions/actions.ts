@@ -30,3 +30,5 @@ export const selectProductAddToBasket = createAction(
 );
 
 export const clearProductAddToBasket = createAction(ActionType.ClearProductAddToBasket);
+export const openAddItemPopup = createAction(ActionType.OpenAddItemPopup);
+export const closeAddItemPopup = createAction(ActionType.CloseAddItemPopup);

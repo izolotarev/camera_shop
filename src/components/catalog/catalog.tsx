@@ -4,7 +4,7 @@ import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { getPromo } from '../../store/reducers/products/products-selectors';
 import { ProductType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
-import CatalogAddItemPopup from '../catalog-add-item/catalog-add-item';
+import CatalogAddItemPopup from '../catalog-add-item-popup/catalog-add-item-popup';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';

@@ -9,6 +9,7 @@ export type ProductState = {
   promo?: PromoType;
   isPromoLoaded: boolean;
   productToAddtoBasket?: ProductType;
+  isAddItemPopupOpened: boolean;
 }
 
 export type ProductType = {

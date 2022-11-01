@@ -6,3 +6,4 @@ export const getProductsLoadingStatus = (state: State): boolean => state[NameSpa
 export const getPromoLoadingStatus = (state: State): boolean => state[NameSpace.products].isPromoLoaded;
 export const getPromo = (state: State): PromoType | undefined => state[NameSpace.products].promo;
 export const getProductToAddToBasket = (state: State): ProductType | undefined => state[NameSpace.products].productToAddtoBasket;
+export const getAddItemPopupOpenedStatus = (state: State): boolean => state[NameSpace.products].isAddItemPopupOpened;

@@ -1,27 +1,18 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
-import { clearProductAddToBasket } from '../../store/actions/actions';
-import { getProductToAddToBasket } from '../../store/reducers/products/products-selectors';
+import { closeAddItemPopup } from '../../store/actions/actions';
+import { getAddItemPopupOpenedStatus, getProductToAddToBasket } from '../../store/reducers/products/products-selectors';
 
 function CatalogAddItemPopup():JSX.Element {
-
+  const popupActive = useSelector(getAddItemPopupOpenedStatus);
   const productToAddToBasket = useSelector(getProductToAddToBasket);
-
-  const [popupActive, setPopupActive] = useState(false);
-
-  useEffect(() => {
-    if (productToAddToBasket) {
-      setPopupActive(true);
-    }
-  }, [productToAddToBasket]);
 
   const dispatch = useAppDispatch();
 
   const handlePopupClose = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    setPopupActive(false);
-    dispatch(clearProductAddToBasket());
+    dispatch(closeAddItemPopup());
   };
 
   return (

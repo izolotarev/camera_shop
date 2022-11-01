@@ -1,7 +1,7 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
-import { clearProductAddToBasket, loadProducts, loadPromo, selectProductAddToBasket } from '../../actions/actions';
+import { clearProductAddToBasket, closeAddItemPopup, loadProducts, loadPromo, openAddItemPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -9,6 +9,7 @@ export const initialState: ProductState = {
   promo: undefined,
   isPromoLoaded: false,
   productToAddtoBasket: undefined,
+  isAddItemPopupOpened: false,
 };
 
 export const productsData = createReducer(initialState, (builder) => {
@@ -26,5 +27,11 @@ export const productsData = createReducer(initialState, (builder) => {
     })
     .addCase(clearProductAddToBasket, (state, action) => {
       state.productToAddtoBasket = initialState.productToAddtoBasket;
+    })
+    .addCase(openAddItemPopup, (state, action) => {
+      state.isAddItemPopupOpened = true;
+    })
+    .addCase(closeAddItemPopup, (state, action) => {
+      state.isAddItemPopupOpened = false;
     });
 });
