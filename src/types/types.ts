@@ -4,12 +4,14 @@ import { ThunkAction} from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 
 export type ProductState = {
-  products: ProductType[];
-  productsLoaded: boolean;
-  promo?: PromoType;
-  isPromoLoaded: boolean;
-  productToAddtoBasket?: ProductType;
-  isAddItemPopupOpened: boolean;
+  products: ProductType[],
+  productsLoaded: boolean,
+  promo?: PromoType,
+  isPromoLoaded: boolean,
+  productToAddtoBasket?: ProductType,
+  isAddItemPopupOpened: boolean,
+  product?: ProductType,
+  isProductLoaded: boolean
 }
 
 export type ProductType = {

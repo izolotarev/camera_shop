@@ -1,7 +1,7 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
-import { clearProductAddToBasket, closeAddItemPopup, loadProducts, loadPromo, openAddItemPopup, selectProductAddToBasket } from '../../actions/actions';
+import { clearProductById, closeAddItemPopup, loadProductById, loadProducts, loadPromo, openAddItemPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -10,6 +10,8 @@ export const initialState: ProductState = {
   isPromoLoaded: false,
   productToAddtoBasket: undefined,
   isAddItemPopupOpened: false,
+  product: undefined,
+  isProductLoaded: false,
 };
 
 export const productsData = createReducer(initialState, (builder) => {
@@ -25,13 +27,18 @@ export const productsData = createReducer(initialState, (builder) => {
     .addCase(selectProductAddToBasket, (state, action) => {
       state.productToAddtoBasket = action.payload.product;
     })
-    .addCase(clearProductAddToBasket, (state, action) => {
-      state.productToAddtoBasket = initialState.productToAddtoBasket;
-    })
     .addCase(openAddItemPopup, (state, action) => {
       state.isAddItemPopupOpened = true;
     })
     .addCase(closeAddItemPopup, (state, action) => {
       state.isAddItemPopupOpened = false;
+    })
+    .addCase(loadProductById, (state, action) => {
+      state.product = action.payload.product;
+      state.isProductLoaded = true;
+    })
+    .addCase(clearProductById, (state, action) => {
+      state.product = initialState.product;
+      state.isProductLoaded = false;
     });
 });

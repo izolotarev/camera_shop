@@ -1,4 +1,3 @@
-import { MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
 import { closeAddItemPopup } from '../../store/actions/actions';
@@ -10,8 +9,7 @@ function CatalogAddItemPopup():JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const handlePopupClose = (evt: MouseEvent<HTMLElement>) => {
-    evt.preventDefault();
+  const handlePopupClose = () => {
     dispatch(closeAddItemPopup());
   };
 

@@ -29,6 +29,25 @@ export const selectProductAddToBasket = createAction(
   })
 );
 
-export const clearProductAddToBasket = createAction(ActionType.ClearProductAddToBasket);
 export const openAddItemPopup = createAction(ActionType.OpenAddItemPopup);
 export const closeAddItemPopup = createAction(ActionType.CloseAddItemPopup);
+
+export const loadProductById = createAction(
+  ActionType.LoadProductById,
+  (product: ProductType) => ({
+    payload: {
+      product,
+    },
+  }),
+);
+
+export const clearProductById = createAction(ActionType.ClearProductById);
+
+export const redirectToRoute = createAction(
+  ActionType.RedirectToRoute,
+  (url: string) => ({
+    payload: {
+      url,
+    },
+  }),
+);

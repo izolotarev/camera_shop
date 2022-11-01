@@ -1,6 +1,6 @@
-import { APIRoute } from '../../const/const';
+import { APIRoute, AppRoute } from '../../const/const';
 import { ProductType, PromoType, ThunkActionResult } from '../../types/types';
-import { loadProducts, loadPromo } from './actions';
+import { loadProductById, loadProducts, loadPromo, redirectToRoute } from './actions';
 //import axios, { AxiosError } from 'axios';
 
 
@@ -21,5 +21,16 @@ export const fetchPromo = (): ThunkActionResult =>
       dispatch(loadPromo(data));
     } catch (error) {
       // handleError(error);
+    }
+  };
+
+
+export const fetchProductById = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<ProductType>(`${APIRoute.PRODUCTS}/${id}`);
+      dispatch(loadProductById(data));
+    } catch {
+      dispatch(redirectToRoute(AppRoute.NOT_FOUND));
     }
   };
