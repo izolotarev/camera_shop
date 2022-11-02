@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { getPromo } from '../../store/reducers/products/products-selectors';
-import { ProductType } from '../../types/types';
+import { BreadcrumbsType, ProductType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogAddItemPopup from '../catalog-add-item-popup/catalog-add-item-popup';
 import Footer from '../footer/footer';
@@ -29,6 +29,12 @@ function Catalog({products}:CatalogProps):JSX.Element {
   const promo = useSelector(getPromo);
   const promoId = promo?.id ?? 0;
 
+  const breadcrumbs: BreadcrumbsType[] =
+  [
+    {name: 'Главная', url: AppRoute.ROOT},
+    {name: 'Каталог'}
+  ];
+
   if (!promo || !products) {
     return (
       <LoadingScreen/>
@@ -47,7 +53,7 @@ function Catalog({products}:CatalogProps):JSX.Element {
           <p className="banner__info"><span className="banner__message">Новинка!</span><span className="title title--h1">{promo.name}</span><span className="banner__text">Профессиональная камера от&nbsp;известного производителя</span><Link className="btn" to={{pathname: `${AppRoute.PRODUCTS}/${promoId}`}}>Подробнее</Link></p>
         </div>
         <div className="page-content">
-          <Breadcrumbs/>
+          <Breadcrumbs crumbs={breadcrumbs}/>
           <section className="catalog">
             <div className="container">
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>

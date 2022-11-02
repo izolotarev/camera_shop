@@ -43,3 +43,8 @@ export type PromoType = {
 export type State = RootState;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
+
+export type BreadcrumbsType = {
+  name: string,
+  url?: string
+};
