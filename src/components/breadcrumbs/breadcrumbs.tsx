@@ -16,12 +16,7 @@ function Breadcrumbs({crumbs}:BreadcrumbsProps):JSX.Element {
             crumbs.length > 1
               ?
               crumbs.map((crumb, index) => {
-                if (index === lastIndex) {
-                  return (
-                    <li key={`${crumb.name}`} className="breadcrumbs__item"><span className="breadcrumbs__link breadcrumbs__link--active">{crumb.name}</span>
-                    </li>
-                  );
-                } else {
+                if (index !== lastIndex) {
                   return (
                     <li key={crumb.name} className="breadcrumbs__item">
                       <Link className="breadcrumbs__link" to={crumb.url ?? '#'}>{crumb.name}
@@ -34,9 +29,10 @@ function Breadcrumbs({crumbs}:BreadcrumbsProps):JSX.Element {
                 }
               })
               :
-              <li className="breadcrumbs__item"><span className="breadcrumbs__link breadcrumbs__link--active">{crumbs[0].name}</span>
-              </li>
+              ''
           }
+          <li className="breadcrumbs__item"><span className="breadcrumbs__link breadcrumbs__link--active">{crumbs[lastIndex].name}</span>
+          </li>
         </ul>
       </div>
     </div>
