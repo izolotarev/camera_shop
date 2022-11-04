@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { AppRoute, MAX_PRODUCT_RATING, ProcuctTabNames } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
-import { clearProductById } from '../../store/actions/actions';
+import { clearProductById, openAddItemPopup, selectProductAddToBasket } from '../../store/actions/actions';
 import { fetchProductById, fetchSimilarProducts } from '../../store/actions/api.actions';
 import { getProductById, getSimilarProducts } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import CatalogAddItemPopup from '../catalog-add-item-popup/catalog-add-item-popup';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -71,6 +72,12 @@ function Product():JSX.Element {
     setActiveTab(ProcuctTabNames.CHARACTERISTICS);
   };
 
+  const handleAddToBasketClick = () => {
+    if (!product) {return; }
+    dispatch(selectProductAddToBasket(product));
+    dispatch(openAddItemPopup());
+  };
+
   const breadcrumbs: BreadcrumbsType[] =
   [
     {name: 'Главная', url: AppRoute.ROOT},
@@ -107,7 +114,7 @@ function Product():JSX.Element {
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
                   </div>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
-                  <button className="btn btn--purple" type="button">
+                  <button className="btn btn--purple" type="button" onClick={handleAddToBasketClick}>
                     <svg width="24" height="16" aria-hidden="true">
                       <use xlinkHref="#icon-add-basket"></use>
                     </svg>Добавить в корзину
@@ -297,6 +304,7 @@ function Product():JSX.Element {
             </section>
           </div>
         </div>
+        <CatalogAddItemPopup/>
       </main>
       <a className="up-btn" href="#header">
         <svg width="12" height="18" aria-hidden="true">
