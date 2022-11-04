@@ -1,7 +1,7 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
-import { clearProductById, closeAddItemPopup, loadProductById, loadProducts, loadPromo, openAddItemPopup, selectProductAddToBasket } from '../../actions/actions';
+import { clearProductById, closeAddItemPopup, loadProductById, loadProducts, loadPromo, loadSimilarProducts, openAddItemPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -12,6 +12,8 @@ export const initialState: ProductState = {
   isAddItemPopupOpened: false,
   product: undefined,
   isProductLoaded: false,
+  similarProducts: [],
+  similarProductsLoaded: false,
 };
 
 export const productsData = createReducer(initialState, (builder) => {
@@ -40,5 +42,9 @@ export const productsData = createReducer(initialState, (builder) => {
     .addCase(clearProductById, (state, action) => {
       state.product = initialState.product;
       state.isProductLoaded = false;
+    })
+    .addCase(loadSimilarProducts, (state, action) => {
+      state.similarProducts = action.payload.products;
+      state.similarProductsLoaded = true;
     });
 });

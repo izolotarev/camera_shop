@@ -43,6 +43,15 @@ export const loadProductById = createAction(
 
 export const clearProductById = createAction(ActionType.ClearProductById);
 
+export const loadSimilarProducts = createAction(
+  ActionType.LoadSimilarProducts,
+  (products: ProductType[]) => ({
+    payload: {
+      products,
+    },
+  }),
+);
+
 export const redirectToRoute = createAction(
   ActionType.RedirectToRoute,
   (url: string) => ({

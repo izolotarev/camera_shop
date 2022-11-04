@@ -11,7 +11,9 @@ export type ProductState = {
   productToAddtoBasket?: ProductType,
   isAddItemPopupOpened: boolean,
   product?: ProductType,
-  isProductLoaded: boolean
+  isProductLoaded: boolean,
+  similarProducts: ProductType[],
+  similarProductsLoaded: boolean,
 }
 
 export type ProductType = {

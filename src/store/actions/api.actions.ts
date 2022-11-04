@@ -1,6 +1,6 @@
 import { APIRoute, AppRoute } from '../../const/const';
 import { ProductType, PromoType, ThunkActionResult } from '../../types/types';
-import { loadProductById, loadProducts, loadPromo, redirectToRoute } from './actions';
+import { loadProductById, loadProducts, loadPromo, loadSimilarProducts, redirectToRoute } from './actions';
 //import axios, { AxiosError } from 'axios';
 
 
@@ -32,5 +32,15 @@ export const fetchProductById = (id: number): ThunkActionResult =>
       dispatch(loadProductById(data));
     } catch {
       dispatch(redirectToRoute(AppRoute.NOT_FOUND));
+    }
+  };
+
+export const fetchSimilarProducts = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}/${id}/similar`);
+      dispatch(loadSimilarProducts(data));
+    } catch (error) {
+      //
     }
   };

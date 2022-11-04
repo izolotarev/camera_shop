@@ -8,9 +8,10 @@ import RatingStar from '../rating-star/rating-star';
 
 type ProductProps = {
   product: ProductType;
+  isActive?: boolean;
 }
 
-function ProductCard({product}:ProductProps): JSX.Element {
+function ProductCard({product, isActive}:ProductProps): JSX.Element {
   const {id, name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, rating, price, reviewCount } = product;
 
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ function ProductCard({product}:ProductProps): JSX.Element {
   };
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${isActive ? 'is-active' : ''}`}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}/>

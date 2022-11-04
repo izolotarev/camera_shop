@@ -6,6 +6,7 @@ export enum ActionType {
   CloseAddItemPopup = 'PRODUCTS/CLOSE_ADD_ITEM_POPUP',
   LoadProductById = 'PRODUCTS/LOAD_PRODUCT_BY_ID',
   ClearProductById = 'PRODUCTS/CLEAR_PRODUCT',
+  LoadSimilarProducts = 'PRODUCTS/LOAD_SIMILAR_PRODUCTS',
   RedirectToRoute = 'USER/REDIRECT',
 }
 

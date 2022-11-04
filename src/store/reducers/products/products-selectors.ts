@@ -8,3 +8,4 @@ export const getPromo = (state: State): PromoType | undefined => state[NameSpace
 export const getProductToAddToBasket = (state: State): ProductType | undefined => state[NameSpace.products].productToAddtoBasket;
 export const getAddItemPopupOpenedStatus = (state: State): boolean => state[NameSpace.products].isAddItemPopupOpened;
 export const getProductById = (state: State): ProductType | undefined => state[NameSpace.products].product;
+export const getSimilarProducts = (state: State): ProductType[] => state[NameSpace.products].similarProducts;
