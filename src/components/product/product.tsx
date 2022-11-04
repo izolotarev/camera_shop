@@ -4,16 +4,16 @@ import { useParams } from 'react-router-dom';
 import { AppRoute, MAX_PRODUCT_RATING, ProcuctTabNames } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { clearProductById, openAddItemPopup, selectProductAddToBasket } from '../../store/actions/actions';
-import { fetchProductById, fetchSimilarProducts } from '../../store/actions/api.actions';
-import { getProductById, getSimilarProducts } from '../../store/reducers/products/products-selectors';
+import { fetchProductById } from '../../store/actions/api.actions';
+import { getProductById } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogAddItemPopup from '../catalog-add-item-popup/catalog-add-item-popup';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
-import ProductCard from '../product-card/product-card';
 import RatingStar from '../rating-star/rating-star';
+import SimilarProductSlider from '../similar-product-slider/similar-product-slider';
 
 
 type ProductParams = {
@@ -29,7 +29,6 @@ function Product():JSX.Element {
 
   useEffect(() => {
     dispatch(fetchProductById(id));
-    dispatch(fetchSimilarProducts(id));
     window.scrollTo(0,0);
     return () => {dispatch(clearProductById());};
   }, [id]);
@@ -37,30 +36,6 @@ function Product():JSX.Element {
   const product = useSelector(getProductById);
   const {previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name,
     rating, reviewCount, price, vendorCode, category, type, level, description} = product || {} ;
-
-  const similarProducts = useSelector(getSimilarProducts);
-  const similarProductsIds = similarProducts.slice().map((p) => p.id);
-
-  const [activeSimilarProductsIds, setActiveSimilarProductsIds] = useState<number[]>([]);
-  const [activeSimilarProductsIndexes, setActiveSimilarProductsIndexes] = useState([0,1,2]);
-
-  useEffect(() => {
-    setActiveSimilarProductsIds(similarProductsIds.slice(0,3));
-  }, [similarProducts]);
-
-  const handleNextSlideClick = () => {
-    if (activeSimilarProductsIds.includes(similarProductsIds[similarProductsIds.length - 1])) {return;}
-    const nextIndexes = activeSimilarProductsIndexes.slice().map((i) => i + 1);
-    setActiveSimilarProductsIndexes(nextIndexes);
-    setActiveSimilarProductsIds(nextIndexes.map((i) => similarProductsIds[i]));
-  };
-
-  const handlePrevSlideClick = () => {
-    if (activeSimilarProductsIds.includes(similarProductsIds[0])) {return;}
-    const prevIndexes = activeSimilarProductsIndexes.slice().map((i) => i - 1);
-    setActiveSimilarProductsIndexes(prevIndexes);
-    setActiveSimilarProductsIds(prevIndexes.map((i) => similarProductsIds[i]));
-  };
 
   const [activeTab, setActiveTab] = useState(ProcuctTabNames.DESCRIPTION);
 
@@ -85,7 +60,7 @@ function Product():JSX.Element {
     {name: product?.name ?? ''}
   ];
 
-  if (!product || !similarProducts) {
+  if (!product) {
     return (
       <LoadingScreen/>
     );
@@ -153,34 +128,7 @@ function Product():JSX.Element {
             </section>
           </div>
           <div className="page-content__section">
-            <section className="product-similar">
-              <div className="container">
-                <h2 className="title title--h3">Похожие товары</h2>
-                {
-                  similarProducts.length > 0
-                    ?
-                    <div className="product-similar__slider">
-                      <div className="product-similar__slider-list">
-                        {
-                          similarProducts.map((similarProduct) => <ProductCard product={similarProduct} key={similarProduct.id} isActive={activeSimilarProductsIds.includes(similarProduct.id)}/>)
-                        }
-                      </div>
-                      <button className="slider-controls slider-controls--prev" type="button" aria-label="Предыдущий слайд" disabled={activeSimilarProductsIds.includes(similarProductsIds[0])} onClick={handlePrevSlideClick}>
-                        <svg width="7" height="12" aria-hidden="true">
-                          <use xlinkHref="#icon-arrow"></use>
-                        </svg>
-                      </button>
-                      <button className="slider-controls slider-controls--next" type="button" aria-label="Следующий слайд" disabled={activeSimilarProductsIds.includes(similarProductsIds[similarProductsIds.length - 1])} onClick={handleNextSlideClick}>
-                        <svg width="7" height="12" aria-hidden="true">
-                          <use xlinkHref="#icon-arrow"></use>
-                        </svg>
-                      </button>
-                    </div>
-                    :
-                    ''
-                }
-              </div>
-            </section>
+            <SimilarProductSlider id={id} />
           </div>
           <div className="page-content__section">
             <section className="review-block">
