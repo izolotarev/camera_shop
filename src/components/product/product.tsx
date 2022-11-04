@@ -43,19 +43,23 @@ function Product():JSX.Element {
   const [activeSimilarProductsIds, setActiveSimilarProductsIds] = useState<number[]>([]);
   const [activeSimilarProductsIndexes, setActiveSimilarProductsIndexes] = useState([0,1,2]);
 
-  const handleNextSlideClick = () => {
-    alert('yo');
-    setActiveSimilarProductsIndexes(activeSimilarProductsIndexes.slice().map((i) => i + 1));
-    setActiveSimilarProductsIds(activeSimilarProductsIndexes.slice().map((i) => similarProductsIds[i]));
-  };
-
-  const handlePrevSlideClick = () => {
-    alert('yo');
-  };
-
   useEffect(() => {
     setActiveSimilarProductsIds(similarProductsIds.slice(0,3));
   }, [similarProducts]);
+
+  const handleNextSlideClick = () => {
+    if (activeSimilarProductsIds.includes(similarProductsIds[similarProductsIds.length - 1])) {return;}
+    const nextIndexes = activeSimilarProductsIndexes.slice().map((i) => i + 1);
+    setActiveSimilarProductsIndexes(nextIndexes);
+    setActiveSimilarProductsIds(nextIndexes.map((i) => similarProductsIds[i]));
+  };
+
+  const handlePrevSlideClick = () => {
+    if (activeSimilarProductsIds.includes(similarProductsIds[0])) {return;}
+    const prevIndexes = activeSimilarProductsIndexes.slice().map((i) => i - 1);
+    setActiveSimilarProductsIndexes(prevIndexes);
+    setActiveSimilarProductsIds(prevIndexes.map((i) => similarProductsIds[i]));
+  };
 
   const [activeTab, setActiveTab] = useState(ProcuctTabNames.DESCRIPTION);
 
@@ -154,12 +158,12 @@ function Product():JSX.Element {
                           similarProducts.map((similarProduct) => <ProductCard product={similarProduct} key={similarProduct.id} isActive={activeSimilarProductsIds.includes(similarProduct.id)}/>)
                         }
                       </div>
-                      <button className="slider-controls slider-controls--prev" type="button" aria-label="Предыдущий слайд" disabled onClick={handlePrevSlideClick}>
+                      <button className="slider-controls slider-controls--prev" type="button" aria-label="Предыдущий слайд" disabled={activeSimilarProductsIds.includes(similarProductsIds[0])} onClick={handlePrevSlideClick}>
                         <svg width="7" height="12" aria-hidden="true">
                           <use xlinkHref="#icon-arrow"></use>
                         </svg>
                       </button>
-                      <button className="slider-controls slider-controls--next" type="button" aria-label="Следующий слайд" onClick={handleNextSlideClick}>
+                      <button className="slider-controls slider-controls--next" type="button" aria-label="Следующий слайд" disabled={activeSimilarProductsIds.includes(similarProductsIds[similarProductsIds.length - 1])} onClick={handleNextSlideClick}>
                         <svg width="7" height="12" aria-hidden="true">
                           <use xlinkHref="#icon-arrow"></use>
                         </svg>
