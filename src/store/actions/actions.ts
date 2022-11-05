@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType } from '../../const/const';
-import { ProductType, PromoType } from '../../types/types';
+import { ProductType, PromoType, ReviewType } from '../../types/types';
 
 export const loadProducts = createAction(
   ActionType.LoadProducts,
@@ -48,6 +48,15 @@ export const loadSimilarProducts = createAction(
   (products: ProductType[]) => ({
     payload: {
       products,
+    },
+  }),
+);
+
+export const loadReviews = createAction(
+  ActionType.LoadReviews,
+  (reviews: ReviewType[]) => ({
+    payload: {
+      reviews,
     },
   }),
 );

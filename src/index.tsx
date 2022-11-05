@@ -9,6 +9,8 @@ import { fetchProducts, fetchPromo } from './store/actions/api.actions';
 import { Provider } from 'react-redux';
 import browserHistory from './browser-history/browser-history';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const api = createAPI();
 
@@ -36,6 +38,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <HistoryRouter history={browserHistory}>
+        <ToastContainer />
         <App />
       </HistoryRouter>
     </Provider>

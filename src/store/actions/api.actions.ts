@@ -1,6 +1,8 @@
+import axios, { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 import { APIRoute, AppRoute } from '../../const/const';
-import { ProductType, PromoType, ThunkActionResult } from '../../types/types';
-import { loadProductById, loadProducts, loadPromo, loadSimilarProducts, redirectToRoute } from './actions';
+import { ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
+import { loadProductById, loadProducts, loadPromo, loadReviews, loadSimilarProducts, redirectToRoute } from './actions';
 //import axios, { AxiosError } from 'axios';
 
 
@@ -10,7 +12,7 @@ export const fetchProducts = (): ThunkActionResult =>
       const {data} = await api.get<ProductType[]>(APIRoute.PRODUCTS);
       dispatch(loadProducts(data));
     } catch(error) {
-      //handleError(error);
+      handleError(error);
     }
   };
 
@@ -20,10 +22,9 @@ export const fetchPromo = (): ThunkActionResult =>
       const {data} = await api.get<PromoType>(APIRoute.PROMO);
       dispatch(loadPromo(data));
     } catch (error) {
-      // handleError(error);
+      handleError(error);
     }
   };
-
 
 export const fetchProductById = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -41,6 +42,23 @@ export const fetchSimilarProducts = (id: number): ThunkActionResult =>
       const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}/${id}/similar`);
       dispatch(loadSimilarProducts(data));
     } catch (error) {
-      //
+      handleError(error);
     }
   };
+
+export const fetchReviews = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<ReviewType[]>(`${APIRoute.PRODUCTS}/${id}${APIRoute.REVIEWS}`);
+      dispatch(loadReviews(data));
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+const handleError = (err: unknown) => {
+  if (axios.isAxiosError(err)) {
+    const error = err as AxiosError;
+    toast.info(error.message);
+  }
+};

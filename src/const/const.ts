@@ -7,6 +7,7 @@ export enum ActionType {
   LoadProductById = 'PRODUCTS/LOAD_PRODUCT_BY_ID',
   ClearProductById = 'PRODUCTS/CLEAR_PRODUCT',
   LoadSimilarProducts = 'PRODUCTS/LOAD_SIMILAR_PRODUCTS',
+  LoadReviews = 'REVIEWS/LOAD_REVIEWS',
   RedirectToRoute = 'USER/REDIRECT',
 }
 
