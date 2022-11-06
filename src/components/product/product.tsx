@@ -55,6 +55,14 @@ function Product():JSX.Element {
     dispatch(openAddItemPopup());
   };
 
+  const handleGoUp = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
   const breadcrumbs: BreadcrumbsType[] =
   [
     {name: 'Главная', url: AppRoute.ROOT},
@@ -138,11 +146,11 @@ function Product():JSX.Element {
         </div>
         <CatalogAddItemPopup/>
       </main>
-      <a className="up-btn" href="#header">
+      <button className="up-btn" onClick={handleGoUp}>
         <svg width="12" height="18" aria-hidden="true">
           <use xlinkHref="#icon-arrow2"></use>
         </svg>
-      </a>
+      </button>
       <Footer/>
     </div>
   );
