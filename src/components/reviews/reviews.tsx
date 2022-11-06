@@ -1,10 +1,17 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { REVIEW_CARDS_PER_STEP } from '../../const/const';
 import { getReviews } from '../../store/reducers/reviews/reviews-selectors';
 import ReviewListEmpty from '../review-list-empty/review-list-empty';
 import ReviewList from '../review-list/review-list';
+import ShowMoreReviews from '../show-more-reviews/show-more-reviews';
 
 function Reviews():JSX.Element {
   const reviews = useSelector(getReviews);
+
+  const [numberOfReviewsToShow, setNumberOfReviewsToShow] = useState(REVIEW_CARDS_PER_STEP);
+
+  const increaseNumberOfReviewsToShow = () => setNumberOfReviewsToShow((prev) => prev + REVIEW_CARDS_PER_STEP);
 
   return (
     <section className="review-block">
@@ -15,13 +22,16 @@ function Reviews():JSX.Element {
         </div>
         {
           reviews && reviews.length > 0
-            ? <ReviewList reviews={reviews}/>
+            ? <ReviewList reviews={reviews} numberOfReviewsToShow={numberOfReviewsToShow}/>
             : <ReviewListEmpty/>
         }
-        <div className="review-block__buttons">
-          <button className="btn btn--purple" type="button">Показать больше отзывов
-          </button>
-        </div>
+        {
+          reviews && reviews.length > REVIEW_CARDS_PER_STEP && numberOfReviewsToShow < reviews.length
+            ?
+            <ShowMoreReviews increaseNumberOfReviewsToShow={increaseNumberOfReviewsToShow}/>
+            :
+            ''
+        }
       </div>
     </section>
   );

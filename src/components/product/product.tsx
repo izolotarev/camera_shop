@@ -120,7 +120,7 @@ function Product():JSX.Element {
                       </div>
                       <div className={`tabs__element ${activeTab === ProcuctTabNames.DESCRIPTION ? 'is-active' : ''}`}>
                         <div className="product__tabs-text">
-                          {description}
+                          <p>{description}</p>
                         </div>
                       </div>
                     </div>

@@ -3,13 +3,16 @@ import ReviewCard from '../review-card/review-card';
 
 type ReviewListProps = {
   reviews: ReviewType[];
+  numberOfReviewsToShow: number;
 }
 
-function ReviewList({reviews}: ReviewListProps):JSX.Element {
+function ReviewList({reviews, numberOfReviewsToShow}: ReviewListProps):JSX.Element {
+  const reviewsToShow = reviews.slice(0, numberOfReviewsToShow);
+
   return (
     <ul className="review-block__list">
       {
-        reviews.map((review) =>
+        reviewsToShow.map((review) =>
           <ReviewCard reviewObj={review} key={review.id}/>
         )
       }

@@ -32,3 +32,5 @@ export const ProcuctTabNames = {
   DESCRIPTION: 'Description',
   CHARACTERISTICS: 'Characteristics',
 };
+
+export const REVIEW_CARDS_PER_STEP = 3;

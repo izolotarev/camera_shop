@@ -10,7 +10,7 @@ function ReviewCard({reviewObj}:ReviewCardProps):JSX.Element {
 
   const date = new Date(reviewObj.createAt);
   const dateTime = date.toISOString().substring(0,10);
-  const dayMonth = date.toLocaleString('ru-RU', { month: 'long', day:'numeric'});
+  const dayMonth = date.toLocaleString('ru-RU', { month: 'long', day:'numeric', timeZone: 'Europe/Moscow'});
 
   return (
     <li className="review-card">
