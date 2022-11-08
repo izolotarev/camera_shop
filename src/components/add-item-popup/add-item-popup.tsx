@@ -3,7 +3,7 @@ import { useAppDispatch } from '../../hooks/hooks';
 import { closeAddItemPopup } from '../../store/actions/actions';
 import { getAddItemPopupOpenedStatus, getProductToAddToBasket } from '../../store/reducers/products/products-selectors';
 
-function CatalogAddItemPopup():JSX.Element {
+function AddItemPopup():JSX.Element {
   const popupActive = useSelector(getAddItemPopupOpenedStatus);
   const productToAddToBasket = useSelector(getProductToAddToBasket);
 
@@ -55,4 +55,4 @@ function CatalogAddItemPopup():JSX.Element {
   );
 }
 
-export default CatalogAddItemPopup;
+export default AddItemPopup;

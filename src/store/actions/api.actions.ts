@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { APIRoute, AppRoute } from '../../const/const';
-import { ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
-import { loadProductById, loadProducts, loadPromo, loadReviews, loadSimilarProducts, redirectToRoute } from './actions';
+import { PostReviewType, ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
+import { loadProductById, loadProducts, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
 //import axios, { AxiosError } from 'axios';
 
 
@@ -53,6 +53,17 @@ export const fetchReviews = (id: number): ThunkActionResult =>
       dispatch(loadReviews(data));
     } catch (error) {
       handleError(error);
+    }
+  };
+
+export const postReview = (review: PostReviewType): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.post<ReviewType>(`${APIRoute.REVIEWS}`, review);
+      dispatch(postReviewAction(data));
+    } catch(error) {
+      handleError(error);
+      dispatch(postReviewError());
     }
   };
 

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { REVIEW_CARDS_PER_STEP } from '../../const/const';
+import { useAppDispatch } from '../../hooks/hooks';
+import { openAddReviewPopup } from '../../store/actions/actions';
 import { getReviews } from '../../store/reducers/reviews/reviews-selectors';
 import ReviewListEmpty from '../review-list-empty/review-list-empty';
 import ReviewList from '../review-list/review-list';
@@ -13,12 +15,18 @@ function Reviews():JSX.Element {
 
   const increaseNumberOfReviewsToShow = () => setNumberOfReviewsToShow((prev) => prev + REVIEW_CARDS_PER_STEP);
 
+  const dispatch = useAppDispatch();
+
+  const handleOpenAddReviewPopup = () => {
+    dispatch(openAddReviewPopup());
+  };
+
   return (
     <section className="review-block">
       <div className="container">
         <div className="page-content__headed">
           <h2 className="title title--h3">Отзывы</h2>
-          <button className="btn" type="button">Оставить свой отзыв</button>
+          <button className="btn" type="button" onClick={handleOpenAddReviewPopup}>Оставить свой отзыв</button>
         </div>
         {
           reviews && reviews.length > 0

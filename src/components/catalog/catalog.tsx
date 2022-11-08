@@ -4,12 +4,13 @@ import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { getPromo } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType, ProductType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
-import CatalogAddItemPopup from '../catalog-add-item-popup/catalog-add-item-popup';
+import AddItemPopup from '../add-item-popup/add-item-popup';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Pagination from '../pagination/pagination';
 import ProductList from '../product-list/product-list';
+import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
 
 type CatalogProps = {
   products: ProductType[];
@@ -179,7 +180,8 @@ function Catalog({products}:CatalogProps):JSX.Element {
             </div>
           </section>
         </div>
-        <CatalogAddItemPopup/>
+        <AddItemPopup/>
+        <AddItemSuccessPopup/>
       </main>
       <Footer/>
     </div>

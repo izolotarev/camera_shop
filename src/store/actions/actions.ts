@@ -31,6 +31,8 @@ export const selectProductAddToBasket = createAction(
 
 export const openAddItemPopup = createAction(ActionType.OpenAddItemPopup);
 export const closeAddItemPopup = createAction(ActionType.CloseAddItemPopup);
+export const openAddItemSuccessPopup = createAction(ActionType.OpenAddItemSuccessPopup);
+export const closeAddItemSuccessPopup = createAction(ActionType.CloseAddItemSuccessPopup);
 
 export const loadProductById = createAction(
   ActionType.LoadProductById,
@@ -61,6 +63,9 @@ export const loadReviews = createAction(
   }),
 );
 
+export const openAddReviewPopup = createAction(ActionType.OpenAddReviewPopup);
+export const closeAddReviewPopup = createAction(ActionType.CloseAddReviewPopup);
+
 export const redirectToRoute = createAction(
   ActionType.RedirectToRoute,
   (url: string) => ({
@@ -69,3 +74,18 @@ export const redirectToRoute = createAction(
     },
   }),
 );
+
+export const postReviewAction = createAction(
+  ActionType.PostReview,
+  (review: ReviewType) => ({
+    payload: {
+      review,
+    },
+  }),
+);
+
+export const postReviewError = createAction(ActionType.PostError);
+
+export const clearPostReviewStatus = createAction(ActionType.ClearPostReviewStatus);
+
+export const clearPostReviewError = createAction(ActionType.ClearPostReviewError);

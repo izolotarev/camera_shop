@@ -1,7 +1,7 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
-import { clearProductById, closeAddItemPopup, loadProductById, loadProducts, loadPromo, loadSimilarProducts, openAddItemPopup, selectProductAddToBasket } from '../../actions/actions';
+import { clearProductById, closeAddItemPopup, closeAddItemSuccessPopup, loadProductById, loadProducts, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -10,6 +10,7 @@ export const initialState: ProductState = {
   isPromoLoaded: false,
   productToAddtoBasket: undefined,
   isAddItemPopupOpened: false,
+  isAddItemSuccessPopupOpened: false,
   product: undefined,
   isProductLoaded: false,
   similarProducts: [],
@@ -34,6 +35,12 @@ export const productsData = createReducer(initialState, (builder) => {
     })
     .addCase(closeAddItemPopup, (state, action) => {
       state.isAddItemPopupOpened = false;
+    })
+    .addCase(openAddItemSuccessPopup, (state, action) => {
+      state.isAddItemSuccessPopupOpened = true;
+    })
+    .addCase(closeAddItemSuccessPopup, (state, action) => {
+      state.isAddItemSuccessPopupOpened = false;
     })
     .addCase(loadProductById, (state, action) => {
       state.product = action.payload.product;

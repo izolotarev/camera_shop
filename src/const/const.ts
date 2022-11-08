@@ -4,10 +4,18 @@ export enum ActionType {
   SelectProduct = 'PRODUCTS/SELECT_PRODUCT_TO_ADD_TO_BASKET',
   OpenAddItemPopup = 'PRODUCTS/OPEN_ADD_ITEM_POPUP',
   CloseAddItemPopup = 'PRODUCTS/CLOSE_ADD_ITEM_POPUP',
+  OpenAddItemSuccessPopup = 'PRODUCTS/OPEN_ADD_ITEM_SUCCESS_POPUP',
+  CloseAddItemSuccessPopup = 'PRODUCTS/CLOSE_ADD_ITEM_SUCCESS_POPUP',
+  OpenAddReviewPopup = 'REVIEWS/OPEN_ADD_REVIEW_POPUP',
+  CloseAddReviewPopup = 'REVIEWS/CLOSE_ADD_REVIEW_POPUP',
   LoadProductById = 'PRODUCTS/LOAD_PRODUCT_BY_ID',
   ClearProductById = 'PRODUCTS/CLEAR_PRODUCT',
   LoadSimilarProducts = 'PRODUCTS/LOAD_SIMILAR_PRODUCTS',
   LoadReviews = 'REVIEWS/LOAD_REVIEWS',
+  PostReview = 'REVIEWS/POST_REVIEW',
+  PostError = 'REVIEWS/POST_REVIEW_ERROR',
+  ClearPostReviewStatus = 'REVIEWS/CLEAR_POST_REVIEW_STATUS',
+  ClearPostReviewError = 'REVIEWS/CLEAR_POST_REVIEW_ERROR',
   RedirectToRoute = 'USER/REDIRECT',
 }
 
@@ -34,3 +42,5 @@ export const ProcuctTabNames = {
 };
 
 export const REVIEW_CARDS_PER_STEP = 3;
+
+export const MIN_REVIEW_LENGTH = 5;

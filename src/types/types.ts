@@ -10,6 +10,7 @@ export type ProductState = {
   isPromoLoaded: boolean,
   productToAddtoBasket?: ProductType,
   isAddItemPopupOpened: boolean,
+  isAddItemSuccessPopupOpened: boolean,
   product?: ProductType,
   isProductLoaded: boolean,
   similarProducts: ProductType[],
@@ -67,4 +68,15 @@ export type ReviewState = {
   reviewsLoaded: boolean,
   postSuccess: boolean,
   postError: boolean,
+  postedReview?: ReviewType,
+  isAddReviewPopupOpened: boolean,
+}
+
+export type PostReviewType = {
+  rating?: number,
+  userName: string,
+  advantage: string,
+  disadvantage: string,
+  review: string,
+  cameraId: number
 }

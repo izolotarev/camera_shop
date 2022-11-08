@@ -8,13 +8,15 @@ import { fetchProductById, fetchReviews } from '../../store/actions/api.actions'
 import { getProductById } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
-import CatalogAddItemPopup from '../catalog-add-item-popup/catalog-add-item-popup';
+import AddItemPopup from '../add-item-popup/add-item-popup';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
 import RatingStar from '../rating-star/rating-star';
 import Reviews from '../reviews/reviews';
 import SimilarProductSlider from '../similar-product-slider/similar-product-slider';
+import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
+import AddReviewPopup from '../add-review-popup/add-review-popup';
 
 
 type ProductParams = {
@@ -144,7 +146,9 @@ function Product():JSX.Element {
             <Reviews/>
           </div>
         </div>
-        <CatalogAddItemPopup/>
+        <AddItemPopup/>
+        <AddItemSuccessPopup/>
+        <AddReviewPopup/>
       </main>
       <button className="up-btn" onClick={handleGoUp}>
         <svg width="12" height="18" aria-hidden="true">
