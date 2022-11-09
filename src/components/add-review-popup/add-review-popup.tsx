@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MIN_REVIEW_LENGTH } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
-import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup } from '../../store/actions/actions';
-import { postReview } from '../../store/actions/api.actions';
+import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup, openAddReviewSuccessPopup } from '../../store/actions/actions';
+import { fetchReviews, postReview } from '../../store/actions/api.actions';
 import { getAddReviewPopupOpenedStatus, getReviewPostError, getReviewPostStatus } from '../../store/reducers/reviews/reviews-selectors';
 import { PostReviewType } from '../../types/types';
 
@@ -199,9 +199,11 @@ function AddReviewPopup():JSX.Element {
       });
 
       resetState();
-
       setDisabledForm(false);
       dispatch(clearPostReviewStatus());
+      dispatch(closeAddReviewPopup());
+      dispatch(openAddReviewSuccessPopup());
+      dispatch(fetchReviews(id));
     }
     if (isPostError) {
       setDisabledForm(false);
@@ -220,8 +222,8 @@ function AddReviewPopup():JSX.Element {
     setRatingValid(false);
     setUserNameValid(false);
     setAdvantageValid(false);
-    setRatingValid(false);
-    setRatingValid(false);
+    setDisadvantageValid(false);
+    setCommentValid(false);
     setFormValid(false);
   };
 
@@ -242,15 +244,15 @@ function AddReviewPopup():JSX.Element {
                   </legend>
                   <div className="rate__bar">
                     <div className="rate__group">
-                      <input className="visually-hidden" id="star-5" name="rate" type="radio" value="5" onChange={handleRatingChange} disabled={disabledForm}/>
+                      <input className="visually-hidden" id="star-5" name="rate" type="radio" value="5" onChange={handleRatingChange} disabled={disabledForm} checked={comment.rating === 5}/>
                       <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-                      <input className="visually-hidden" id="star-4" name="rate" type="radio" value="4" onChange={handleRatingChange} disabled={disabledForm}/>
+                      <input className="visually-hidden" id="star-4" name="rate" type="radio" value="4" onChange={handleRatingChange} disabled={disabledForm} checked={comment.rating === 4}/>
                       <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-                      <input className="visually-hidden" id="star-3" name="rate" type="radio" value="3" onChange={handleRatingChange} disabled={disabledForm}/>
+                      <input className="visually-hidden" id="star-3" name="rate" type="radio" value="3" onChange={handleRatingChange} disabled={disabledForm} checked={comment.rating === 3}/>
                       <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-                      <input className="visually-hidden" id="star-2" name="rate" type="radio" value="2" onChange={handleRatingChange} disabled={disabledForm}/>
+                      <input className="visually-hidden" id="star-2" name="rate" type="radio" value="2" onChange={handleRatingChange} disabled={disabledForm} checked={comment.rating === 2}/>
                       <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
-                      <input className="visually-hidden" id="star-1" name="rate" type="radio" value="1" onChange={handleRatingChange} disabled={disabledForm}/>
+                      <input className="visually-hidden" id="star-1" name="rate" type="radio" value="1" onChange={handleRatingChange} disabled={disabledForm} checked={comment.rating === 1}/>
                       <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
                     </div>
                     <div className="rate__progress"><span className="rate__stars">{rating ?? 0}</span> <span>/</span> <span className="rate__all-stars">5</span>

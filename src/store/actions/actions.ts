@@ -89,3 +89,6 @@ export const postReviewError = createAction(ActionType.PostError);
 export const clearPostReviewStatus = createAction(ActionType.ClearPostReviewStatus);
 
 export const clearPostReviewError = createAction(ActionType.ClearPostReviewError);
+
+export const openAddReviewSuccessPopup = createAction(ActionType.OpenAddReviewSuccessPopup);
+export const closeAddReviewSuccessPopup = createAction(ActionType.CloseAddReviewSuccessPopup);

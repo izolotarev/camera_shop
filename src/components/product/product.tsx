@@ -17,6 +17,7 @@ import Reviews from '../reviews/reviews';
 import SimilarProductSlider from '../similar-product-slider/similar-product-slider';
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
 import AddReviewPopup from '../add-review-popup/add-review-popup';
+import AddReviewSuccessPopup from '../add-review-success-popup/add-review-success-popup';
 
 
 type ProductParams = {
@@ -149,6 +150,7 @@ function Product():JSX.Element {
         <AddItemPopup/>
         <AddItemSuccessPopup/>
         <AddReviewPopup/>
+        <AddReviewSuccessPopup/>
       </main>
       <button className="up-btn" onClick={handleGoUp}>
         <svg width="12" height="18" aria-hidden="true">

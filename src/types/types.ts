@@ -70,6 +70,7 @@ export type ReviewState = {
   postError: boolean,
   postedReview?: ReviewType,
   isAddReviewPopupOpened: boolean,
+  isAddReviewSuccessPopupOpened: boolean,
 }
 
 export type PostReviewType = {

@@ -8,6 +8,8 @@ export enum ActionType {
   CloseAddItemSuccessPopup = 'PRODUCTS/CLOSE_ADD_ITEM_SUCCESS_POPUP',
   OpenAddReviewPopup = 'REVIEWS/OPEN_ADD_REVIEW_POPUP',
   CloseAddReviewPopup = 'REVIEWS/CLOSE_ADD_REVIEW_POPUP',
+  OpenAddReviewSuccessPopup = 'REVIEWS/OPEN_ADD_REVIEW_SUCCESS_POPUP',
+  CloseAddReviewSuccessPopup = 'REVIEWS/CLOSE_ADD_REVIEW_SUCCESS_POPUP',
   LoadProductById = 'PRODUCTS/LOAD_PRODUCT_BY_ID',
   ClearProductById = 'PRODUCTS/CLEAR_PRODUCT',
   LoadSimilarProducts = 'PRODUCTS/LOAD_SIMILAR_PRODUCTS',

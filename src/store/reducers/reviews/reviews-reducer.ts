@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { ReviewState } from '../../../types/types';
-import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup, loadReviews, openAddReviewPopup, postReviewAction, postReviewError } from '../../actions/actions';
+import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup, closeAddReviewSuccessPopup, loadReviews, openAddReviewPopup, openAddReviewSuccessPopup, postReviewAction, postReviewError } from '../../actions/actions';
 
 export const initialState: ReviewState = {
   reviews: undefined,
@@ -9,6 +9,7 @@ export const initialState: ReviewState = {
   postError: false,
   postedReview: undefined,
   isAddReviewPopupOpened: false,
+  isAddReviewSuccessPopupOpened: false,
 };
 
 export const reviewsData = createReducer(initialState, (builder) => {
@@ -35,5 +36,11 @@ export const reviewsData = createReducer(initialState, (builder) => {
     })
     .addCase(clearPostReviewError, (state) => {
       state.postError = initialState.postError;
+    })
+    .addCase(openAddReviewSuccessPopup, (state, action) => {
+      state.isAddReviewSuccessPopupOpened = true;
+    })
+    .addCase(closeAddReviewSuccessPopup, (state, action) => {
+      state.isAddReviewSuccessPopupOpened = false;
     });
 });
