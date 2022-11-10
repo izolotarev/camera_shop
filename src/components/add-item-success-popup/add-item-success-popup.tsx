@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
 import { closeAddItemSuccessPopup } from '../../store/actions/actions';
@@ -11,6 +12,20 @@ function AddItemSuccessPopup():JSX.Element {
   const handlePopupClose = () => {
     dispatch(closeAddItemSuccessPopup());
   };
+
+  const handleEscapeKey = (evt: KeyboardEvent) => {
+    if (evt.key === 'Escape') {
+      handlePopupClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapeKey, false);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey, false);
+    };
+  }, []);
 
   return (
     <div className={`modal ${popupActive ? 'is-active' : ''} modal--narrow`}>

@@ -29,6 +29,20 @@ function AddReviewPopup():JSX.Element {
     dispatch(closeAddReviewPopup());
   };
 
+  const handleEscapeKey = (evt: KeyboardEvent) => {
+    if (evt.key === 'Escape') {
+      handlePopupClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapeKey, false);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey, false);
+    };
+  }, []);
+
   const [comment, setComment] = useState<PostReviewType>({
     rating: undefined,
     userName: '',
@@ -230,7 +244,7 @@ function AddReviewPopup():JSX.Element {
   return (
     <div className={`modal ${popupActive ? 'is-active' : ''}`}>
       <div className="modal__wrapper">
-        <div className="modal__overlay"></div>
+        <div className="modal__overlay" onClick={handlePopupClose}></div>
         <div className="modal__content">
           <p className="title title--h4">Оставить отзыв</p>
           <div className="form-review">

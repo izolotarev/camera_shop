@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
 import { closeAddReviewSuccessPopup } from '../../store/actions/actions';
@@ -12,6 +13,20 @@ function AddReviewSuccessPopup():JSX.Element {
   const handlePopupClose = () => {
     dispatch(closeAddReviewSuccessPopup());
   };
+
+  const handleEscapeKey = (evt: KeyboardEvent) => {
+    if (evt.key === 'Escape') {
+      handlePopupClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapeKey, false);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey, false);
+    };
+  }, []);
 
   return (
     <div className={`modal ${popupActive ? 'is-active' : ''} modal--narrow`}>
