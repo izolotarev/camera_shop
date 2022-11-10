@@ -5,6 +5,7 @@ import { getProducts, getProductsLoadingStatus, getPromoLoadingStatus } from '..
 import Basket from '../basket/basket';
 import Catalog from '../catalog/catalog';
 import LoadingScreen from '../loading-screen/loading-screen';
+import NotFound from '../not-found/not-found';
 import Product from '../product/product';
 
 function App(): JSX.Element {
@@ -24,6 +25,7 @@ function App(): JSX.Element {
       <Route path={`${AppRoute.CATALOG}/page_:id`} element={<Catalog products={products}/>}/>
       <Route path={`${AppRoute.PRODUCTS}/:id`} element={<Product/>}/>
       <Route path={AppRoute.BASKET} element={<Basket/>}/>
+      <Route path={'*'} element={<NotFound/>}/>
     </Routes>
   );
 }
