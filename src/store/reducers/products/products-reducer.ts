@@ -32,15 +32,19 @@ export const productsData = createReducer(initialState, (builder) => {
     })
     .addCase(openAddItemPopup, (state, action) => {
       state.isAddItemPopupOpened = true;
+      document.body.classList.add('scroll-lock');
     })
     .addCase(closeAddItemPopup, (state, action) => {
       state.isAddItemPopupOpened = false;
+      document.body.classList.remove('scroll-lock');
     })
     .addCase(openAddItemSuccessPopup, (state, action) => {
       state.isAddItemSuccessPopupOpened = true;
+      document.body.classList.add('scroll-lock');
     })
     .addCase(closeAddItemSuccessPopup, (state, action) => {
       state.isAddItemSuccessPopupOpened = false;
+      document.body.classList.remove('scroll-lock');
     })
     .addCase(loadProductById, (state, action) => {
       state.product = action.payload.product;

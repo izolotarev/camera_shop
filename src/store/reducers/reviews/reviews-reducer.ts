@@ -20,9 +20,11 @@ export const reviewsData = createReducer(initialState, (builder) => {
     })
     .addCase(openAddReviewPopup, (state, action) => {
       state.isAddReviewPopupOpened = true;
+      document.body.classList.add('scroll-lock');
     })
     .addCase(closeAddReviewPopup, (state, action) => {
       state.isAddReviewPopupOpened = false;
+      document.body.classList.remove('scroll-lock');
     })
     .addCase(postReviewAction, (state, action) => {
       state.postedReview = action.payload.review;
@@ -39,8 +41,10 @@ export const reviewsData = createReducer(initialState, (builder) => {
     })
     .addCase(openAddReviewSuccessPopup, (state, action) => {
       state.isAddReviewSuccessPopupOpened = true;
+      document.body.classList.add('scroll-lock');
     })
     .addCase(closeAddReviewSuccessPopup, (state, action) => {
       state.isAddReviewSuccessPopupOpened = false;
+      document.body.classList.remove('scroll-lock');
     });
 });
