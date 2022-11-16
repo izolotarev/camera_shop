@@ -7,32 +7,26 @@ type RatingStarProps = {
 function RatingStar({numberOfFullStars}: RatingStarProps):JSX.Element {
   const numberOfNotFullStars = MAX_PRODUCT_RATING - numberOfFullStars;
 
-  const fullStars = [];
-  const notFullStars = [];
-
-  for (let i = 0; i < numberOfFullStars; i++) {
-    fullStars.push(
-      <svg width="17" height="16" aria-hidden="true">
-        <use xlinkHref="#icon-full-star"></use>
-      </svg>
-    );
-  }
-
-  for (let i = 0; i < numberOfNotFullStars; i++) {
-    notFullStars.push(
-      <svg width="17" height="16" aria-hidden="true">
-        <use xlinkHref="#icon-star"></use>
-      </svg>
-    );
-  }
-
   return (
     <>
       {
-        fullStars
+        Array(numberOfFullStars).fill(null).map((_, index) => {
+          const i = index;
+
+          return (
+            <svg width="17" height="16" aria-hidden="true" key={i}>
+              <use xlinkHref="#icon-full-star"></use>
+            </svg>);
+        })
       }
       {
-        notFullStars
+        Array(numberOfNotFullStars).fill(null).map((_, index) => {
+          const j = numberOfFullStars + index;
+          return (
+            <svg width="17" height="16" aria-hidden="true" key={j}>
+              <use xlinkHref="#icon-star"></use>
+            </svg>);
+        })
       }
     </>
   );

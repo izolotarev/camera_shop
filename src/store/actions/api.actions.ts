@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { APIRoute, AppRoute } from '../../const/const';
 import { PostReviewType, ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
 import { loadProductById, loadProducts, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
-//import axios, { AxiosError } from 'axios';
 
 
 export const fetchProducts = (): ThunkActionResult =>
