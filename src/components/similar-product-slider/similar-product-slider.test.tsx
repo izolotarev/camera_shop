@@ -6,9 +6,10 @@ import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import { AppRoute } from '../../const/const';
 import { render, screen } from '@testing-library/react';
 import SimilarProductSlider from './similar-product-slider';
-import * as Redux from 'react-redux';
+import thunk from 'redux-thunk';
 
-const mockStore = configureMockStore();
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 const fakeProduct = makeFakeProduct();
 const products = [fakeProduct];
@@ -22,11 +23,7 @@ history.push(`${AppRoute.PRODUCTS}/${fakeProduct.id}`);
 
 describe('Component: SimilarProducts', () => {
 
-  it('should render correctly', async () => {
-    const dispatch = jest.fn();
-    const useDispatch = jest.spyOn(Redux, 'useDispatch');
-    useDispatch.mockReturnValue(dispatch);
-
+  it('should render correctly', () => {
     const store = mockStore({
       PRODUCTS: {
         productsLoaded: true,
@@ -38,7 +35,7 @@ describe('Component: SimilarProducts', () => {
         similarProductsLoaded: true,
       },
       REVIEWS: {
-        reviews: [reviews],
+        reviews: reviews,
         reviewsLoaded: true,
         isAddReviewPopupOpened:true
       }
@@ -52,7 +49,7 @@ describe('Component: SimilarProducts', () => {
       </Provider>,
     );
 
-    expect(screen.getByText(fakeProduct.description)).toBeInTheDocument();
+    expect(screen.getByText(`${fakeProduct.price} ₽`)).toBeInTheDocument();
 
   });
 

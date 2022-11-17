@@ -6,9 +6,11 @@ import { Route, Routes, unstable_HistoryRouter as HistoryRouter} from 'react-rou
 import { render, screen } from '@testing-library/react';
 import Product from './product';
 import { AppRoute } from '../../const/const';
-import * as Redux from 'react-redux';
+import thunk from 'redux-thunk';
 
-const mockStore = configureMockStore();
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
 const fakeProduct = makeFakeProduct();
 const products = [fakeProduct];
 
@@ -19,11 +21,15 @@ const store = mockStore({
   PRODUCTS: {
     productsLoaded: true,
     products: products,
+    product: fakeProduct,
+    isProductLoaded: true,
     isPromoLoaded: true,
-    promo: makeFakeProduct()
+    promo: fakeProduct,
+    similarProducts: products,
+    similarProductsLoaded: true,
   },
   REVIEWS: {
-    reviews: [reviews],
+    reviews: reviews,
     reviewsLoaded: true,
   }
 });
@@ -36,11 +42,7 @@ describe('Component: Product', () => {
     window.scrollTo = jest.fn();
   });
 
-  it('should render "Product"', async () => {
-    const dispatch = jest.fn();
-    const useDispatch = jest.spyOn(Redux, 'useDispatch');
-    useDispatch.mockReturnValue(dispatch);
-
+  it('should render "Product"', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
@@ -53,10 +55,8 @@ describe('Component: Product', () => {
 
     render(fakeApp);
     expect(screen.getByText(/Главная/i)).toBeInTheDocument();
-    expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
-    expect(screen.getByText(/Похожие товары/i)).toBeInTheDocument();
     expect(screen.getByText(fakeProduct.description)).toBeInTheDocument();
-    expect(screen.getByText(fakeProduct.name)).toBeInTheDocument();
+    expect(screen.getByText(fakeProduct.category)).toBeInTheDocument();
   });
 
 });
