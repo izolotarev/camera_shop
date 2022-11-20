@@ -14,7 +14,7 @@ function SimilarProductSlider({id}: SimilarProductSliderProps) {
 
   useEffect(() => {
     dispatch(fetchSimilarProducts(id));
-  }, [id]);
+  }, [dispatch, id]);
 
   const similarProducts = useSelector(getSimilarProducts);
   const similarProductsIds = similarProducts.slice().map((p) => p.id);
@@ -24,6 +24,7 @@ function SimilarProductSlider({id}: SimilarProductSliderProps) {
 
   useEffect(() => {
     setActiveSimilarProductsIds(similarProductsIds.slice(0,3));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [similarProducts]);
 
   const handleNextSlideClick = () => {

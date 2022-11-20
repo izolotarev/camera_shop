@@ -36,7 +36,7 @@ function Product():JSX.Element {
     dispatch(fetchReviews(id));
     window.scrollTo(0,0);
     return () => {dispatch(clearProductById());};
-  }, [id]);
+  }, [dispatch, id]);
 
   const product = useSelector(getProductById);
   const {previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name,

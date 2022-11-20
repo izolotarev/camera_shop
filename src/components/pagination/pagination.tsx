@@ -20,7 +20,7 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
         navigate(`${AppRoute.CATALOG}/page_1`);
       }
     },
-    [currentPage],
+    [currentPage, navigate, numberOfPages],
   );
 
   const handlePaginationClick = (evt: MouseEvent<HTMLUListElement>) => {

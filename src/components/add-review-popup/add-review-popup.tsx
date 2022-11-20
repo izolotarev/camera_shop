@@ -212,7 +212,7 @@ function AddReviewPopup():JSX.Element {
       setDisabledForm(false);
       dispatch(clearPostReviewError());
     }
-  }, [isPostError, isPostSuccessfull]);
+  }, [dispatch, id, isPostError, isPostSuccessfull]);
 
   const resetState = () => {
     setRatingTouched(false);
