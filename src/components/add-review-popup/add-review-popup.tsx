@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MIN_REVIEW_LENGTH } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
+import useEscapeKey from '../../hooks/useEscapeKey';
 import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup, openAddReviewSuccessPopup } from '../../store/actions/actions';
 import { fetchReviews, postReview } from '../../store/actions/api.actions';
 import { getAddReviewPopupOpenedStatus, getReviewPostError, getReviewPostStatus } from '../../store/reducers/reviews/reviews-selectors';
@@ -29,19 +30,7 @@ function AddReviewPopup():JSX.Element {
     dispatch(closeAddReviewPopup());
   };
 
-  const handleEscapeKey = (evt: KeyboardEvent) => {
-    if (evt.key === 'Escape') {
-      handlePopupClose();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleEscapeKey, false);
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKey, false);
-    };
-  }, []);
+  useEscapeKey(handlePopupClose);
 
   const [comment, setComment] = useState<PostReviewType>({
     rating: undefined,

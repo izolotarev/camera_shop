@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
+import useEscapeKey from '../../hooks/useEscapeKey';
 import { closeAddItemSuccessPopup } from '../../store/actions/actions';
 import { getAddItemSuccessPopupOpenedStatus } from '../../store/reducers/products/products-selectors';
 
@@ -13,19 +13,7 @@ function AddItemSuccessPopup():JSX.Element {
     dispatch(closeAddItemSuccessPopup());
   };
 
-  const handleEscapeKey = (evt: KeyboardEvent) => {
-    if (evt.key === 'Escape') {
-      handlePopupClose();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleEscapeKey, false);
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKey, false);
-    };
-  }, []);
+  useEscapeKey(handlePopupClose);
 
   return (
     <div className={`modal ${popupActive ? 'is-active' : ''} modal--narrow`}>

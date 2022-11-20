@@ -23,16 +23,6 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
     [currentPage],
   );
 
-  const pages = [];
-
-  for (let i = 1; i < numberOfPages + 1; i++) {
-    pages.push(
-      <li key={i} className="pagination__item">
-        <Link className={`pagination__link ${i === currentPage ? 'pagination__link--active' : ''}`} to={`${AppRoute.CATALOG}/page_${i}`}>{i}</Link>
-      </li>
-    );
-  }
-
   const handlePaginationClick = (evt: MouseEvent<HTMLUListElement>) => {
     evt.preventDefault();
     const page = (evt.target as HTMLAnchorElement).href?.split('_').reverse()[0];
@@ -57,7 +47,14 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
                 null
             }
             {
-              pages
+              Array(numberOfPages).fill(null).map((_, index) => {
+                const j = index + 1;
+                return (
+                  <li key={j} className="pagination__item">
+                    <Link className={`pagination__link ${j === currentPage ? 'pagination__link--active' : ''}`} to={`${AppRoute.CATALOG}/page_${j}`}>{j}</Link>
+                  </li>
+                );
+              })
             }
             {
               currentPage !== numberOfPages
