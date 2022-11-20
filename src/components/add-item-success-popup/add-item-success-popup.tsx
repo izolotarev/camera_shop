@@ -1,11 +1,13 @@
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
+import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { closeAddItemSuccessPopup } from '../../store/actions/actions';
 import { getAddItemSuccessPopupOpenedStatus } from '../../store/reducers/products/products-selectors';
 
 function AddItemSuccessPopup():JSX.Element {
   const popupActive = useSelector(getAddItemSuccessPopupOpenedStatus);
+  useChangeBodyClass(popupActive);
 
   const dispatch = useAppDispatch();
 

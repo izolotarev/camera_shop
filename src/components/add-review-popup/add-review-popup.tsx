@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MIN_REVIEW_LENGTH } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
+import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup, openAddReviewSuccessPopup } from '../../store/actions/actions';
 import { fetchReviews, postReview } from '../../store/actions/api.actions';
@@ -23,6 +24,7 @@ function AddReviewPopup():JSX.Element {
   const [disabledForm, setDisabledForm] = useState(false);
 
   const popupActive = useSelector(getAddReviewPopupOpenedStatus);
+  useChangeBodyClass(popupActive);
 
   const dispatch = useAppDispatch();
 
@@ -59,11 +61,11 @@ function AddReviewPopup():JSX.Element {
   const [formValid, setFormValid] = useState(false);
 
   useEffect(() => {
+    let isFormValid = false;
     if (ratingValid && userNameValid && advantageValid && disadvantageValid && commentValid) {
-      setFormValid(true);
-    } else {
-      setFormValid(false);
+      isFormValid = true;
     }
+    setFormValid(isFormValid);
   }, [ratingValid, userNameValid, advantageValid, disadvantageValid, commentValid]);
 
   const handleBlur = (evt: SyntheticEvent) => {
@@ -99,11 +101,11 @@ function AddReviewPopup():JSX.Element {
   };
 
   useEffect(() => {
+    let isRatingValid = false;
     if (rating && rating > 0) {
-      setRatingValid(true);
-    } else {
-      setRatingValid(false);
+      isRatingValid = true;
     }
+    setRatingValid(isRatingValid);
   }, [rating]);
 
   const handleUserNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -116,11 +118,12 @@ function AddReviewPopup():JSX.Element {
       cameraId
     });
 
-    if (evt.target.value.length > 1) {
-      setUserNameValid(true);
-    } else {
-      setUserNameValid(false);
+    let isUserNameValid = false;
+
+    if (evt.target.value.length > 0) {
+      isUserNameValid = true;
     }
+    setUserNameValid(isUserNameValid);
   };
 
   const handleAdvantagesChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -133,11 +136,11 @@ function AddReviewPopup():JSX.Element {
       cameraId
     });
 
-    if (evt.target.value.length > 1) {
-      setAdvantageValid(true);
-    } else {
-      setAdvantageValid(false);
+    let isAdvantageValid = false;
+    if (evt.target.value.length > 0) {
+      isAdvantageValid = true;
     }
+    setAdvantageValid(isAdvantageValid);
   };
 
   const handleDisadvantagesChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -150,11 +153,11 @@ function AddReviewPopup():JSX.Element {
       cameraId
     });
 
-    if (evt.target.value.length > 1) {
-      setDisadvantageValid(true);
-    } else {
-      setDisadvantageValid(false);
+    let isDisadvantageValid = false;
+    if (evt.target.value.length > 0) {
+      isDisadvantageValid = true;
     }
+    setDisadvantageValid(isDisadvantageValid);
   };
 
   const handleCommentChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
@@ -167,11 +170,11 @@ function AddReviewPopup():JSX.Element {
       cameraId
     });
 
+    let isCommentValid = false;
     if (evt.target.value.length >= MIN_REVIEW_LENGTH) {
-      setCommentValid(true);
-    } else {
-      setCommentValid(false);
+      isCommentValid = true;
     }
+    setCommentValid(isCommentValid);
   };
 
   const handleSubmit = (evt: SyntheticEvent) => {

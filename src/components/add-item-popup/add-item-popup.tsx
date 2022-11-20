@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
+import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { closeAddItemPopup } from '../../store/actions/actions';
 import { getAddItemPopupOpenedStatus, getProductToAddToBasket } from '../../store/reducers/products/products-selectors';
@@ -7,6 +8,8 @@ import { getAddItemPopupOpenedStatus, getProductToAddToBasket } from '../../stor
 function AddItemPopup():JSX.Element {
   const popupActive = useSelector(getAddItemPopupOpenedStatus);
   const productToAddToBasket = useSelector(getProductToAddToBasket);
+
+  useChangeBodyClass(popupActive);
 
   const dispatch = useAppDispatch();
 

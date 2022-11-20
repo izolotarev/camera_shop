@@ -23,8 +23,7 @@ function SimilarProductSlider({id}: SimilarProductSliderProps) {
   const [activeSimilarProductsIndexes, setActiveSimilarProductsIndexes] = useState([0,1,2]);
 
   useEffect(() => {
-    setActiveSimilarProductsIds(similarProductsIds.slice(0,3));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setActiveSimilarProductsIds(similarProducts.slice().map((p) => p.id).slice(0,3));
   }, [similarProducts]);
 
   const handleNextSlideClick = () => {

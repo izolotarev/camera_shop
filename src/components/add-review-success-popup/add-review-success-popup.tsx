@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
+import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { closeAddReviewSuccessPopup } from '../../store/actions/actions';
 import { getAddReviewSuccessPopupOpenedStatus } from '../../store/reducers/reviews/reviews-selectors';
@@ -7,6 +8,7 @@ import { getAddReviewSuccessPopupOpenedStatus } from '../../store/reducers/revie
 function AddReviewSuccessPopup():JSX.Element {
 
   const popupActive = useSelector(getAddReviewSuccessPopupOpenedStatus);
+  useChangeBodyClass(popupActive);
 
   const dispatch = useAppDispatch();
 
