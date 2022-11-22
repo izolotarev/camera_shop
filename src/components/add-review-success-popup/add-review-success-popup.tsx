@@ -4,6 +4,7 @@ import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { closeAddReviewSuccessPopup } from '../../store/actions/actions';
 import { getAddReviewSuccessPopupOpenedStatus } from '../../store/reducers/reviews/reviews-selectors';
+import useTrapFocus from '../../hooks/useTrapFocus';
 
 function AddReviewSuccessPopup():JSX.Element {
 
@@ -17,6 +18,7 @@ function AddReviewSuccessPopup():JSX.Element {
   };
 
   useEscapeKey(handlePopupClose);
+  useTrapFocus(popupActive);
 
   return (
     <div className={`modal ${popupActive ? 'is-active' : ''} modal--narrow`}>

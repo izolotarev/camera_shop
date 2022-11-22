@@ -9,6 +9,7 @@ import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup, openA
 import { fetchReviews, postReview } from '../../store/actions/api.actions';
 import { getAddReviewPopupOpenedStatus, getReviewPostError, getReviewPostStatus } from '../../store/reducers/reviews/reviews-selectors';
 import { PostReviewType } from '../../types/types';
+import useTrapFocus from '../../hooks/useTrapFocus';
 
 type AddReviewPopupParams = {
   id: string;
@@ -33,6 +34,7 @@ function AddReviewPopup():JSX.Element {
   };
 
   useEscapeKey(handlePopupClose);
+  useTrapFocus(popupActive);
 
   const [comment, setComment] = useState<PostReviewType>({
     rating: undefined,

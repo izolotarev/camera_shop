@@ -4,6 +4,7 @@ import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { closeAddItemSuccessPopup } from '../../store/actions/actions';
 import { getAddItemSuccessPopupOpenedStatus } from '../../store/reducers/products/products-selectors';
+import useTrapFocus from '../../hooks/useTrapFocus';
 
 function AddItemSuccessPopup():JSX.Element {
   const popupActive = useSelector(getAddItemSuccessPopupOpenedStatus);
@@ -16,6 +17,7 @@ function AddItemSuccessPopup():JSX.Element {
   };
 
   useEscapeKey(handlePopupClose);
+  useTrapFocus(popupActive);
 
   return (
     <div className={`modal ${popupActive ? 'is-active' : ''} modal--narrow`}>
