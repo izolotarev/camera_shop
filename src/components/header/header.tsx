@@ -1,7 +1,22 @@
+import { ChangeEvent, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
+import { getProductsInSearch } from '../../store/reducers/products/products-selectors';
+import { State } from '../../types/types';
 
 function Header() : JSX.Element {
+  const [search, setSearch] = useState('');
+  const productsInSearch = useSelector((state: State) => getProductsInSearch(state, search));
+
+  const handleSearchChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setSearch(evt.target.value);
+  };
+
+  const handleResetSearch = () => {
+    setSearch('');
+  };
+
   return (
     <header className="header" id="header">
       <div className="container">
@@ -22,23 +37,31 @@ function Header() : JSX.Element {
             </li>
           </ul>
         </nav>
-        <div className="form-search">
+        <div className={`form-search ${search ? 'list-opened' : ''}`}>
           <form>
             <label>
               <svg className="form-search__icon" width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-lens"></use>
               </svg>
-              <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту"/>
+              <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту" onChange={handleSearchChange} value={search}/>
             </label>
             <ul className="form-search__select-list">
-              <li className="form-search__select-item" tabIndex={0}>Cannonball Pro MX 8i</li>
-              <li className="form-search__select-item" tabIndex={0}>Cannonball Pro MX 7i</li>
-              <li className="form-search__select-item" tabIndex={0}>Cannonball Pro MX 6i</li>
-              <li className="form-search__select-item" tabIndex={0}>Cannonball Pro MX 5i</li>
-              <li className="form-search__select-item" tabIndex={0}>Cannonball Pro MX 4i</li>
+              {
+                productsInSearch.length > 0
+                  ?
+                  productsInSearch.map((product, index) =>
+                    (
+                      <Link key={product.id} to={{pathname: `${AppRoute.PRODUCTS}/${product.id}`}}>
+                        <li className="form-search__select-item" tabIndex={index}>{product.name}</li>
+                      </Link>
+                    )
+                  )
+                  :
+                  ''
+              }
             </ul>
           </form>
-          <button className="form-search__reset" type="reset">
+          <button className="form-search__reset" type="reset" onClick={handleResetSearch}>
             <svg width="10" height="10" aria-hidden="true">
               <use xlinkHref="#icon-close"></use>
             </svg><span className="visually-hidden">Сбросить поиск</span>
