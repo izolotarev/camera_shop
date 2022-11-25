@@ -1,33 +1,25 @@
-import { MAX_PRODUCT_RATING } from '../../const/const';
-
 type RatingStarProps = {
   numberOfFullStars: number;
 }
 
 function RatingStar({numberOfFullStars}: RatingStarProps):JSX.Element {
-  const numberOfNotFullStars = MAX_PRODUCT_RATING - numberOfFullStars;
-
   return (
     <>
-      {
-        Array(numberOfFullStars).fill(null).map((_, index) => {
-          const i = index;
-
-          return (
-            <svg width="17" height="16" aria-hidden="true" key={i}>
-              <use xlinkHref="#icon-full-star"></use>
-            </svg>);
-        })
-      }
-      {
-        Array(numberOfNotFullStars).fill(null).map((_, index) => {
-          const j = numberOfFullStars + index;
-          return (
-            <svg width="17" height="16" aria-hidden="true" key={j}>
-              <use xlinkHref="#icon-star"></use>
-            </svg>);
-        })
-      }
+      <svg width="12" height="11" aria-hidden="true">
+        <use xlinkHref={numberOfFullStars > 0 ? '#icon-full-star' : '#icon-star'}></use>
+      </svg>
+      <svg width="12" height="11" aria-hidden="true">
+        <use xlinkHref={numberOfFullStars > 1 ? '#icon-full-star' : '#icon-star'}></use>
+      </svg>
+      <svg width="12" height="11" aria-hidden="true">
+        <use xlinkHref={numberOfFullStars > 2 ? '#icon-full-star' : '#icon-star'}></use>
+      </svg>
+      <svg width="12" height="11" aria-hidden="true">
+        <use xlinkHref={numberOfFullStars > 3 ? '#icon-full-star' : '#icon-star'}></use>
+      </svg>
+      <svg width="12" height="11" aria-hidden="true">
+        <use xlinkHref={numberOfFullStars > 4 ? '#icon-full-star' : '#icon-star'}></use>
+      </svg>
     </>
   );
 }
