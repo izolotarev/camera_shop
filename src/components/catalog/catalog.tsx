@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
+import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { getPromo } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType, ProductType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
@@ -11,6 +11,7 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import Pagination from '../pagination/pagination';
 import ProductList from '../product-list/product-list';
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 type CatalogProps = {
   products: ProductType[];
@@ -25,10 +26,32 @@ function Catalog({products}:CatalogProps):JSX.Element {
   let pageId = parseInt(params.id ?? '', 10);
   if (isNaN(pageId)) { pageId = 1; }
 
-  const productsOnPage = products.slice((pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE, (pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE + NUMBER_OF_ELEMENTS_PER_PAGE);
+  const [sortedProducts, setSortedProducts] = useState<ProductType[]>(products);
+  const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(CatalogSortType.None);
+  const [catalogSortOrder, setCatalogSortOrder] = useState<CatalogSortOrder>(CatalogSortOrder.None);
+
+  useEffect(() => {
+    if (catalogSortType !== CatalogSortType.None || catalogSortOrder !== CatalogSortOrder.None) {
+      setSortedProducts(sortProducts(products, catalogSortType, catalogSortOrder));
+    } else {
+      setSortedProducts(products);
+    }
+  }, [catalogSortType, catalogSortOrder, products]);
+
+  const productsOnPage = sortedProducts.slice((pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE, (pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE + NUMBER_OF_ELEMENTS_PER_PAGE);
 
   const promo = useSelector(getPromo);
   const promoId = promo?.id ?? 0;
+
+  const handleSortTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const sortType = evt.target.value as CatalogSortType || null;
+    setCatalogSortType(sortType || CatalogSortType.None);
+  };
+
+  const handleSortOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const sortOrder = evt.target.value as CatalogSortOrder || null;
+    setCatalogSortOrder(sortOrder || CatalogSortOrder.None);
+  };
 
   const breadcrumbs: BreadcrumbsType[] =
   [
@@ -144,17 +167,17 @@ function Catalog({products}:CatalogProps):JSX.Element {
                         <p className="title title--h5">Сортировать:</p>
                         <div className="catalog-sort__type">
                           <div className="catalog-sort__btn-text">
-                            <input type="radio" id="sortPrice" name="sort" checked/>
+                            <input type="radio" id="sortPrice" name="sort" value={CatalogSortType.Price} onChange={handleSortTypeChange} checked={catalogSortType === CatalogSortType.Price}/>
                             <label htmlFor="sortPrice">по цене</label>
                           </div>
                           <div className="catalog-sort__btn-text">
-                            <input type="radio" id="sortPopular" name="sort"/>
+                            <input type="radio" id="sortPopular" name="sort" value={CatalogSortType.Rating} onChange={handleSortTypeChange} checked={catalogSortType === CatalogSortType.Rating}/>
                             <label htmlFor="sortPopular">по популярности</label>
                           </div>
                         </div>
                         <div className="catalog-sort__order">
                           <div className="catalog-sort__btn catalog-sort__btn--up">
-                            <input type="radio" id="up" name="sort-icon" checked aria-label="По возрастанию"/>
+                            <input type="radio" id="up" name="sort-icon" aria-label="По возрастанию" value={CatalogSortOrder.Ascending} onChange={handleSortOrderChange} checked={catalogSortOrder === CatalogSortOrder.Ascending}/>
                             <label htmlFor="up">
                               <svg width="16" height="14" aria-hidden="true">
                                 <use xlinkHref="#icon-sort"></use>
@@ -162,7 +185,7 @@ function Catalog({products}:CatalogProps):JSX.Element {
                             </label>
                           </div>
                           <div className="catalog-sort__btn catalog-sort__btn--down">
-                            <input type="radio" id="down" name="sort-icon" aria-label="По убыванию"/>
+                            <input type="radio" id="down" name="sort-icon" aria-label="По убыванию" value={CatalogSortOrder.Descending} onChange={handleSortOrderChange} checked={catalogSortOrder === CatalogSortOrder.Descending}/>
                             <label htmlFor="down">
                               <svg width="16" height="14" aria-hidden="true">
                                 <use xlinkHref="#icon-sort"></use>
@@ -187,5 +210,15 @@ function Catalog({products}:CatalogProps):JSX.Element {
     </div>
   );
 }
+
+const sortProducts = (products: ProductType[], sortType: CatalogSortType, order: CatalogSortOrder): ProductType[] => {
+  sortType = sortType === CatalogSortType.None ? CatalogSortType.Price : sortType;
+  order = order === CatalogSortOrder.None ? CatalogSortOrder.Ascending : order;
+  const key = sortType === CatalogSortType.Price ? 'price' : 'rating';
+  if (order === CatalogSortOrder.Ascending) {
+    return products.slice().sort((a, b) => a[key] - b[key]);
+  }
+  return products.slice().sort((a, b) => b[key] - a[key]);
+};
 
 export default Catalog;
