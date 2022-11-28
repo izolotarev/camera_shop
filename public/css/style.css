@@ -2039,10 +2039,10 @@ button,
   background-color: #dddddd;
 }
 
-.catalog-sort__btn-text input[type="radio"]:focus + label {
+/* .catalog-sort__btn-text input[type="radio"]:focus + label {
   color: #7575e2;
   background-color: #e8e8fa;
-}
+} */
 
 .catalog-sort__btn {
   /* Checked */

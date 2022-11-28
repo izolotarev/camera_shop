@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { getPromo } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType, ProductType } from '../../types/types';
@@ -25,6 +25,8 @@ function Catalog({products}:CatalogProps):JSX.Element {
   const params = useParams<CatalogParams>();
   let pageId = parseInt(params.id ?? '', 10);
   if (isNaN(pageId)) { pageId = 1; }
+
+  let [searchParams, setSearchParams] = useSearchParams();
 
   const [sortedProducts, setSortedProducts] = useState<ProductType[]>(products);
   const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(CatalogSortType.None);
