@@ -26,11 +26,13 @@ function Catalog({products}:CatalogProps):JSX.Element {
   let pageId = parseInt(params.id ?? '', 10);
   if (isNaN(pageId)) { pageId = 1; }
 
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortTypeParam = searchParams.get('catalogSortType') as CatalogSortType || null;
+  const sortOrderParam = searchParams.get('catalogSortOrder') as CatalogSortOrder || null;
 
   const [sortedProducts, setSortedProducts] = useState<ProductType[]>(products);
-  const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(CatalogSortType.None);
-  const [catalogSortOrder, setCatalogSortOrder] = useState<CatalogSortOrder>(CatalogSortOrder.None);
+  const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(sortTypeParam || CatalogSortType.None);
+  const [catalogSortOrder, setCatalogSortOrder] = useState<CatalogSortOrder>(sortOrderParam || CatalogSortOrder.None);
 
   useEffect(() => {
     if (catalogSortType !== CatalogSortType.None || catalogSortOrder !== CatalogSortOrder.None) {
@@ -48,11 +50,13 @@ function Catalog({products}:CatalogProps):JSX.Element {
   const handleSortTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortType = evt.target.value as CatalogSortType || null;
     setCatalogSortType(sortType || CatalogSortType.None);
+    setSearchParams({sortType, catalogSortOrder});
   };
 
   const handleSortOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortOrder = evt.target.value as CatalogSortOrder || null;
     setCatalogSortOrder(sortOrder || CatalogSortOrder.None);
+    setSearchParams({catalogSortType, sortOrder});
   };
 
   const breadcrumbs: BreadcrumbsType[] =
