@@ -6,6 +6,8 @@ export enum ActionType {
   CloseAddItemPopup = 'PRODUCTS/CLOSE_ADD_ITEM_POPUP',
   OpenAddItemSuccessPopup = 'PRODUCTS/OPEN_ADD_ITEM_SUCCESS_POPUP',
   CloseAddItemSuccessPopup = 'PRODUCTS/CLOSE_ADD_ITEM_SUCCESS_POPUP',
+  LoadProductsFromSearch = 'PRODUCTS/LOAD_PRODUCTS_SEARCH',
+  ClearProductsFromSearch = 'PRODUCTS/CLEAR_PRODUCTS_SEARCH',
   OpenAddReviewPopup = 'REVIEWS/OPEN_ADD_REVIEW_POPUP',
   CloseAddReviewPopup = 'REVIEWS/CLOSE_ADD_REVIEW_POPUP',
   OpenAddReviewSuccessPopup = 'REVIEWS/OPEN_ADD_REVIEW_SUCCESS_POPUP',

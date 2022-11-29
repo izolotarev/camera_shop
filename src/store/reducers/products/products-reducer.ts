@@ -1,7 +1,7 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
-import { clearProductById, closeAddItemPopup, closeAddItemSuccessPopup, loadProductById, loadProducts, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
+import { clearProductById, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -15,6 +15,7 @@ export const initialState: ProductState = {
   isProductLoaded: false,
   similarProducts: [],
   similarProductsLoaded: false,
+  searchResultProducts: []
 };
 
 export const productsData = createReducer(initialState, (builder) => {
@@ -53,5 +54,11 @@ export const productsData = createReducer(initialState, (builder) => {
     .addCase(loadSimilarProducts, (state, action) => {
       state.similarProducts = action.payload.products;
       state.similarProductsLoaded = true;
+    })
+    .addCase(loadProductsFromSearch, (state, action) => {
+      state.searchResultProducts = action.payload.searchResultProducts;
+    })
+    .addCase(clearProductsFromSearch, (state, action) => {
+      state.searchResultProducts = initialState.searchResultProducts;
     });
 });

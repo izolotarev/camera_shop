@@ -24,6 +24,7 @@ describe('Function: productsData', () => {
       isProductLoaded: false,
       similarProducts: [],
       similarProductsLoaded: false,
+      searchResultProducts: [],
     };
     expect(productsData(state, loadProducts(products)))
       .toEqual({
@@ -38,6 +39,7 @@ describe('Function: productsData', () => {
         isProductLoaded: false,
         similarProducts: [],
         similarProductsLoaded: false,
+        searchResultProducts: [],
       });
   });
 

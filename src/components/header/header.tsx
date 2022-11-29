@@ -1,13 +1,25 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
-import { getProductsInSearch } from '../../store/reducers/products/products-selectors';
-import { State } from '../../types/types';
+import { useAppDispatch } from '../../hooks/hooks';
+import { useDebounce } from '../../hooks/useDebounce';
+import { clearProductsFromSearch } from '../../store/actions/actions';
+import { fetchProductsFromSearch } from '../../store/actions/api.actions';
+import { getSearchResultProducts } from '../../store/reducers/products/products-selectors';
 
 function Header() : JSX.Element {
+
   const [search, setSearch] = useState('');
-  const productsInSearch = useSelector((state: State) => getProductsInSearch(state, search));
+  const debouncedSearch: string = useDebounce<string>(search, 500);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProductsFromSearch(debouncedSearch));
+  }, [debouncedSearch, dispatch]);
+
+  const searchResultProducts = useSelector(getSearchResultProducts);
 
   const handleSearchChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setSearch(evt.target.value);
@@ -15,6 +27,7 @@ function Header() : JSX.Element {
 
   const handleResetSearch = () => {
     setSearch('');
+    dispatch(clearProductsFromSearch());
   };
 
   return (
@@ -47,9 +60,9 @@ function Header() : JSX.Element {
             </label>
             <ul className="form-search__select-list">
               {
-                productsInSearch.length > 0
+                searchResultProducts.length > 0
                   ?
-                  productsInSearch.map((product, index) =>
+                  searchResultProducts.map((product, index) =>
                     (
                       <Link key={product.id} to={{pathname: `${AppRoute.PRODUCTS}/${product.id}`}}>
                         <li className="form-search__select-item" tabIndex={index}>{product.name}</li>

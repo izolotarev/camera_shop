@@ -92,3 +92,14 @@ export const clearPostReviewError = createAction(ActionType.ClearPostReviewError
 
 export const openAddReviewSuccessPopup = createAction(ActionType.OpenAddReviewSuccessPopup);
 export const closeAddReviewSuccessPopup = createAction(ActionType.CloseAddReviewSuccessPopup);
+
+export const loadProductsFromSearch = createAction(
+  ActionType.LoadProductsFromSearch,
+  (searchResultProducts: ProductType[]) => ({
+    payload: {
+      searchResultProducts,
+    },
+  }),
+);
+
+export const clearProductsFromSearch = createAction(ActionType.ClearProductsFromSearch);

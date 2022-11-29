@@ -15,6 +15,7 @@ export type ProductState = {
   isProductLoaded: boolean,
   similarProducts: ProductType[],
   similarProductsLoaded: boolean,
+  searchResultProducts: ProductType[],
 }
 
 export type ProductType = {

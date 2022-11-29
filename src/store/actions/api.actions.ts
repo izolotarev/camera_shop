@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { APIRoute, AppRoute } from '../../const/const';
 import { PostReviewType, ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
-import { loadProductById, loadProducts, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
+import { clearProductsFromSearch, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
 
 
 export const fetchProducts = (): ThunkActionResult =>
@@ -63,6 +63,20 @@ export const postReview = (review: PostReviewType): ThunkActionResult =>
     } catch(error) {
       handleError(error);
       dispatch(postReviewError());
+    }
+  };
+
+export const fetchProductsFromSearch = (input: string | null): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      if (input) {
+        const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}?name_like=${input}`);
+        dispatch(loadProductsFromSearch(data));
+      } else {
+        dispatch(clearProductsFromSearch());
+      }
+    } catch(error) {
+      handleError(error);
     }
   };
 
