@@ -27,8 +27,8 @@ function Catalog({products}:CatalogProps):JSX.Element {
   if (isNaN(pageId)) { pageId = 1; }
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const sortTypeParam = searchParams.get('catalogSortType') as CatalogSortType || null;
-  const sortOrderParam = searchParams.get('catalogSortOrder') as CatalogSortOrder || null;
+  const sortTypeParam = searchParams.get('_sort') as CatalogSortType || null;
+  const sortOrderParam = searchParams.get('_order') as CatalogSortOrder || null;
 
   const [sortedProducts, setSortedProducts] = useState<ProductType[]>(products);
   const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(sortTypeParam || CatalogSortType.None);
@@ -50,13 +50,13 @@ function Catalog({products}:CatalogProps):JSX.Element {
   const handleSortTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortType = evt.target.value as CatalogSortType || null;
     setCatalogSortType(sortType || CatalogSortType.None);
-    setSearchParams({sortType, catalogSortOrder});
+    setSearchParams({_sort: sortType, _order: catalogSortOrder});
   };
 
   const handleSortOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortOrder = evt.target.value as CatalogSortOrder || null;
     setCatalogSortOrder(sortOrder || CatalogSortOrder.None);
-    setSearchParams({catalogSortType, sortOrder});
+    setSearchParams({_sort: catalogSortType, _order: sortOrder});
   };
 
   const breadcrumbs: BreadcrumbsType[] =

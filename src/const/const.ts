@@ -48,13 +48,13 @@ export const REVIEW_CARDS_PER_STEP = 3;
 export const MIN_REVIEW_LENGTH = 5;
 
 export enum CatalogSortType {
-  Price = 'Price',
-  Rating = 'Rating',
-  None = 'None',
+  Price = 'price',
+  Rating = 'rating',
+  None = 'none',
 }
 
 export enum CatalogSortOrder {
-  Ascending = 'Ascending',
-  Descending = 'Descending',
-  None = 'None',
+  Ascending = 'asc',
+  Descending = 'desc',
+  None = 'none',
 }
