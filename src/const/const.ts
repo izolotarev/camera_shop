@@ -1,5 +1,7 @@
 export enum ActionType {
   LoadProducts = 'PRODUCTS/LOAD_PRODUCTS',
+  ClearProducts = 'PRODUCTS/CLEAR_PRODUCTS',
+  LoadProductsTotalCount = 'PRODUCTS/LOAD_PRODUCTS_TOTAL_COUNT',
   LoadPromo = 'PRODUCTS/LOAD_PROMO',
   SelectProduct = 'PRODUCTS/SELECT_PRODUCT_TO_ADD_TO_BASKET',
   OpenAddItemPopup = 'PRODUCTS/OPEN_ADD_ITEM_POPUP',

@@ -5,6 +5,7 @@ import { AxiosInstance } from 'axios';
 
 export type ProductState = {
   products: ProductType[],
+  productsTotalCount: number,
   productsLoaded: boolean,
   promo?: PromoType,
   isPromoLoaded: boolean,

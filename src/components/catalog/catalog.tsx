@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
-import { getProducts, getProductsLoadingStatus, getPromo, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
+import { getProducts, getProductsLoadingStatus, getProductsTotalCount, getPromo, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType, } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import AddItemPopup from '../add-item-popup/add-item-popup';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
-// import Pagination from '../pagination/pagination';
+import Pagination from '../pagination/pagination';
 import ProductList from '../product-list/product-list';
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -33,11 +33,12 @@ function Catalog():JSX.Element {
   const promo = useSelector(getPromo);
   const isPromoLoaded = useSelector(getPromoLoadingStatus);
   const promoId = promo?.id ?? 0;
+  const productsTotalCount = useSelector(getProductsTotalCount);
 
   useEffect(() => {
     if (productsLoaded) { return; }
     dispatch(fetchProducts(`_start=${_start}&_end=${_end}`));
-  }, [_end, _start, dispatch, productsLoaded]);
+  }, [_end, _start, dispatch, productsLoaded, pageId]);
 
   useEffect(() => {
     if (isPromoLoaded) { return; }
@@ -146,7 +147,7 @@ function Catalog():JSX.Element {
                     </form>
                   </div>
                   <ProductList products={products}/>
-                  {/* <Pagination numberOfElements={products.length} initPage={pageId}/> */}
+                  <Pagination numberOfElements={productsTotalCount} initPage={pageId}/>
                 </div>
               </div>
             </div>

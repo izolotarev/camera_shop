@@ -2,14 +2,17 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { APIRoute, AppRoute } from '../../const/const';
 import { PostReviewType, ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
-import { loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
+import { loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
 
 
 export const fetchProducts = (params: string | null = null): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}${params ? `?${params}` : ''}`);
+      const response = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}${params ? `?${params}` : ''}`);
+      const {data, headers} = response;
       dispatch(loadProducts(data));
+      const totalCount = parseInt(headers['x-total-count'] ?? '', 10);
+      dispatch(loadProductsTotalCount(totalCount));
     } catch(error) {
       handleError(error);
     }

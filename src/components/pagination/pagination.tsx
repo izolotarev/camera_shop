@@ -1,6 +1,8 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
+import { useAppDispatch } from '../../hooks/hooks';
+import { clearProducts } from '../../store/actions/actions';
 
 type PaginationProps = {
   numberOfElements: number;
@@ -12,22 +14,16 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
   const [currentPage, setCurrentPage] = useState(initPage);
 
   const navigate = useNavigate();
-
-  useEffect(
-    () => {
-      if (currentPage > numberOfPages) {
-        setCurrentPage(1);
-        navigate(`${AppRoute.CATALOG}/page_1`);
-      }
-    },
-    [currentPage, navigate, numberOfPages],
-  );
+  const dispatch = useAppDispatch();
 
   const handlePaginationClick = (evt: MouseEvent<HTMLUListElement>) => {
     evt.preventDefault();
     const page = (evt.target as HTMLAnchorElement).href?.split('_').reverse()[0];
     if (page) {
       setCurrentPage(parseInt(page, 10));
+      dispatch(clearProducts());
+      window.scroll(0,0);
+      navigate(`${AppRoute.CATALOG}/page_${page}`);
     }
   };
 

@@ -11,6 +11,17 @@ export const loadProducts = createAction(
   }),
 );
 
+export const clearProducts = createAction(ActionType.ClearProducts);
+
+export const loadProductsTotalCount = createAction(
+  ActionType.LoadProductsTotalCount,
+  (productsTotalCount: number) => ({
+    payload: {
+      productsTotalCount,
+    },
+  }),
+);
+
 export const loadPromo = createAction(
   ActionType.LoadPromo,
   (promo: PromoType) => ({

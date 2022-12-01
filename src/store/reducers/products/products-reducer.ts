@@ -2,10 +2,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
 import { extractFilterSettings } from '../../../utils/utils';
-import { clearProductById, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
+import { clearProductById, clearProducts, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
+  productsTotalCount: 0,
   productsLoaded: false,
   promo: undefined,
   isPromoLoaded: false,
@@ -27,6 +28,13 @@ export const productsData = createReducer(initialState, (builder) => {
     .addCase(loadProducts, (state, action) => {
       state.products = action.payload.products;
       state.productsLoaded = true;
+    })
+    .addCase(clearProducts, (state, action) => {
+      state.products = initialState.products;
+      state.productsLoaded = false;
+    })
+    .addCase(loadProductsTotalCount, (state, action) => {
+      state.productsTotalCount = action.payload.productsTotalCount;
     })
     .addCase(loadPromo, (state, action) => {
       state.promo = action.payload.promo;

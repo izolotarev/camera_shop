@@ -14,6 +14,7 @@ describe('Function: productsData', () => {
   it('should update products on data load', () => {
     const state = {
       products: [],
+      productsTotalCount: 0,
       productsLoaded: false,
       promo: undefined,
       isPromoLoaded: false,
@@ -32,6 +33,7 @@ describe('Function: productsData', () => {
     expect(productsData(state, loadProducts(products)))
       .toEqual({
         products: products,
+        productsTotalCount: 0,
         productsLoaded: true,
         promo: undefined,
         isPromoLoaded: false,

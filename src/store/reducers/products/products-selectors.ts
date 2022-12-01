@@ -2,6 +2,7 @@ import { FilterSettingsType, ProductType, PromoType, State } from '../../../type
 import { NameSpace } from '../root-reducer';
 
 export const getProducts = (state: State): ProductType[] => state[NameSpace.products].products;
+export const getProductsTotalCount = (state: State): number => state[NameSpace.products].productsTotalCount;
 export const getProductsLoadingStatus = (state: State): boolean => state[NameSpace.products].productsLoaded;
 export const getPromoLoadingStatus = (state: State): boolean => state[NameSpace.products].isPromoLoaded;
 export const getPromo = (state: State): PromoType | undefined => state[NameSpace.products].promo;
