@@ -5,7 +5,7 @@ import { createAPI } from './services/api';
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './store/reducers/root-reducer';
 import { redirect } from './store/middlewares/redirect';
-import { fetchFilterSettings, fetchProducts, fetchPromo } from './store/actions/api.actions';
+import { fetchFilterSettings, } from './store/actions/api.actions';
 import { Provider } from 'react-redux';
 import browserHistory from './browser-history/browser-history';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';

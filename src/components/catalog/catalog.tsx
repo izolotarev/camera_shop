@@ -2,13 +2,13 @@ import { useSelector } from 'react-redux';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { getProducts, getProductsLoadingStatus, getPromo, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
-import { BreadcrumbsType, ProductType } from '../../types/types';
+import { BreadcrumbsType, } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import AddItemPopup from '../add-item-popup/add-item-popup';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
-import Pagination from '../pagination/pagination';
+// import Pagination from '../pagination/pagination';
 import ProductList from '../product-list/product-list';
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -49,19 +49,17 @@ function Catalog():JSX.Element {
   const sortTypeParam = searchParams.get('_sort') as CatalogSortType || null;
   const sortOrderParam = searchParams.get('_order') as CatalogSortOrder || null;
 
-  const [sortedProducts, setSortedProducts] = useState<ProductType[]>(products);
+  // const [sortedProducts, setSortedProducts] = useState<ProductType[]>(products);
   const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(sortTypeParam || CatalogSortType.None);
   const [catalogSortOrder, setCatalogSortOrder] = useState<CatalogSortOrder>(sortOrderParam || CatalogSortOrder.None);
 
-  useEffect(() => {
-    if (catalogSortType !== CatalogSortType.None || catalogSortOrder !== CatalogSortOrder.None) {
-      setSortedProducts(sortProducts(products, catalogSortType, catalogSortOrder));
-    } else {
-      setSortedProducts(products);
-    }
-  }, [catalogSortType, catalogSortOrder, products]);
-
-
+  // useEffect(() => {
+  //   if (catalogSortType !== CatalogSortType.None || catalogSortOrder !== CatalogSortOrder.None) {
+  //     setSortedProducts(sortProducts(products, catalogSortType, catalogSortOrder));
+  //   } else {
+  //     setSortedProducts(products);
+  //   }
+  // }, [catalogSortType, catalogSortOrder, products]);
 
   const handleSortTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortType = evt.target.value as CatalogSortType;
@@ -162,12 +160,12 @@ function Catalog():JSX.Element {
   );
 }
 
-const sortProducts = (products: ProductType[], sortType: CatalogSortType, order: CatalogSortOrder): ProductType[] => {
-  const key = sortType === CatalogSortType.Price ? 'price' : 'rating';
-  if (order === CatalogSortOrder.Ascending) {
-    return products.slice().sort((a, b) => a[key] - b[key]);
-  }
-  return products.slice().sort((a, b) => b[key] - a[key]);
-};
+// const sortProducts = (products: ProductType[], sortType: CatalogSortType, order: CatalogSortOrder): ProductType[] => {
+//   const key = sortType === CatalogSortType.Price ? 'price' : 'rating';
+//   if (order === CatalogSortOrder.Ascending) {
+//     return products.slice().sort((a, b) => a[key] - b[key]);
+//   }
+//   return products.slice().sort((a, b) => b[key] - a[key]);
+// };
 
 export default Catalog;
