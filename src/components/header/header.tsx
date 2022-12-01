@@ -16,6 +16,7 @@ function Header() : JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    if (!debouncedSearch) { return; }
     dispatch(fetchProductsFromSearch(debouncedSearch));
   }, [debouncedSearch, dispatch]);
 

@@ -25,6 +25,9 @@ describe('Function: productsData', () => {
       similarProducts: [],
       similarProductsLoaded: false,
       searchResultProducts: [],
+      searchResultProductsLoaded: false,
+      filterSettings: undefined,
+      filterSettingsLoaded: false,
     };
     expect(productsData(state, loadProducts(products)))
       .toEqual({
@@ -40,6 +43,9 @@ describe('Function: productsData', () => {
         similarProducts: [],
         similarProductsLoaded: false,
         searchResultProducts: [],
+        searchResultProductsLoaded: false,
+        filterSettings: undefined,
+        filterSettingsLoaded: false,
       });
   });
 

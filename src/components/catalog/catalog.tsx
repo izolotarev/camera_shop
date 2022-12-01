@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
-import { getPromo } from '../../store/reducers/products/products-selectors';
+import { getProducts, getProductsLoadingStatus, getPromo, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType, ProductType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import AddItemPopup from '../add-item-popup/add-item-popup';
@@ -12,19 +12,38 @@ import Pagination from '../pagination/pagination';
 import ProductList from '../product-list/product-list';
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
 import { ChangeEvent, useEffect, useState } from 'react';
-
-type CatalogProps = {
-  products: ProductType[];
-}
+import CatalogFilters from '../catalog-filters/catalog-filters';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchProducts, fetchPromo } from '../../store/actions/api.actions';
 
 type CatalogParams = {
   id:string;
 }
 
-function Catalog({products}:CatalogProps):JSX.Element {
+function Catalog():JSX.Element {
   const params = useParams<CatalogParams>();
-  let pageId = parseInt(params.id ?? '', 10);
-  if (isNaN(pageId)) { pageId = 1; }
+  const pageId = parseInt(params.id ?? '', 10);
+  const _start = (pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE;
+  const _end = _start + NUMBER_OF_ELEMENTS_PER_PAGE;
+
+  const dispatch = useAppDispatch();
+
+  const products = useSelector(getProducts);
+  const productsLoaded = useSelector(getProductsLoadingStatus);
+  const promo = useSelector(getPromo);
+  const isPromoLoaded = useSelector(getPromoLoadingStatus);
+  const promoId = promo?.id ?? 0;
+
+  useEffect(() => {
+    if (productsLoaded) { return; }
+    dispatch(fetchProducts(`_start=${_start}&_end=${_end}`));
+  }, [_end, _start, dispatch, productsLoaded]);
+
+  useEffect(() => {
+    if (isPromoLoaded) { return; }
+    dispatch(fetchPromo());
+  }, [dispatch, isPromoLoaded]);
+
 
   const [searchParams, setSearchParams] = useSearchParams();
   const sortTypeParam = searchParams.get('_sort') as CatalogSortType || null;
@@ -42,21 +61,22 @@ function Catalog({products}:CatalogProps):JSX.Element {
     }
   }, [catalogSortType, catalogSortOrder, products]);
 
-  const productsOnPage = sortedProducts.slice((pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE, (pageId - 1) * NUMBER_OF_ELEMENTS_PER_PAGE + NUMBER_OF_ELEMENTS_PER_PAGE);
 
-  const promo = useSelector(getPromo);
-  const promoId = promo?.id ?? 0;
 
   const handleSortTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const sortType = evt.target.value as CatalogSortType || null;
-    setCatalogSortType(sortType || CatalogSortType.None);
-    setSearchParams({_sort: sortType, _order: catalogSortOrder});
+    const sortType = evt.target.value as CatalogSortType;
+    setCatalogSortType(sortType);
+    const sortOrder = catalogSortOrder === CatalogSortOrder.None ? CatalogSortOrder.Ascending : catalogSortOrder;
+    setCatalogSortOrder(sortOrder);
+    setSearchParams({_sort: sortType, _order: sortOrder});
   };
 
   const handleSortOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const sortOrder = evt.target.value as CatalogSortOrder || null;
-    setCatalogSortOrder(sortOrder || CatalogSortOrder.None);
-    setSearchParams({_sort: catalogSortType, _order: sortOrder});
+    const sortOrder = evt.target.value as CatalogSortOrder;
+    setCatalogSortOrder(sortOrder);
+    const sortType = catalogSortType === CatalogSortType.None ? CatalogSortType.Price : catalogSortType;
+    setCatalogSortType(sortType);
+    setSearchParams({_sort: sortType, _order: sortOrder});
   };
 
   const breadcrumbs: BreadcrumbsType[] =
@@ -65,7 +85,7 @@ function Catalog({products}:CatalogProps):JSX.Element {
     {name: 'Каталог'}
   ];
 
-  if (!promo || !products) {
+  if (!promo || !products || !isPromoLoaded || !productsLoaded) {
     return (
       <LoadingScreen/>
     );
@@ -89,82 +109,7 @@ function Catalog({products}:CatalogProps):JSX.Element {
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
               <div className="page-content__columns">
                 <div className="catalog__aside">
-                  <div className="catalog-filter">
-                    <form action="#">
-                      <h2 className="visually-hidden">Фильтр</h2>
-                      <fieldset className="catalog-filter__block">
-                        <legend className="title title--h5">Цена, ₽</legend>
-                        <div className="catalog-filter__price-range">
-                          <div className="custom-input">
-                            <label>
-                              <input type="number" name="price" placeholder="от"/>
-                            </label>
-                          </div>
-                          <div className="custom-input">
-                            <label>
-                              <input type="number" name="priceUp" placeholder="до"/>
-                            </label>
-                          </div>
-                        </div>
-                      </fieldset>
-                      <fieldset className="catalog-filter__block">
-                        <legend className="title title--h5">Категория</legend>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="photocamera" checked/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Фотокамера</span>
-                          </label>
-                        </div>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="videocamera"/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Видеокамера</span>
-                          </label>
-                        </div>
-                      </fieldset>
-                      <fieldset className="catalog-filter__block">
-                        <legend className="title title--h5">Тип камеры</legend>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="digital" checked/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Цифровая</span>
-                          </label>
-                        </div>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="film" disabled/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Плёночная</span>
-                          </label>
-                        </div>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="snapshot"/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Моментальная</span>
-                          </label>
-                        </div>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="collection" checked disabled/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Коллекционная</span>
-                          </label>
-                        </div>
-                      </fieldset>
-                      <fieldset className="catalog-filter__block">
-                        <legend className="title title--h5">Уровень</legend>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="zero" checked/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Нулевой</span>
-                          </label>
-                        </div>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="non-professional"/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Любительский</span>
-                          </label>
-                        </div>
-                        <div className="custom-checkbox catalog-filter__item">
-                          <label>
-                            <input type="checkbox" name="professional"/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Профессиональный</span>
-                          </label>
-                        </div>
-                      </fieldset>
-                      <button className="btn catalog-filter__reset-btn" type="reset">Сбросить фильтры
-                      </button>
-                    </form>
-                  </div>
+                  <CatalogFilters/>
                 </div>
                 <div className="catalog__content">
                   <div className="catalog-sort">
@@ -202,8 +147,8 @@ function Catalog({products}:CatalogProps):JSX.Element {
                       </div>
                     </form>
                   </div>
-                  <ProductList products={productsOnPage}/>
-                  <Pagination numberOfElements={products.length} initPage={pageId}/>
+                  <ProductList products={products}/>
+                  {/* <Pagination numberOfElements={products.length} initPage={pageId}/> */}
                 </div>
               </div>
             </div>
@@ -218,8 +163,6 @@ function Catalog({products}:CatalogProps):JSX.Element {
 }
 
 const sortProducts = (products: ProductType[], sortType: CatalogSortType, order: CatalogSortOrder): ProductType[] => {
-  sortType = sortType === CatalogSortType.None ? CatalogSortType.Price : sortType;
-  order = order === CatalogSortOrder.None ? CatalogSortOrder.Ascending : order;
   const key = sortType === CatalogSortType.Price ? 'price' : 'rating';
   if (order === CatalogSortOrder.Ascending) {
     return products.slice().sort((a, b) => a[key] - b[key]);

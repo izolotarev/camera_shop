@@ -26,7 +26,7 @@ describe('Component: Catalog', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Catalog products={products}/>
+          <Catalog/>
         </HistoryRouter>
       </Provider>
     );

@@ -103,3 +103,12 @@ export const loadProductsFromSearch = createAction(
 );
 
 export const clearProductsFromSearch = createAction(ActionType.ClearProductsFromSearch);
+
+export const loadFilterSettings = createAction(
+  ActionType.LoadFilterSettings,
+  (products: ProductType[]) => ({
+    payload: {
+      products,
+    },
+  }),
+);

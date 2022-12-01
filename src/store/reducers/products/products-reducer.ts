@@ -1,7 +1,8 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
-import { clearProductById, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
+import { extractFilterSettings } from '../../../utils/utils';
+import { clearProductById, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -15,7 +16,10 @@ export const initialState: ProductState = {
   isProductLoaded: false,
   similarProducts: [],
   similarProductsLoaded: false,
-  searchResultProducts: []
+  searchResultProducts: [],
+  searchResultProductsLoaded: false,
+  filterSettings: undefined,
+  filterSettingsLoaded: false,
 };
 
 export const productsData = createReducer(initialState, (builder) => {
@@ -57,8 +61,14 @@ export const productsData = createReducer(initialState, (builder) => {
     })
     .addCase(loadProductsFromSearch, (state, action) => {
       state.searchResultProducts = action.payload.searchResultProducts;
+      state.searchResultProductsLoaded = true;
     })
     .addCase(clearProductsFromSearch, (state, action) => {
       state.searchResultProducts = initialState.searchResultProducts;
+      state.searchResultProductsLoaded = initialState.searchResultProductsLoaded;
+    })
+    .addCase(loadFilterSettings, (state, action) => {
+      state.filterSettings = extractFilterSettings(action.payload.products);
+      state.filterSettingsLoaded = true;
     });
 });

@@ -2,13 +2,13 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { APIRoute, AppRoute } from '../../const/const';
 import { PostReviewType, ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
-import { clearProductsFromSearch, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
+import { loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
 
 
-export const fetchProducts = (): ThunkActionResult =>
+export const fetchProducts = (params: string | null = null): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const {data} = await api.get<ProductType[]>(APIRoute.PRODUCTS);
+      const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}${params ? `?${params}` : ''}`);
       dispatch(loadProducts(data));
     } catch(error) {
       handleError(error);
@@ -69,12 +69,18 @@ export const postReview = (review: PostReviewType): ThunkActionResult =>
 export const fetchProductsFromSearch = (input: string | null): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      if (input) {
-        const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}?name_like=${input}`);
-        dispatch(loadProductsFromSearch(data));
-      } else {
-        dispatch(clearProductsFromSearch());
-      }
+      const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}?name_like=${input}`);
+      dispatch(loadProductsFromSearch(data));
+    } catch(error) {
+      handleError(error);
+    }
+  };
+
+export const fetchFilterSettings = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<ProductType[]>(APIRoute.PRODUCTS);
+      dispatch(loadFilterSettings(data));
     } catch(error) {
       handleError(error);
     }

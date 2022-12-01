@@ -16,6 +16,9 @@ export type ProductState = {
   similarProducts: ProductType[],
   similarProductsLoaded: boolean,
   searchResultProducts: ProductType[],
+  searchResultProductsLoaded: boolean,
+  filterSettings?: FilterSettingsType,
+  filterSettingsLoaded: boolean,
 }
 
 export type ProductType = {
@@ -81,4 +84,9 @@ export type PostReviewType = {
   disadvantage: string,
   review: string,
   cameraId: number
+}
+
+export type FilterSettingsType = {
+  minPrice: number;
+  maxPrice: number;
 }
