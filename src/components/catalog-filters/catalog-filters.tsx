@@ -1,16 +1,16 @@
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useDebounce } from '../../hooks/useDebounce';
+// import { useNavigate } from 'react-router-dom';
+// import { useDebounce } from '../../hooks/useDebounce';
 import { getFilterSettings } from '../../store/reducers/products/products-selectors';
 
 function CatalogFilters(): JSX.Element {
 
-  const history = useNavigate();
+  // const history = useNavigate();
   const filterSettings = useSelector(getFilterSettings);
 
-  const [searchRequest, setSearchRequest] = useState<string>('');
-  const debouncedSearchRequest: string = useDebounce<string>(searchRequest, 1000);
+  // const [searchRequest, setSearchRequest] = useState<string>('');
+  // const debouncedSearchRequest: string = useDebounce<string>(searchRequest, 1000);
 
   const [minPrice, setMinPrice] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<string>('');
