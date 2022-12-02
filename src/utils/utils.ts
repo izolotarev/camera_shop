@@ -8,3 +8,12 @@ export const extractFilterSettings = (data: ProductType[]) : FilterSettingsType 
     maxPrice: productsSortedByPrice[productsSortedByPrice.length - 1].price,
   };
 };
+
+export const searhParamsToString = (searchParams: URLSearchParams) : string => {
+  const paramsObject = Object.fromEntries([...searchParams]);
+  let str = '';
+  for (const [key, value] of Object.entries(paramsObject)) {
+    str = `${str}${key}=${value}&`;
+  }
+  return str.slice(0, -1);
+};

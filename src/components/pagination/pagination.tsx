@@ -1,8 +1,9 @@
 import { MouseEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { clearProducts } from '../../store/actions/actions';
+import { searhParamsToString } from '../../utils/utils';
 
 type PaginationProps = {
   numberOfElements: number;
@@ -16,6 +17,8 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [searchParams] = useSearchParams();
+
   const handlePaginationClick = (evt: MouseEvent<HTMLUListElement>) => {
     evt.preventDefault();
     const page = (evt.target as HTMLAnchorElement).href?.split('_').reverse()[0];
@@ -23,7 +26,8 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
       setCurrentPage(parseInt(page, 10));
       dispatch(clearProducts());
       window.scroll(0,0);
-      navigate(`${AppRoute.CATALOG}/page_${page}`);
+      const params = searhParamsToString(searchParams);
+      navigate(`${AppRoute.CATALOG}/page_${page}${params ? `?${params}` : ''}`);
     }
   };
 

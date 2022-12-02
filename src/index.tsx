@@ -5,7 +5,6 @@ import { createAPI } from './services/api';
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './store/reducers/root-reducer';
 import { redirect } from './store/middlewares/redirect';
-import { fetchFilterSettings, } from './store/actions/api.actions';
 import { Provider } from 'react-redux';
 import browserHistory from './browser-history/browser-history';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
@@ -26,19 +25,17 @@ const store = configureStore({
 
 export type AppDispatch = typeof store.dispatch
 
-store.dispatch(fetchFilterSettings());
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <HistoryRouter history={browserHistory}>
-        <ToastContainer />
-        <App />
-      </HistoryRouter>
-    </Provider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <Provider store={store}>
+    <HistoryRouter history={browserHistory}>
+      <ToastContainer />
+      <App />
+    </HistoryRouter>
+  </Provider>
+  // </React.StrictMode>,
 );

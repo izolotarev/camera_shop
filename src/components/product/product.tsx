@@ -30,6 +30,7 @@ function Product():JSX.Element {
   const id = parseInt(params.id ?? '', 10);
 
   const dispatch = useAppDispatch();
+  const product = useSelector(getProductById);
 
   useEffect(() => {
     dispatch(fetchProductById(id));
@@ -38,7 +39,6 @@ function Product():JSX.Element {
     return () => {dispatch(clearProductById());};
   }, [dispatch, id]);
 
-  const product = useSelector(getProductById);
   const {previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name,
     rating, reviewCount, price, vendorCode, category, type, level, description} = product || {} ;
 

@@ -10,6 +10,7 @@ export const getProductToAddToBasket = (state: State): ProductType | undefined =
 export const getAddItemPopupOpenedStatus = (state: State): boolean => state[NameSpace.products].isAddItemPopupOpened;
 export const getAddItemSuccessPopupOpenedStatus = (state: State): boolean => state[NameSpace.products].isAddItemSuccessPopupOpened;
 export const getProductById = (state: State): ProductType | undefined => state[NameSpace.products].product;
+export const getProductByIdLoadingStatus = (state: State): boolean => state[NameSpace.products].isProductLoaded;
 export const getSimilarProducts = (state: State): ProductType[] => state[NameSpace.products].similarProducts;
 export const getSearchResultProducts = (state: State): ProductType[] => state[NameSpace.products].searchResultProducts;
 export const getFilterSettings = (state: State) : FilterSettingsType | undefined => state[NameSpace.products].filterSettings;
