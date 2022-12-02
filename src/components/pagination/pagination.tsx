@@ -1,5 +1,5 @@
 import { MouseEvent, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { AppRoute, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { clearProducts } from '../../store/actions/actions';
@@ -14,10 +14,10 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
   const numberOfPages = Math.ceil(numberOfElements / NUMBER_OF_ELEMENTS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(initPage);
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const [searchParams] = useSearchParams();
+  const params = searhParamsToString(searchParams);
 
   const handlePaginationClick = (evt: MouseEvent<HTMLUListElement>) => {
     evt.preventDefault();
@@ -26,8 +26,6 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
       setCurrentPage(parseInt(page, 10));
       dispatch(clearProducts());
       window.scroll(0,0);
-      const params = searhParamsToString(searchParams);
-      navigate(`${AppRoute.CATALOG}/page_${page}${params ? `?${params}` : ''}`);
     }
   };
 
@@ -41,7 +39,7 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
               currentPage !== 1
                 ?
                 <li className="pagination__item">
-                  <Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage - 1}`}>Назад</Link>
+                  <Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage - 1}${params ? `?${params}` : ''}`}>Назад</Link>
                 </li>
                 :
                 null
@@ -51,7 +49,7 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
                 const j = index + 1;
                 return (
                   <li key={j} className="pagination__item">
-                    <Link className={`pagination__link ${j === currentPage ? 'pagination__link--active' : ''}`} to={`${AppRoute.CATALOG}/page_${j}`}>{j}</Link>
+                    <Link className={`pagination__link ${j === currentPage ? 'pagination__link--active' : ''}`} to={`${AppRoute.CATALOG}/page_${j}${params ? `?${params}` : ''}`}>{j}</Link>
                   </li>
                 );
               })
@@ -60,7 +58,7 @@ function Pagination({numberOfElements, initPage}:PaginationProps):JSX.Element {
               currentPage !== numberOfPages
                 ?
                 <li className="pagination__item">
-                  <Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage + 1}`}>Далее</Link>
+                  <Link className="pagination__link pagination__link--text" to={`${AppRoute.CATALOG}/page_${currentPage + 1}${params ? `?${params}` : ''}`}>Далее</Link>
                 </li>
                 :
                 null
