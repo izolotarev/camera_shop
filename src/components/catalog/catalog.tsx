@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE } from '../../const/const';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE, SearchParams } from '../../const/const';
 import { getFilterSettings, getFilterSettingsLoadingStatus, getProducts, getProductsLoadingStatus, getProductsTotalCount, getPromo, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType, } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
@@ -16,6 +16,7 @@ import CatalogFilters from '../catalog-filters/catalog-filters';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchFilterSettings, fetchProducts, fetchPromo } from '../../store/actions/api.actions';
 import { clearProducts } from '../../store/actions/actions';
+import { updateParamsWithValues } from '../../utils/utils';
 
 type CatalogParams = {
   id:string;
@@ -39,16 +40,21 @@ function Catalog():JSX.Element {
   const filterSettingsLoaded = useSelector(getFilterSettingsLoadingStatus);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const sortTypeParam = searchParams.get('_sort') as CatalogSortType || null;
-  const sortOrderParam = searchParams.get('_order') as CatalogSortOrder || null;
+  const sortTypeParam = searchParams.get(SearchParams.SortType) as CatalogSortType || null;
+  const sortOrderParam = searchParams.get(SearchParams.SortOrder) as CatalogSortOrder || null;
 
   const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(sortTypeParam || CatalogSortType.None);
   const [catalogSortOrder, setCatalogSortOrder] = useState<CatalogSortOrder>(sortOrderParam || CatalogSortOrder.None);
 
+  const location = useLocation();
+
   useEffect(() => {
-    if (productsLoaded) { return; }
-    dispatch(fetchProducts(`_start=${_start}&_end=${_end}&_sort=${catalogSortType}&_order=${catalogSortOrder}`));
-  }, [_end, _start, dispatch, productsLoaded, catalogSortType, catalogSortOrder]);
+    dispatch(fetchProducts(`${SearchParams.Start}=${_start}&${SearchParams.End}=${_end}&${location.search.substring(1)}`));
+    return () => { dispatch(clearProducts()); };
+  }, [_end, _start, dispatch, pageId, location.search]);
+
+  //${searhParamsToString(searchParams)}
+  //${SearchParams.SortType}=${catalogSortType}&${SearchParams.SortOrder}=${catalogSortOrder}
 
   useEffect(() => {
     if (isPromoLoaded) { return; }
@@ -65,8 +71,10 @@ function Catalog():JSX.Element {
     setCatalogSortType(sortType);
     const sortOrder = catalogSortOrder === CatalogSortOrder.None ? CatalogSortOrder.Ascending : catalogSortOrder;
     setCatalogSortOrder(sortOrder);
-    setSearchParams({_sort: sortType, _order: sortOrder});
-    dispatch(clearProducts());
+    setSearchParams(updateParamsWithValues(searchParams, {
+      [SearchParams.SortType] : sortType,
+      [SearchParams.SortOrder] : sortOrder,
+    }));
   };
 
   const handleSortOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -74,8 +82,10 @@ function Catalog():JSX.Element {
     setCatalogSortOrder(sortOrder);
     const sortType = catalogSortType === CatalogSortType.None ? CatalogSortType.Price : catalogSortType;
     setCatalogSortType(sortType);
-    setSearchParams({_sort: sortType, _order: sortOrder});
-    dispatch(clearProducts());
+    setSearchParams(updateParamsWithValues(searchParams, {
+      [SearchParams.SortType] : sortType,
+      [SearchParams.SortOrder] : sortOrder,
+    }));
   };
 
   const breadcrumbs: BreadcrumbsType[] =

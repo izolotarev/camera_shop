@@ -2,6 +2,7 @@ import { RootState } from '../store/reducers/root-reducer';
 import { Action } from 'redux';
 import { ThunkAction} from 'redux-thunk';
 import { AxiosInstance } from 'axios';
+import { SearchParams } from '../const/const';
 
 export type ProductState = {
   products: ProductType[],
@@ -91,3 +92,14 @@ export type FilterSettingsType = {
   minPrice: number;
   maxPrice: number;
 }
+
+export type MapFilterNameToParamType = {
+  [key: string]: ParamValueType;
+};
+
+export type ParamValueType = {
+  param: SearchParams,
+  value: string,
+}
+
+export const parVal: ParamValueType = { param: SearchParams.Category, value: 'asd'};

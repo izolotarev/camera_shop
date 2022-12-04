@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { AppRoute, MAX_PRODUCT_RATING, ProcuctTabNames } from '../../const/const';
+import { AppRoute, MAX_PRODUCT_RATING, ProductTabNames } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { clearProductById, openAddItemPopup, selectProductAddToBasket } from '../../store/actions/actions';
 import { fetchProductById, fetchReviews } from '../../store/actions/api.actions';
@@ -42,14 +42,14 @@ function Product():JSX.Element {
   const {previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name,
     rating, reviewCount, price, vendorCode, category, type, level, description} = product || {} ;
 
-  const [activeTab, setActiveTab] = useState(ProcuctTabNames.DESCRIPTION);
+  const [activeTab, setActiveTab] = useState(ProductTabNames.DESCRIPTION);
 
   const handleDescriptionClick = () => {
-    setActiveTab(ProcuctTabNames.DESCRIPTION);
+    setActiveTab(ProductTabNames.DESCRIPTION);
   };
 
   const handleCharacteristicsClick = () => {
-    setActiveTab(ProcuctTabNames.CHARACTERISTICS);
+    setActiveTab(ProductTabNames.CHARACTERISTICS);
   };
 
   const handleAddToBasketClick = () => {
@@ -109,11 +109,11 @@ function Product():JSX.Element {
                   </button>
                   <div className="tabs product__tabs">
                     <div className="tabs__controls product__tabs-controls">
-                      <button className={`tabs__control ${activeTab === ProcuctTabNames.CHARACTERISTICS ? 'is-active' : ''}`} type="button" onClick={handleCharacteristicsClick}>Характеристики</button>
-                      <button className={`tabs__control ${activeTab === ProcuctTabNames.DESCRIPTION ? 'is-active' : ''}`} type="button" onClick={handleDescriptionClick}>Описание</button>
+                      <button className={`tabs__control ${activeTab === ProductTabNames.CHARACTERISTICS ? 'is-active' : ''}`} type="button" onClick={handleCharacteristicsClick}>Характеристики</button>
+                      <button className={`tabs__control ${activeTab === ProductTabNames.DESCRIPTION ? 'is-active' : ''}`} type="button" onClick={handleDescriptionClick}>Описание</button>
                     </div>
                     <div className="tabs__content">
-                      <div className={`tabs__element ${activeTab === ProcuctTabNames.CHARACTERISTICS ? 'is-active' : ''}`}>
+                      <div className={`tabs__element ${activeTab === ProductTabNames.CHARACTERISTICS ? 'is-active' : ''}`}>
                         <ul className="product__tabs-list">
                           <li className="item-list"><span className="item-list__title">Артикул:</span>
                             <p className="item-list__text"> {vendorCode}</p>
@@ -129,7 +129,7 @@ function Product():JSX.Element {
                           </li>
                         </ul>
                       </div>
-                      <div className={`tabs__element ${activeTab === ProcuctTabNames.DESCRIPTION ? 'is-active' : ''}`}>
+                      <div className={`tabs__element ${activeTab === ProductTabNames.DESCRIPTION ? 'is-active' : ''}`}>
                         <div className="product__tabs-text">
                           <p>{description}</p>
                         </div>

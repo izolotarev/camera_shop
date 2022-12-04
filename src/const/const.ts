@@ -1,3 +1,5 @@
+import { MapFilterNameToParamType } from '../types/types';
+
 export enum ActionType {
   LoadProducts = 'PRODUCTS/LOAD_PRODUCTS',
   ClearProducts = 'PRODUCTS/CLEAR_PRODUCTS',
@@ -43,7 +45,7 @@ export const APIRoute = {
 export const MAX_PRODUCT_RATING = 5;
 export const NUMBER_OF_ELEMENTS_PER_PAGE = 9;
 
-export const ProcuctTabNames = {
+export const ProductTabNames = {
   DESCRIPTION: 'Description',
   CHARACTERISTICS: 'Characteristics',
 };
@@ -63,3 +65,61 @@ export enum CatalogSortOrder {
   Descending = 'desc',
   None = 'none',
 }
+
+export enum SearchParams {
+  Start = '_start',
+  End = '_end',
+  SortType = '_sort',
+  SortOrder = '_order',
+  PriceMin = 'price_gte',
+  PriceMax = 'price_lte',
+  Category = 'category',
+  Type = 'type',
+  Level = 'level',
+}
+
+export enum FilterNames {
+  PriceMin = 'priceMin',
+  PriceMax = 'priceMax',
+  Photocamera = 'photocamera',
+  Videocamera = 'videocamera',
+  Digital = 'digital',
+  Film = 'film',
+  Snapshot = 'snapshot',
+  Collection = 'collection',
+  Zero = 'zero',
+  NonProfessional = 'non-professional',
+  Professional = 'professional',
+}
+
+export enum CameraCategory {
+  Photo = 'Фотоаппарат',
+  Video = 'Видеокамера',
+}
+
+export enum CameraType {
+  Digital = 'Цифровая',
+  Film = 'Пленочная',
+  Snapshot= 'Моментальная',
+  Collection = 'Коллекционная',
+}
+
+export enum CameraLevel {
+  Zero = 'Нулевой',
+  NonProfessional = 'Любительский',
+  Professional = 'Профессиональный',
+}
+
+export const MapFilterNameToParam: MapFilterNameToParamType = {
+  [FilterNames.PriceMin] : { param: SearchParams.PriceMin, value: '' },
+  [FilterNames.PriceMax] : { param: SearchParams.PriceMax, value: '' },
+  [FilterNames.Photocamera] : { param: SearchParams.Category, value: CameraCategory.Photo },
+  [FilterNames.Videocamera] : { param: SearchParams.Category, value: CameraCategory.Video },
+  [FilterNames.Digital] : { param: SearchParams.Type, value: CameraType.Digital },
+  [FilterNames.Film] : { param: SearchParams.Type, value: CameraType.Film },
+  [FilterNames.Snapshot] : { param: SearchParams.Type, value: CameraType.Snapshot },
+  [FilterNames.Collection] : { param: SearchParams.Type, value: CameraType.Collection },
+  [FilterNames.Zero] : { param: SearchParams.Level, value: CameraLevel.Zero },
+  [FilterNames.NonProfessional] : { param: SearchParams.Level, value: CameraLevel.NonProfessional },
+  [FilterNames.Professional] : { param: SearchParams.Level, value: CameraLevel.Professional },
+};

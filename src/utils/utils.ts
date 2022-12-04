@@ -9,11 +9,28 @@ export const extractFilterSettings = (data: ProductType[]) : FilterSettingsType 
   };
 };
 
-export const searhParamsToString = (searchParams: URLSearchParams) : string => {
-  const paramsObject = Object.fromEntries([...searchParams]);
-  let str = '';
-  for (const [key, value] of Object.entries(paramsObject)) {
-    str = `${str}${key}=${value}&`;
+export const appendParamWithValue = (searchParams: URLSearchParams, keyToAppend: string, valueToAppend: string) : URLSearchParams => {
+  const newSearchParams = new URLSearchParams(searchParams);
+  newSearchParams.append(keyToAppend, valueToAppend);
+  return newSearchParams;
+};
+
+export const removeParamWithValue = (searchParams: URLSearchParams, keyToDelete: string, valueToDelete: string) : URLSearchParams => {
+  const newSearchParams = new URLSearchParams();
+  for (const [key, value] of searchParams.entries()) {
+    if ((key === keyToDelete && value !== valueToDelete) ||
+        (key !== keyToDelete && value !== valueToDelete)) {
+      newSearchParams.append(key, value);
+    }
   }
-  return str.slice(0, -1);
+  return newSearchParams;
+};
+
+
+export const updateParamsWithValues = (searchParams: URLSearchParams, keyValuePairs: { [s: string]: string; }) : URLSearchParams => {
+  const newSearchParams = new URLSearchParams(searchParams);
+  for (const [key, value] of Object.entries(keyValuePairs)) {
+    newSearchParams.set(key, value);
+  }
+  return newSearchParams;
 };
