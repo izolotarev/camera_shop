@@ -99,7 +99,7 @@ export enum CameraCategory {
 
 export enum CameraType {
   Digital = 'Цифровая',
-  Film = 'Пленочная',
+  Film = 'Плёночная',
   Snapshot= 'Моментальная',
   Collection = 'Коллекционная',
 }

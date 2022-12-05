@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { CameraCategory, CameraLevel, CameraType, CatalogSortOrder, CatalogSortType, FilterNames, MapFilterNameToParam, SearchParams } from '../../const/const';
+import { CameraCategory, CameraLevel, CameraType, FilterNames, MapFilterNameToParam, SearchParams } from '../../const/const';
 import { getFilterSettings } from '../../store/reducers/products/products-selectors';
 import { appendParamWithValue, removeParam, removeParamWithValue, updateParamsWithValues } from '../../utils/utils';
 
