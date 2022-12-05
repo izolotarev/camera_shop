@@ -147,9 +147,13 @@ function CatalogFilters(): JSX.Element {
       [FilterNames.Professional] : false,
     });
 
-    const sortType = searchParams.get(SearchParams.SortType) ?? CatalogSortType.Price;
-    const sortOrder = searchParams.get(SearchParams.SortOrder) ?? CatalogSortOrder.Ascending;
-    setSearchParams({ [SearchParams.SortType] : sortType, [SearchParams.SortOrder] : sortOrder });
+    const sortType = searchParams.get(SearchParams.SortType);
+    const sortOrder = searchParams.get(SearchParams.SortOrder);
+    if (sortType && sortOrder) {
+      setSearchParams({ [SearchParams.SortType] : sortType, [SearchParams.SortOrder] : sortOrder });
+    } else {
+      setSearchParams({});
+    }
   };
 
   return (
