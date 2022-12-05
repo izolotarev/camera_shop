@@ -15,6 +15,16 @@ export const appendParamWithValue = (searchParams: URLSearchParams, keyToAppend:
   return newSearchParams;
 };
 
+export const removeParam = (searchParams: URLSearchParams, keyToDelete: string) : URLSearchParams => {
+  const newSearchParams = new URLSearchParams();
+  for (const [key, value] of searchParams.entries()) {
+    if (key !== keyToDelete) {
+      newSearchParams.append(key, value);
+    }
+  }
+  return newSearchParams;
+};
+
 export const removeParamWithValue = (searchParams: URLSearchParams, keyToDelete: string, valueToDelete: string) : URLSearchParams => {
   const newSearchParams = new URLSearchParams();
   for (const [key, value] of searchParams.entries()) {

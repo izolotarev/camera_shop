@@ -34,7 +34,7 @@ describe('Component: ProductListEmpty', () => {
     );
 
     render(fakeApp);
-    expect(screen.getByText(/No products found/i)).toBeInTheDocument();
+    expect(screen.getByText(/по вашему запросу ничего не найдено/i)).toBeInTheDocument();
   });
 
 });

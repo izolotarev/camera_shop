@@ -30,12 +30,12 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <HistoryRouter history={browserHistory}>
-      <ToastContainer />
-      <App />
-    </HistoryRouter>
-  </Provider>
-  // </React.StrictMode>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <HistoryRouter history={browserHistory}>
+        <ToastContainer />
+        <App />
+      </HistoryRouter>
+    </Provider>
+  </React.StrictMode>,
 );

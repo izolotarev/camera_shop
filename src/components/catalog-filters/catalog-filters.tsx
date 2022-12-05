@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { CameraCategory, CameraLevel, CameraType, FilterNames, MapFilterNameToParam, SearchParams } from '../../const/const';
+import { CameraCategory, CameraLevel, CameraType, CatalogSortOrder, CatalogSortType, FilterNames, MapFilterNameToParam, SearchParams } from '../../const/const';
 import { getFilterSettings } from '../../store/reducers/products/products-selectors';
-import { appendParamWithValue, removeParamWithValue } from '../../utils/utils';
+import { appendParamWithValue, removeParam, removeParamWithValue, updateParamsWithValues } from '../../utils/utils';
 
 function CatalogFilters(): JSX.Element {
 
@@ -32,16 +32,124 @@ function CatalogFilters(): JSX.Element {
     }
   );
 
-  const handleFormChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    if (evt.target.checked) {
-      setFormState({...formState, [evt.target.name]: true});
-      const paramValue = MapFilterNameToParam[evt.target.name];
-      setSearchParams(appendParamWithValue(searchParams, paramValue.param, paramValue.value));
-    } else {
-      setFormState({...formState, [evt.target.name]: false});
-      const paramValue = MapFilterNameToParam[evt.target.name];
-      setSearchParams(removeParamWithValue(searchParams, paramValue.param, paramValue.value));
+  const [disabledCameraType, setDisabledCameraType] = useState({
+    [FilterNames.Snapshot]: false,
+    [FilterNames.Film]: false,
+  });
+
+  useEffect(() => {
+    setDisabledCameraType({
+      [FilterNames.Snapshot]: formState[FilterNames.Videocamera] && !formState[FilterNames.Photocamera],
+      [FilterNames.Film]: formState[FilterNames.Videocamera] && !formState[FilterNames.Photocamera],
+    });
+  }, [formState]);
+
+  const [minPrice, setMinPrice] = useState<string>(priceMinParam ?? '');
+  const [maxPrice, setMaxPrice] = useState<string>(priceMaxParam ?? '');
+
+  const handlePriceChange = (evt: ChangeEvent<HTMLInputElement>): void => {
+    if(evt.target.name === FilterNames.PriceMin) {
+      if (evt.target.value) {
+        if (parseInt(evt.target.value, 10) < 0) {
+          setMinPrice('0');
+        } else {
+          setMinPrice(evt.target.value);
+        }
+      } else {
+        setMinPrice('');
+      }
     }
+
+    if (evt.target.name === FilterNames.PriceMax) {
+      if (evt.target.value) {
+        if (parseInt(evt.target.value, 10) < 0) {
+          setMaxPrice('0');
+        } else {
+          setMaxPrice(evt.target.value);
+        }
+      } else {
+        setMaxPrice('');
+      }
+    }
+  };
+
+  const handleFormChange = (evt: ChangeEvent<HTMLInputElement>): void => {
+    if(evt.target.name === FilterNames.PriceMin) {
+      let minValue = evt.target.value;
+      if (filterSettings?.minPrice && parseInt(minValue, 10) < filterSettings.minPrice) {
+        minValue = filterSettings.minPrice.toString();
+      }
+      if (filterSettings?.maxPrice && parseInt(minValue, 10) > filterSettings.maxPrice) {
+        minValue = filterSettings.maxPrice.toString();
+      }
+      if (parseInt(minValue, 10) > parseInt(maxPrice, 10)) {
+        minValue = maxPrice;
+      }
+      setMinPrice(minValue);
+      setFormState({...formState, [FilterNames.PriceMin]: minValue});
+      if (minValue === '') {
+        setSearchParams(removeParam(searchParams, SearchParams.PriceMin));
+      } else if (searchParams.get(SearchParams.PriceMin)) {
+        setSearchParams(updateParamsWithValues(searchParams, {
+          [SearchParams.PriceMin] : minValue,
+        }));
+      } else {
+        setSearchParams(appendParamWithValue(searchParams, SearchParams.PriceMin, minValue));
+      }
+    } else if (evt.target.name === FilterNames.PriceMax) {
+      let maxValue = evt.target.value;
+      if (filterSettings?.maxPrice && parseInt(maxValue, 10) > filterSettings.maxPrice) {
+        maxValue = filterSettings.maxPrice.toString();
+      }
+      if (filterSettings?.minPrice && parseInt(maxValue, 10) < filterSettings.minPrice) {
+        maxValue = filterSettings.minPrice.toString();
+      }
+      if (parseInt(maxValue, 10) < parseInt(minPrice, 10)) {
+        maxValue = minPrice;
+      }
+      setMaxPrice(maxValue);
+      setFormState({...formState, [FilterNames.PriceMax]: maxValue});
+      if (maxValue === '') {
+        setSearchParams(removeParam(searchParams, SearchParams.PriceMax));
+      } else if (searchParams.get(SearchParams.PriceMax)) {
+        setSearchParams(updateParamsWithValues(searchParams, {
+          [SearchParams.PriceMax] : maxValue,
+        }));
+      } else {
+        setSearchParams(appendParamWithValue(searchParams, SearchParams.PriceMax, maxValue));
+      }
+    }
+    else {
+      if (evt.target.checked) {
+        setFormState({...formState, [evt.target.name]: true});
+        const paramValue = MapFilterNameToParam[evt.target.name];
+        setSearchParams(appendParamWithValue(searchParams, paramValue.param, paramValue.value));
+      } else {
+        setFormState({...formState, [evt.target.name]: false});
+        const paramValue = MapFilterNameToParam[evt.target.name];
+        setSearchParams(removeParamWithValue(searchParams, paramValue.param, paramValue.value));
+      }
+    }
+  };
+
+  const handleResetFilters = () => {
+    setFormState({
+      [FilterNames.PriceMin] : '',
+      [FilterNames.PriceMax] : '',
+      [FilterNames.Photocamera] : false,
+      [FilterNames.Videocamera] : false,
+      [FilterNames.Digital] : false,
+      [FilterNames.Film] : false,
+      [FilterNames.Snapshot] : false,
+      [FilterNames.Collection] : false,
+      [FilterNames.Zero] : false,
+      [FilterNames.NonProfessional] : false,
+      [FilterNames.Professional] : false,
+    });
+
+    const sortType = searchParams.get(SearchParams.SortType) ?? CatalogSortType.Price;
+    const sortOrder = searchParams.get(SearchParams.SortOrder) ?? CatalogSortOrder.Ascending;
+    setSearchParams({ [SearchParams.SortType] : sortType, [SearchParams.SortOrder] : sortOrder });
   };
 
   return (
@@ -53,12 +161,12 @@ function CatalogFilters(): JSX.Element {
           <div className="catalog-filter__price-range">
             <div className="custom-input">
               <label>
-                <input type="number" name={FilterNames.PriceMin} placeholder={ filterSettings?.minPrice.toString()} />
+                <input type="number" name={FilterNames.PriceMin} placeholder={ filterSettings?.minPrice.toString()} value={minPrice} onChange={handlePriceChange} onBlur={ handleFormChange }/>
               </label>
             </div>
             <div className="custom-input">
               <label>
-                <input type="number" name={FilterNames.PriceMax} placeholder={ filterSettings?.maxPrice.toString()} />
+                <input type="number" name={FilterNames.PriceMax} placeholder={ filterSettings?.maxPrice.toString()} value={maxPrice} onChange={handlePriceChange} onBlur={ handleFormChange }/>
               </label>
             </div>
           </div>
@@ -85,12 +193,12 @@ function CatalogFilters(): JSX.Element {
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Film} checked={formState[FilterNames.Film]} onChange={ handleFormChange } /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Плёночная</span>
+              <input type="checkbox" name={FilterNames.Film} checked={formState[FilterNames.Film]} onChange={ handleFormChange } disabled={disabledCameraType[FilterNames.Film]} /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Плёночная</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Snapshot} checked={formState[FilterNames.Snapshot]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Моментальная</span>
+              <input type="checkbox" name={FilterNames.Snapshot} checked={formState[FilterNames.Snapshot]} onChange={ handleFormChange } disabled={disabledCameraType[FilterNames.Snapshot]} /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Моментальная</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
@@ -117,7 +225,7 @@ function CatalogFilters(): JSX.Element {
             </label>
           </div>
         </fieldset>
-        <button className="btn catalog-filter__reset-btn" type="reset">Сбросить фильтры
+        <button className="btn catalog-filter__reset-btn" type="reset" onClick={ handleResetFilters }>Сбросить фильтры
         </button>
       </form>
     </div>
