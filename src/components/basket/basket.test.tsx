@@ -18,7 +18,14 @@ const history = createMemoryHistory();
 describe('Component: Basket', () => {
   it('should render correctly', () => {
     const store = mockStore({
-      PRODUCTS: {productsLoaded: true, products: products, isPromoLoaded: true, promo: products[0] },
+      PRODUCTS: {
+        productsLoaded: true,
+        products: products,
+        isPromoLoaded: true,
+        promo: products[0],
+        searchResultProducts: products,
+        searchResultProductsLoaded: true,
+      }
     });
 
     render (

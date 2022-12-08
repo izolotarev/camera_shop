@@ -27,6 +27,8 @@ const store = mockStore({
     promo: fakeProduct,
     similarProducts: products,
     similarProductsLoaded: true,
+    searchResultProducts: products,
+    searchResultProductsLoaded: true,
   },
   REVIEWS: {
     reviews: reviews,
@@ -56,7 +58,6 @@ describe('Component: Product', () => {
     render(fakeApp);
     expect(screen.getByText(/Главная/i)).toBeInTheDocument();
     expect(screen.getByText(fakeProduct.description)).toBeInTheDocument();
-    expect(screen.getByText(fakeProduct.category)).toBeInTheDocument();
   });
 
 });

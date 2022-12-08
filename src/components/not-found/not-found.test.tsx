@@ -20,7 +20,10 @@ describe('Component: NotFound', () => {
         productsLoaded: true,
         products: products,
         isPromoLoaded: true,
-        promo: makeFakeProduct() },
+        promo: makeFakeProduct(),
+        searchResultProducts: products,
+        searchResultProductsLoaded: true,
+      },
     });
 
     const fakeApp = (

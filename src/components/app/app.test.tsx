@@ -6,9 +6,15 @@ import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import App from './app';
 import { AppRoute } from '../../const/const';
 import { render, screen } from '@testing-library/react';
+import thunk from 'redux-thunk';
 
-const mockStore = configureMockStore();
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 const products = [makeFakeProduct()];
+const fakeFilterSettings: FilterSettingsType = {
+  minPrice: 0,
+  maxPrice: 0,
+};
 
 const history = createMemoryHistory();
 
@@ -16,7 +22,16 @@ describe('Application Routing', () => {
 
   it('should render "Catalog" screen when user navigate to "/"', () => {
     const store = mockStore({
-      PRODUCTS: {productsLoaded: true, products: products, isPromoLoaded: true, promo: products[0] },
+      PRODUCTS: {
+        productsLoaded: true,
+        products: products,
+        isPromoLoaded: true,
+        promo: products[0],
+        filterSettings: fakeFilterSettings,
+        filterSettingsLoaded: true,
+        searchResultProducts: products,
+        searchResultProductsLoaded: true,
+      },
     });
 
     const fakeApp = (

@@ -21,7 +21,10 @@ describe('Component: Header', () => {
         productsLoaded: true,
         products: products,
         isPromoLoaded: true,
-        promo: makeFakeProduct() },
+        promo: products[0],
+        searchResultProducts: products,
+        searchResultProductsLoaded: true,
+      }
     });
 
     const fakeApp = (

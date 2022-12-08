@@ -53,9 +53,6 @@ function Catalog():JSX.Element {
     return () => { dispatch(clearProducts()); };
   }, [_end, _start, dispatch, pageId, location.search]);
 
-  //${searhParamsToString(searchParams)}
-  //${SearchParams.SortType}=${catalogSortType}&${SearchParams.SortOrder}=${catalogSortOrder}
-
   useEffect(() => {
     if (isPromoLoaded) { return; }
     dispatch(fetchPromo());
