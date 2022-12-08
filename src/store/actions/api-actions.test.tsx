@@ -6,8 +6,8 @@ import { State } from '../../types/types';
 import { Action } from 'redux';
 import { makeFakeProduct, makeFakeReview } from '../../utils/mocks';
 import { APIRoute, AppRoute } from '../../const/const';
-import { fetchProductById, fetchProducts, fetchPromo, fetchReviews, fetchSimilarProducts, postReview } from './api.actions';
-import { loadProducts, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, redirectToRoute } from './actions';
+import { fetchFilterSettings, fetchProductById, fetchProducts, fetchProductsFromSearch, fetchPromo, fetchReviews, fetchSimilarProducts, postReview } from './api.actions';
+import { loadFilterSettings, loadProducts, loadProductsFromSearch, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, redirectToRoute } from './actions';
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -102,6 +102,38 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       postReviewAction(mockReview),
+    ]);
+  });
+
+  it('should dispatch loadProductsFromSearch on GET /cameras?name_like=', async () => {
+    const fakeProduct = makeFakeProduct();
+    const mockProducts = [fakeProduct];
+
+    mockAPI
+      .onGet(`${APIRoute.PRODUCTS}?name_like=${fakeProduct.name}`)
+      .reply(200, mockProducts);
+
+    const store = mockStore();
+    await store.dispatch(fetchProductsFromSearch(fakeProduct.name));
+
+    expect(store.getActions()).toEqual([
+      loadProductsFromSearch(mockProducts),
+    ]);
+  });
+
+  it('should dispatch loadFilterSettings on GET /cameras', async () => {
+    const fakeProduct = makeFakeProduct();
+    const mockProducts = [fakeProduct];
+
+    mockAPI
+      .onGet(APIRoute.PRODUCTS)
+      .reply(200, mockProducts);
+
+    const store = mockStore();
+    await store.dispatch(fetchFilterSettings());
+
+    expect(store.getActions()).toEqual([
+      loadFilterSettings(mockProducts),
     ]);
   });
 

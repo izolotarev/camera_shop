@@ -7,6 +7,7 @@ import App from './app';
 import { AppRoute } from '../../const/const';
 import { render, screen } from '@testing-library/react';
 import thunk from 'redux-thunk';
+import { FilterSettingsType } from '../../types/types';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
