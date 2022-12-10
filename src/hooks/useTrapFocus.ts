@@ -28,21 +28,22 @@ const useTrapFocus = (isPopupActive: boolean ) => {
 
     const activeElem = document.activeElement as HTMLElement | null;
 
-    if (isElementInList(focusableEls, activeElem)) {
-      if ( evt.shiftKey ) /* shift + tab */ {
-        if (document.activeElement === firstFocusableEl) {
-          lastFocusableEl?.focus();
-          evt.preventDefault();
-        }
-      } else /* tab */ {
-        if (document.activeElement === lastFocusableEl) {
-          firstFocusableEl?.focus();
-          evt.preventDefault();
-        }
-      }
-    } else {
+    if (!isElementInList(focusableEls, activeElem)) {
       firstFocusableEl?.focus();
       evt.preventDefault();
+      return;
+    }
+
+    if ( evt.shiftKey ) /* shift + tab */ {
+      if (document.activeElement === firstFocusableEl) {
+        lastFocusableEl?.focus();
+        evt.preventDefault();
+      }
+    } else /* tab */ {
+      if (document.activeElement === lastFocusableEl) {
+        firstFocusableEl?.focus();
+        evt.preventDefault();
+      }
     }
   }, []);
 
@@ -52,9 +53,9 @@ const useTrapFocus = (isPopupActive: boolean ) => {
       activeElem?.blur();
 
       document.addEventListener('keydown', handleFocus, false);
-    } else {
-      document.removeEventListener('keydown', handleFocus, false);
+      return;
     }
+    document.removeEventListener('keydown', handleFocus, false);
   }, [handleFocus, isPopupActive]);
 };
 

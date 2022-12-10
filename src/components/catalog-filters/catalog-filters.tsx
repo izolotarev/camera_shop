@@ -49,27 +49,27 @@ function CatalogFilters(): JSX.Element {
 
   const handlePriceChange = (evt: ChangeEvent<HTMLInputElement>): void => {
     if(evt.target.name === FilterNames.PriceMin) {
+      let minPriceValue = '';
       if (evt.target.value) {
-        if (parseInt(evt.target.value, 10) < 0) {
-          setMinPrice('0');
-        } else {
-          setMinPrice(evt.target.value);
-        }
-      } else {
-        setMinPrice('');
+        parseInt(evt.target.value, 10) < 0
+          ?
+          minPriceValue = '0'
+          :
+          minPriceValue = evt.target.value;
       }
+      setMinPrice(minPriceValue);
     }
 
     if (evt.target.name === FilterNames.PriceMax) {
+      let maxPriceValue = '';
       if (evt.target.value) {
-        if (parseInt(evt.target.value, 10) < 0) {
-          setMaxPrice('0');
-        } else {
-          setMaxPrice(evt.target.value);
-        }
-      } else {
-        setMaxPrice('');
+        parseInt(evt.target.value, 10) < 0
+          ?
+          maxPriceValue = '0'
+          :
+          maxPriceValue = evt.target.value;
       }
+      setMaxPrice(maxPriceValue);
     }
   };
 
@@ -96,7 +96,10 @@ function CatalogFilters(): JSX.Element {
       } else {
         setSearchParams(appendParamWithValue(searchParams, SearchParams.PriceMin, minValue));
       }
-    } else if (evt.target.name === FilterNames.PriceMax) {
+      return;
+    }
+
+    if (evt.target.name === FilterNames.PriceMax) {
       let maxValue = evt.target.value;
       if (filterSettings?.maxPrice && parseInt(maxValue, 10) > filterSettings.maxPrice) {
         maxValue = filterSettings.maxPrice.toString();
@@ -118,18 +121,19 @@ function CatalogFilters(): JSX.Element {
       } else {
         setSearchParams(appendParamWithValue(searchParams, SearchParams.PriceMax, maxValue));
       }
+      return;
     }
-    else {
-      if (evt.target.checked) {
-        setFormState({...formState, [evt.target.name]: true});
-        const paramValue = MapFilterNameToParam[evt.target.name];
-        setSearchParams(appendParamWithValue(searchParams, paramValue.param, paramValue.value));
-      } else {
-        setFormState({...formState, [evt.target.name]: false});
-        const paramValue = MapFilterNameToParam[evt.target.name];
-        setSearchParams(removeParamWithValue(searchParams, paramValue.param, paramValue.value));
-      }
+
+    if (evt.target.checked) {
+      setFormState({...formState, [evt.target.name]: true});
+      const paramValue = MapFilterNameToParam[evt.target.name];
+      setSearchParams(appendParamWithValue(searchParams, paramValue.param, paramValue.value));
+    } else {
+      setFormState({...formState, [evt.target.name]: false});
+      const paramValue = MapFilterNameToParam[evt.target.name];
+      setSearchParams(removeParamWithValue(searchParams, paramValue.param, paramValue.value));
     }
+
   };
 
   const handleResetFilters = () => {
@@ -149,11 +153,15 @@ function CatalogFilters(): JSX.Element {
 
     const sortType = searchParams.get(SearchParams.SortType);
     const sortOrder = searchParams.get(SearchParams.SortOrder);
-    if (sortType && sortOrder) {
-      setSearchParams({ [SearchParams.SortType] : sortType, [SearchParams.SortOrder] : sortOrder });
-    } else {
+
+    sortType && sortOrder
+      ?
+      setSearchParams({
+        [SearchParams.SortType] : sortType,
+        [SearchParams.SortOrder] : sortOrder
+      })
+      :
       setSearchParams({});
-    }
   };
 
   return (

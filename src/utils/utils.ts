@@ -16,31 +16,23 @@ export const appendParamWithValue = (searchParams: URLSearchParams, keyToAppend:
 };
 
 export const removeParam = (searchParams: URLSearchParams, keyToDelete: string) : URLSearchParams => {
-  const newSearchParams = new URLSearchParams();
-  for (const [key, value] of searchParams.entries()) {
-    if (key !== keyToDelete) {
-      newSearchParams.append(key, value);
-    }
-  }
+  const newSearchParams = new URLSearchParams([...searchParams.entries()]);
+  newSearchParams.delete(keyToDelete);
   return newSearchParams;
 };
 
 export const removeParamWithValue = (searchParams: URLSearchParams, keyToDelete: string, valueToDelete: string) : URLSearchParams => {
-  const newSearchParams = new URLSearchParams();
-  for (const [key, value] of searchParams.entries()) {
-    if ((key === keyToDelete && value !== valueToDelete) ||
-        (key !== keyToDelete && value !== valueToDelete)) {
-      newSearchParams.append(key, value);
-    }
-  }
+  const newSearchParams = new URLSearchParams([...searchParams.entries()].filter(([key, value]) =>
+    (key === keyToDelete && value !== valueToDelete) ||
+    (key !== keyToDelete && value !== valueToDelete)
+  ));
   return newSearchParams;
 };
 
-
 export const updateParamsWithValues = (searchParams: URLSearchParams, keyValuePairs: { [s: string]: string; }) : URLSearchParams => {
   const newSearchParams = new URLSearchParams(searchParams);
-  for (const [key, value] of Object.entries(keyValuePairs)) {
-    newSearchParams.set(key, value);
-  }
+  Object.entries(keyValuePairs).forEach(([key,value]) => {
+    newSearchParams.set(key,value);
+  });
   return newSearchParams;
 };
