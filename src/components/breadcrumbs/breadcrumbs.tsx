@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/hooks';
+import { clearProductFilters, clearProductsSorting } from '../../store/actions/actions';
 import { BreadcrumbsType } from '../../types/types';
 
 type BreadcrumbsProps = {
@@ -7,6 +9,13 @@ type BreadcrumbsProps = {
 
 function Breadcrumbs({crumbs}:BreadcrumbsProps):JSX.Element {
   const lastIndex = crumbs.length - 1;
+
+  const dispatch = useAppDispatch();
+
+  const handleCrumbClick = () => {
+    dispatch(clearProductsSorting());
+    dispatch(clearProductFilters());
+  };
 
   return (
     <div className="breadcrumbs">
@@ -19,7 +28,7 @@ function Breadcrumbs({crumbs}:BreadcrumbsProps):JSX.Element {
                 if (index === lastIndex) { return ''; }
                 return (
                   <li key={crumb.name} className="breadcrumbs__item">
-                    <Link className="breadcrumbs__link" to={crumb.url ?? '#'}>{crumb.name}
+                    <Link onClick={handleCrumbClick} className="breadcrumbs__link" to={crumb.url ?? '#'}>{crumb.name}
                       <svg width="5" height="8" aria-hidden="true">
                         <use xlinkHref="#icon-arrow-mini"></use>
                       </svg>

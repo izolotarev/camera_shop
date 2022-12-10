@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { useDebounce } from '../../hooks/useDebounce';
-import { clearProductsFromSearch } from '../../store/actions/actions';
+import { clearProductFilters, clearProductsFromSearch, clearProductsSorting } from '../../store/actions/actions';
 import { fetchProductsFromSearch } from '../../store/actions/api.actions';
 import { getSearchResultProducts } from '../../store/reducers/products/products-selectors';
 
@@ -31,10 +31,15 @@ function Header() : JSX.Element {
     dispatch(clearProductsFromSearch());
   };
 
+  const handleLogoClick = () => {
+    dispatch(clearProductsSorting());
+    dispatch(clearProductFilters());
+  };
+
   return (
     <header className="header" id="header">
       <div className="container">
-        <Link className="header__logo" to={AppRoute.ROOT} aria-label="Переход на главную">
+        <Link onClick={handleLogoClick} className="header__logo" to={AppRoute.ROOT} aria-label="Переход на главную">
           <svg width="100" height="36" aria-hidden="true">
             <use xlinkHref="#icon-logo"></use>
           </svg>

@@ -127,9 +127,7 @@ export const loadFilterSettings = createAction(
 export const applyProductsFilter = createAction(
   ActionType.ApplyProductsFilter,
   (filterState: ProductsFilterState) => ({
-    payload: {
-      filterState
-    },
+    payload: filterState,
   }),
 );
 
@@ -152,3 +150,5 @@ export const applySortOrder = createAction(
     },
   })
 );
+
+export const clearProductsSorting = createAction(ActionType.ClearProductsSorting);

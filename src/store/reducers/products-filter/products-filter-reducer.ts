@@ -27,9 +27,9 @@ export const initialState : ProductsFilterState = {
 
 export const productsFilter = createReducer(initialState, (builder) => {
   builder
-    .addCase(applyProductsFilter, (state, action) => {
-      Object.assign(state, action.payload.filterState);
-    })
+    .addCase(applyProductsFilter, (state, action) =>
+      action.payload
+    )
     .addCase(clearProductFilters, (state, action) => {
       state[FilterNames.PriceMin] = '';
       state[FilterNames.PriceMax] = '';

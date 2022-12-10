@@ -15,7 +15,7 @@ import { ChangeEvent, useEffect, } from 'react';
 import CatalogFilters from '../catalog-filters/catalog-filters';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchFilterSettings, fetchProducts, fetchPromo } from '../../store/actions/api.actions';
-import { applySortOrder, applySortType, clearProducts } from '../../store/actions/actions';
+import { applySortOrder, applySortType, clearProducts, } from '../../store/actions/actions';
 import { updateParamsWithValues } from '../../utils/utils';
 import { getCatalogSortOrder, getCatalogSortType } from '../../store/reducers/products-sorting/products-sorting-selectors';
 
@@ -47,7 +47,9 @@ function Catalog():JSX.Element {
 
   useEffect(() => {
     dispatch(fetchProducts(`${SearchParams.Start}=${_start}&${SearchParams.End}=${_end}&${location.search.substring(1)}`));
-    return () => { dispatch(clearProducts()); };
+    return () => {
+      dispatch(clearProducts());
+    };
   }, [_end, _start, dispatch, pageId, location.search]);
 
   useEffect(() => {

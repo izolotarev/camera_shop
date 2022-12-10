@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { CatalogSortOrder, CatalogSortType, SearchParams } from '../../../const/const';
 import { ProductsSortingState } from '../../../types/types';
-import { applySortOrder, applySortType } from '../../actions/actions';
+import { applySortOrder, applySortType, clearProductsSorting } from '../../actions/actions';
 
 
 const searchParams = new URLSearchParams(document.location.search);
@@ -20,5 +20,9 @@ export const productsSort = createReducer(initialState, (builder) => {
     })
     .addCase(applySortOrder, (state, action) => {
       state.catalogSortOrder = action.payload.sortOrder;
+    })
+    .addCase(clearProductsSorting, (state, action) => {
+      state.catalogSortType = initialState.catalogSortType;
+      state.catalogSortOrder = initialState.catalogSortOrder;
     });
 });

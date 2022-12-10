@@ -30,6 +30,7 @@ export enum ActionType {
   ClearProductsFilters = 'PRODUCTS/CLEAR_FILTERS',
   ApplySortType = 'PRODUCTS/SORT_PRODUCTS_BY_TYPE',
   ApplySortOrder = 'PRODUCTS/SORT_PRODUCTS_BY_ORDER',
+  ClearProductsSorting = 'PRODUCTS/CLEAR_SORT',
 }
 
 export const AppRoute = {
