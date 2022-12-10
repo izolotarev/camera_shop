@@ -26,6 +26,8 @@ export enum ActionType {
   ClearPostReviewStatus = 'REVIEWS/CLEAR_POST_REVIEW_STATUS',
   ClearPostReviewError = 'REVIEWS/CLEAR_POST_REVIEW_ERROR',
   RedirectToRoute = 'USER/REDIRECT',
+  ApplyProductsFilter = 'PRODUCTS/FILTER_PRODUCTS',
+  ClearProductsFilters = 'PRODUCTS/CLEAR_FILTERS',
 }
 
 export const AppRoute = {

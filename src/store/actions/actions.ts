@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType } from '../../const/const';
-import { ProductType, PromoType, ReviewType } from '../../types/types';
+import { ProductsFilterState, ProductType, PromoType, ReviewType } from '../../types/types';
 
 export const loadProducts = createAction(
   ActionType.LoadProducts,
@@ -123,3 +123,14 @@ export const loadFilterSettings = createAction(
     },
   }),
 );
+
+export const applyProductsFilter = createAction(
+  ActionType.ApplyProductsFilter,
+  (filterState: ProductsFilterState) => ({
+    payload: {
+      filterState
+    },
+  }),
+);
+
+export const clearProductFilters = createAction(ActionType.ClearProductsFilters);

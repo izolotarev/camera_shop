@@ -1,36 +1,19 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { CameraCategory, CameraLevel, CameraType, FilterNames, MapFilterNameToParam, SearchParams } from '../../const/const';
+import { FilterNames, MapFilterNameToParam, SearchParams } from '../../const/const';
+import { useAppDispatch } from '../../hooks/hooks';
+import { applyProductsFilter, clearProductFilters } from '../../store/actions/actions';
+import { getFilterState } from '../../store/reducers/products-filter/products-filter-selectors';
 import { getFilterSettings } from '../../store/reducers/products/products-selectors';
 import { appendParamWithValue, removeParam, removeParamWithValue, updateParamsWithValues } from '../../utils/utils';
 
 function CatalogFilters(): JSX.Element {
 
   const filterSettings = useSelector(getFilterSettings);
-
   const [searchParams, setSearchParams] = useSearchParams();
-  const priceMinParam = searchParams.get(SearchParams.PriceMin);
-  const priceMaxParam = searchParams.get(SearchParams.PriceMax);
-  const categoryParams = searchParams.getAll(SearchParams.Category);
-  const typeParams = searchParams.getAll(SearchParams.Type);
-  const levelParams = searchParams.getAll(SearchParams.Level);
-
-  const [formState, setFormState] = useState(
-    {
-      [FilterNames.PriceMin] : priceMinParam,
-      [FilterNames.PriceMax] : priceMaxParam,
-      [FilterNames.Photocamera] : categoryParams.includes(CameraCategory.Photo),
-      [FilterNames.Videocamera] : categoryParams.includes(CameraCategory.Video),
-      [FilterNames.Digital] : typeParams.includes(CameraType.Digital),
-      [FilterNames.Film] : typeParams.includes(CameraType.Film),
-      [FilterNames.Snapshot] : typeParams.includes(CameraType.Snapshot),
-      [FilterNames.Collection] : typeParams.includes(CameraType.Collection),
-      [FilterNames.Zero] : levelParams.includes(CameraLevel.Zero),
-      [FilterNames.NonProfessional] : levelParams.includes(CameraLevel.NonProfessional),
-      [FilterNames.Professional] : levelParams.includes(CameraLevel.Professional),
-    }
-  );
+  const filterState = useSelector(getFilterState);
+  const dispatch = useAppDispatch();
 
   const [disabledCameraType, setDisabledCameraType] = useState({
     [FilterNames.Snapshot]: false,
@@ -39,13 +22,10 @@ function CatalogFilters(): JSX.Element {
 
   useEffect(() => {
     setDisabledCameraType({
-      [FilterNames.Snapshot]: formState[FilterNames.Videocamera] && !formState[FilterNames.Photocamera],
-      [FilterNames.Film]: formState[FilterNames.Videocamera] && !formState[FilterNames.Photocamera],
+      [FilterNames.Snapshot]: filterState[FilterNames.Videocamera] && !filterState[FilterNames.Photocamera],
+      [FilterNames.Film]: filterState[FilterNames.Videocamera] && !filterState[FilterNames.Photocamera],
     });
-  }, [formState]);
-
-  const [minPrice, setMinPrice] = useState<string>(priceMinParam ?? '');
-  const [maxPrice, setMaxPrice] = useState<string>(priceMaxParam ?? '');
+  }, [filterState]);
 
   const handlePriceChange = (evt: ChangeEvent<HTMLInputElement>): void => {
     if(evt.target.name === FilterNames.PriceMin) {
@@ -57,7 +37,7 @@ function CatalogFilters(): JSX.Element {
           :
           minPriceValue = evt.target.value;
       }
-      setMinPrice(minPriceValue);
+      dispatch(applyProductsFilter({...filterState, [FilterNames.PriceMin]: minPriceValue}));
     }
 
     if (evt.target.name === FilterNames.PriceMax) {
@@ -69,7 +49,7 @@ function CatalogFilters(): JSX.Element {
           :
           maxPriceValue = evt.target.value;
       }
-      setMaxPrice(maxPriceValue);
+      dispatch(applyProductsFilter({...filterState, [FilterNames.PriceMax]: maxPriceValue}));
     }
   };
 
@@ -82,11 +62,11 @@ function CatalogFilters(): JSX.Element {
       if (filterSettings?.maxPrice && parseInt(minValue, 10) > filterSettings.maxPrice) {
         minValue = filterSettings.maxPrice.toString();
       }
-      if (parseInt(minValue, 10) > parseInt(maxPrice, 10)) {
-        minValue = maxPrice;
+      if (parseInt(minValue, 10) > parseInt(filterState.priceMax, 10)) {
+        minValue = filterState.priceMax;
       }
-      setMinPrice(minValue);
-      setFormState({...formState, [FilterNames.PriceMin]: minValue});
+      dispatch(applyProductsFilter({...filterState, [FilterNames.PriceMin]: minValue}));
+
       if (minValue === '') {
         setSearchParams(removeParam(searchParams, SearchParams.PriceMin));
       } else if (searchParams.get(SearchParams.PriceMin)) {
@@ -107,11 +87,11 @@ function CatalogFilters(): JSX.Element {
       if (filterSettings?.minPrice && parseInt(maxValue, 10) < filterSettings.minPrice) {
         maxValue = filterSettings.minPrice.toString();
       }
-      if (parseInt(maxValue, 10) < parseInt(minPrice, 10)) {
-        maxValue = minPrice;
+      if (parseInt(maxValue, 10) < parseInt(filterState.priceMin, 10)) {
+        maxValue = filterState.priceMin;
       }
-      setMaxPrice(maxValue);
-      setFormState({...formState, [FilterNames.PriceMax]: maxValue});
+      dispatch(applyProductsFilter({...filterState, [FilterNames.PriceMax]: maxValue}));
+
       if (maxValue === '') {
         setSearchParams(removeParam(searchParams, SearchParams.PriceMax));
       } else if (searchParams.get(SearchParams.PriceMax)) {
@@ -125,11 +105,11 @@ function CatalogFilters(): JSX.Element {
     }
 
     if (evt.target.checked) {
-      setFormState({...formState, [evt.target.name]: true});
+      dispatch(applyProductsFilter({...filterState, [evt.target.name]: true}));
       const paramValue = MapFilterNameToParam[evt.target.name];
       setSearchParams(appendParamWithValue(searchParams, paramValue.param, paramValue.value));
     } else {
-      setFormState({...formState, [evt.target.name]: false});
+      dispatch(applyProductsFilter({...filterState, [evt.target.name]: false}));
       const paramValue = MapFilterNameToParam[evt.target.name];
       setSearchParams(removeParamWithValue(searchParams, paramValue.param, paramValue.value));
     }
@@ -137,19 +117,7 @@ function CatalogFilters(): JSX.Element {
   };
 
   const handleResetFilters = () => {
-    setFormState({
-      [FilterNames.PriceMin] : '',
-      [FilterNames.PriceMax] : '',
-      [FilterNames.Photocamera] : false,
-      [FilterNames.Videocamera] : false,
-      [FilterNames.Digital] : false,
-      [FilterNames.Film] : false,
-      [FilterNames.Snapshot] : false,
-      [FilterNames.Collection] : false,
-      [FilterNames.Zero] : false,
-      [FilterNames.NonProfessional] : false,
-      [FilterNames.Professional] : false,
-    });
+    dispatch(clearProductFilters());
 
     const sortType = searchParams.get(SearchParams.SortType);
     const sortOrder = searchParams.get(SearchParams.SortOrder);
@@ -173,12 +141,12 @@ function CatalogFilters(): JSX.Element {
           <div className="catalog-filter__price-range">
             <div className="custom-input">
               <label>
-                <input type="number" name={FilterNames.PriceMin} placeholder={ filterSettings?.minPrice.toString()} value={minPrice} onChange={handlePriceChange} onBlur={ handleFormChange }/>
+                <input type="number" name={FilterNames.PriceMin} placeholder={ filterSettings?.minPrice.toString()} value={filterState.priceMin} onChange={handlePriceChange} onBlur={ handleFormChange }/>
               </label>
             </div>
             <div className="custom-input">
               <label>
-                <input type="number" name={FilterNames.PriceMax} placeholder={ filterSettings?.maxPrice.toString()} value={maxPrice} onChange={handlePriceChange} onBlur={ handleFormChange }/>
+                <input type="number" name={FilterNames.PriceMax} placeholder={ filterSettings?.maxPrice.toString()} value={filterState.priceMax} onChange={handlePriceChange} onBlur={ handleFormChange }/>
               </label>
             </div>
           </div>
@@ -187,12 +155,12 @@ function CatalogFilters(): JSX.Element {
           <legend className="title title--h5">Категория</legend>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Photocamera} checked={formState[FilterNames.Photocamera]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Фотокамера</span>
+              <input type="checkbox" name={FilterNames.Photocamera} checked={filterState[FilterNames.Photocamera]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Фотокамера</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Videocamera} checked={formState[FilterNames.Videocamera]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Видеокамера</span>
+              <input type="checkbox" name={FilterNames.Videocamera} checked={filterState[FilterNames.Videocamera]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Видеокамера</span>
             </label>
           </div>
         </fieldset>
@@ -200,22 +168,22 @@ function CatalogFilters(): JSX.Element {
           <legend className="title title--h5">Тип камеры</legend>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Digital} checked={formState[FilterNames.Digital]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Цифровая</span>
+              <input type="checkbox" name={FilterNames.Digital} checked={filterState[FilterNames.Digital]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Цифровая</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Film} checked={formState[FilterNames.Film]} onChange={ handleFormChange } disabled={disabledCameraType[FilterNames.Film]} /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Плёночная</span>
+              <input type="checkbox" name={FilterNames.Film} checked={filterState[FilterNames.Film]} onChange={ handleFormChange } disabled={disabledCameraType[FilterNames.Film]} /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Плёночная</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Snapshot} checked={formState[FilterNames.Snapshot]} onChange={ handleFormChange } disabled={disabledCameraType[FilterNames.Snapshot]} /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Моментальная</span>
+              <input type="checkbox" name={FilterNames.Snapshot} checked={filterState[FilterNames.Snapshot]} onChange={ handleFormChange } disabled={disabledCameraType[FilterNames.Snapshot]} /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Моментальная</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Collection} checked={formState[FilterNames.Collection]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Коллекционная</span>
+              <input type="checkbox" name={FilterNames.Collection} checked={filterState[FilterNames.Collection]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Коллекционная</span>
             </label>
           </div>
         </fieldset>
@@ -223,17 +191,17 @@ function CatalogFilters(): JSX.Element {
           <legend className="title title--h5">Уровень</legend>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Zero} checked={formState[FilterNames.Zero]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Нулевой</span>
+              <input type="checkbox" name={FilterNames.Zero} checked={filterState[FilterNames.Zero]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Нулевой</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.NonProfessional} checked={formState[FilterNames.NonProfessional]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Любительский</span>
+              <input type="checkbox" name={FilterNames.NonProfessional} checked={filterState[FilterNames.NonProfessional]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Любительский</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name={FilterNames.Professional} checked={formState[FilterNames.Professional]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Профессиональный</span>
+              <input type="checkbox" name={FilterNames.Professional} checked={filterState[FilterNames.Professional]} onChange={ handleFormChange }/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Профессиональный</span>
             </label>
           </div>
         </fieldset>
