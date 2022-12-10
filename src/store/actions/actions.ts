@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { ActionType } from '../../const/const';
+import { ActionType, CatalogSortOrder, CatalogSortType } from '../../const/const';
 import { ProductsFilterState, ProductType, PromoType, ReviewType } from '../../types/types';
 
 export const loadProducts = createAction(
@@ -134,3 +134,21 @@ export const applyProductsFilter = createAction(
 );
 
 export const clearProductFilters = createAction(ActionType.ClearProductsFilters);
+
+export const applySortType = createAction(
+  ActionType.ApplySortType,
+  (sortType: CatalogSortType) => ({
+    payload: {
+      sortType
+    },
+  })
+);
+
+export const applySortOrder = createAction(
+  ActionType.ApplySortOrder,
+  (sortOrder: CatalogSortOrder) => ({
+    payload: {
+      sortOrder
+    },
+  })
+);

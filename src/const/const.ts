@@ -28,6 +28,8 @@ export enum ActionType {
   RedirectToRoute = 'USER/REDIRECT',
   ApplyProductsFilter = 'PRODUCTS/FILTER_PRODUCTS',
   ClearProductsFilters = 'PRODUCTS/CLEAR_FILTERS',
+  ApplySortType = 'PRODUCTS/SORT_PRODUCTS_BY_TYPE',
+  ApplySortOrder = 'PRODUCTS/SORT_PRODUCTS_BY_ORDER',
 }
 
 export const AppRoute = {

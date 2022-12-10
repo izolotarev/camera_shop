@@ -11,12 +11,13 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import Pagination from '../pagination/pagination';
 import ProductList from '../product-list/product-list';
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, } from 'react';
 import CatalogFilters from '../catalog-filters/catalog-filters';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchFilterSettings, fetchProducts, fetchPromo } from '../../store/actions/api.actions';
-import { clearProducts } from '../../store/actions/actions';
+import { applySortOrder, applySortType, clearProducts } from '../../store/actions/actions';
 import { updateParamsWithValues } from '../../utils/utils';
+import { getCatalogSortOrder, getCatalogSortType } from '../../store/reducers/products-sorting/products-sorting-selectors';
 
 type CatalogParams = {
   id:string;
@@ -40,12 +41,8 @@ function Catalog():JSX.Element {
   const filterSettingsLoaded = useSelector(getFilterSettingsLoadingStatus);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const sortTypeParam = searchParams.get(SearchParams.SortType) as CatalogSortType || null;
-  const sortOrderParam = searchParams.get(SearchParams.SortOrder) as CatalogSortOrder || null;
-
-  const [catalogSortType, setCatalogSortType] = useState<CatalogSortType>(sortTypeParam || CatalogSortType.None);
-  const [catalogSortOrder, setCatalogSortOrder] = useState<CatalogSortOrder>(sortOrderParam || CatalogSortOrder.None);
-
+  const catalogSortType = useSelector(getCatalogSortType);
+  const catalogSortOrder = useSelector(getCatalogSortOrder);
   const location = useLocation();
 
   useEffect(() => {
@@ -65,9 +62,9 @@ function Catalog():JSX.Element {
 
   const handleSortTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortType = evt.target.value as CatalogSortType;
-    setCatalogSortType(sortType);
+    dispatch(applySortType(sortType));
     const sortOrder = catalogSortOrder === CatalogSortOrder.None ? CatalogSortOrder.Ascending : catalogSortOrder;
-    setCatalogSortOrder(sortOrder);
+    dispatch(applySortOrder(sortOrder));
     setSearchParams(updateParamsWithValues(searchParams, {
       [SearchParams.SortType] : sortType,
       [SearchParams.SortOrder] : sortOrder,
@@ -76,9 +73,9 @@ function Catalog():JSX.Element {
 
   const handleSortOrderChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortOrder = evt.target.value as CatalogSortOrder;
-    setCatalogSortOrder(sortOrder);
+    dispatch(applySortOrder(sortOrder));
     const sortType = catalogSortType === CatalogSortType.None ? CatalogSortType.Price : catalogSortType;
-    setCatalogSortType(sortType);
+    dispatch(applySortType(sortType));
     setSearchParams(updateParamsWithValues(searchParams, {
       [SearchParams.SortType] : sortType,
       [SearchParams.SortOrder] : sortOrder,

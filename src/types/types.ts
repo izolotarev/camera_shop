@@ -2,7 +2,7 @@ import { RootState } from '../store/reducers/root-reducer';
 import { Action } from 'redux';
 import { ThunkAction} from 'redux-thunk';
 import { AxiosInstance } from 'axios';
-import { FilterNames, SearchParams } from '../const/const';
+import { CatalogSortOrder, CatalogSortType, FilterNames, SearchParams } from '../const/const';
 
 export type ProductState = {
   products: ProductType[],
@@ -114,4 +114,9 @@ export type ProductsFilterState = {
   [FilterNames.Zero] : boolean,
   [FilterNames.NonProfessional] : boolean,
   [FilterNames.Professional] : boolean,
+}
+
+export type ProductsSortingState = {
+  catalogSortType: CatalogSortType,
+  catalogSortOrder: CatalogSortOrder,
 }
