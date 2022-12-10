@@ -7,6 +7,7 @@ import { render, screen } from '@testing-library/react';
 import Catalog from './catalog';
 import thunk from 'redux-thunk';
 import { FilterSettingsType } from '../../types/types';
+import { CatalogSortOrder, CatalogSortType, FilterNames } from '../../const/const';
 
 
 const middlewares = [thunk];
@@ -35,6 +36,23 @@ describe('Component: Catalog', () => {
         searchResultProducts: products,
         searchResultProductsLoaded: true,
       },
+      PRODUCTS_SORT: {
+        catalogSortType: CatalogSortType.None,
+        catalogSortOrder: CatalogSortOrder.None,
+      },
+      PRODUCTS_FILTER: {
+        [FilterNames.PriceMin] : '',
+        [FilterNames.PriceMax] : '',
+        [FilterNames.Photocamera] : false,
+        [FilterNames.Videocamera] : false,
+        [FilterNames.Digital] : false,
+        [FilterNames.Film] : false,
+        [FilterNames.Snapshot] : false,
+        [FilterNames.Collection] : false,
+        [FilterNames.Zero] : false,
+        [FilterNames.NonProfessional] : false,
+        [FilterNames.Professional] : false,
+      }
     });
 
     const fakeApp = (

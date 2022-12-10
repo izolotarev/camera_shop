@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import App from './app';
-import { AppRoute } from '../../const/const';
+import { AppRoute, CatalogSortOrder, CatalogSortType, FilterNames } from '../../const/const';
 import { render, screen } from '@testing-library/react';
 import thunk from 'redux-thunk';
 import { FilterSettingsType } from '../../types/types';
@@ -33,6 +33,23 @@ describe('Application Routing', () => {
         searchResultProducts: products,
         searchResultProductsLoaded: true,
       },
+      PRODUCTS_SORT: {
+        catalogSortType: CatalogSortType.None,
+        catalogSortOrder: CatalogSortOrder.None,
+      },
+      PRODUCTS_FILTER: {
+        [FilterNames.PriceMin] : '',
+        [FilterNames.PriceMax] : '',
+        [FilterNames.Photocamera] : false,
+        [FilterNames.Videocamera] : false,
+        [FilterNames.Digital] : false,
+        [FilterNames.Film] : false,
+        [FilterNames.Snapshot] : false,
+        [FilterNames.Collection] : false,
+        [FilterNames.Zero] : false,
+        [FilterNames.NonProfessional] : false,
+        [FilterNames.Professional] : false,
+      }
     });
 
     const fakeApp = (
