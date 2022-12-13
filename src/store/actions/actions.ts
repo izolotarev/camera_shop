@@ -124,6 +124,8 @@ export const loadFilterSettings = createAction(
   }),
 );
 
+export const clearFilterSettings = createAction(ActionType.ClearFilterSettings);
+
 export const applyProductsFilter = createAction(
   ActionType.ApplyProductsFilter,
   (filterState: ProductsFilterState) => ({

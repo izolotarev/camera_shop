@@ -13,6 +13,7 @@ export enum ActionType {
   LoadProductsFromSearch = 'PRODUCTS/LOAD_PRODUCTS_SEARCH',
   ClearProductsFromSearch = 'PRODUCTS/CLEAR_PRODUCTS_SEARCH',
   LoadFilterSettings = 'PRODUCTS/LOAD_FILTER_SETTINGS',
+  ClearFilterSettings = 'PRODUCTS/CLEAR_FILTER_SETTINGS',
   OpenAddReviewPopup = 'REVIEWS/OPEN_ADD_REVIEW_POPUP',
   CloseAddReviewPopup = 'REVIEWS/CLOSE_ADD_REVIEW_POPUP',
   OpenAddReviewSuccessPopup = 'REVIEWS/OPEN_ADD_REVIEW_SUCCESS_POPUP',

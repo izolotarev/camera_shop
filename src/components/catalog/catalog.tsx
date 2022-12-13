@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { AppRoute, CatalogSortOrder, CatalogSortType, NUMBER_OF_ELEMENTS_PER_PAGE, SearchParams } from '../../const/const';
-import { getFilterSettings, getFilterSettingsLoadingStatus, getProducts, getProductsLoadingStatus, getProductsTotalCount, getPromo, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
+import { getProducts, getProductsLoadingStatus, getProductsTotalCount, getPromo, getPromoLoadingStatus } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType, } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import AddItemPopup from '../add-item-popup/add-item-popup';
@@ -13,11 +13,12 @@ import ProductList from '../product-list/product-list';
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
 import { ChangeEvent, useEffect, } from 'react';
 import CatalogFilters from '../catalog-filters/catalog-filters';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, } from '../../hooks/hooks';
 import { fetchFilterSettings, fetchProducts, fetchPromo } from '../../store/actions/api.actions';
-import { applySortOrder, applySortType, clearProducts, } from '../../store/actions/actions';
+import { applySortOrder, applySortType, clearFilterSettings, clearProducts, } from '../../store/actions/actions';
 import { updateParamsWithValues } from '../../utils/utils';
 import { getCatalogSortOrder, getCatalogSortType } from '../../store/reducers/products-sorting/products-sorting-selectors';
+import { getFilterState } from '../../store/reducers/products-filter/products-filter-selectors';
 
 type CatalogParams = {
   id:string;
@@ -37,8 +38,9 @@ function Catalog():JSX.Element {
   const isPromoLoaded = useSelector(getPromoLoadingStatus);
   const promoId = promo?.id ?? 0;
   const productsTotalCount = useSelector(getProductsTotalCount);
-  const filterSettings = useSelector(getFilterSettings);
-  const filterSettingsLoaded = useSelector(getFilterSettingsLoadingStatus);
+  const filterState = useSelector(getFilterState);
+  // const filterSettings = useSelector(getFilterSettings);
+  // const filterSettingsLoaded = useSelector(getFilterSettingsLoadingStatus);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const catalogSortType = useSelector(getCatalogSortType);
@@ -47,20 +49,25 @@ function Catalog():JSX.Element {
 
   useEffect(() => {
     dispatch(fetchProducts(`${SearchParams.Start}=${_start}&${SearchParams.End}=${_end}&${location.search.substring(1)}`));
+    dispatch(fetchFilterSettings(`${location.search.substring(1)}`));
     return () => {
       dispatch(clearProducts());
+      dispatch(clearFilterSettings());
     };
   }, [_end, _start, dispatch, pageId, location.search]);
+
+  const navigate = useNavigate();
+
+  //If filter is applied push to the first page
+  useEffect(() => {
+    navigate(`${AppRoute.CATALOG}/page_1?${location.search.substring(1)}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterState]);
 
   useEffect(() => {
     if (isPromoLoaded) { return; }
     dispatch(fetchPromo());
   }, [dispatch, isPromoLoaded]);
-
-  useEffect(() => {
-    if (filterSettingsLoaded) { return; }
-    dispatch(fetchFilterSettings());
-  }, [dispatch, filterSettingsLoaded]);
 
   const handleSortTypeChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const sortType = evt.target.value as CatalogSortType;
@@ -90,7 +97,7 @@ function Catalog():JSX.Element {
     {name: 'Каталог'}
   ];
 
-  if (!promo || !products || !isPromoLoaded || !productsLoaded || !filterSettings || !filterSettingsLoaded) {
+  if (!promo || !products || !isPromoLoaded || !productsLoaded) {
     return (
       <LoadingScreen/>
     );

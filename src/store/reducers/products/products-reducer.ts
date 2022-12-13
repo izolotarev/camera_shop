@@ -2,7 +2,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
 import { extractFilterSettings } from '../../../utils/utils';
-import { clearProductById, clearProducts, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
+import { clearFilterSettings, clearProductById, clearProducts, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductAddToBasket } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -78,5 +78,9 @@ export const productsData = createReducer(initialState, (builder) => {
     .addCase(loadFilterSettings, (state, action) => {
       state.filterSettings = extractFilterSettings(action.payload.products);
       state.filterSettingsLoaded = true;
+    })
+    .addCase(clearFilterSettings, (state, action) => {
+      state.filterSettings = initialState.filterSettings;
+      state.filterSettingsLoaded = false;
     });
 });

@@ -2,10 +2,12 @@ import { FilterSettingsType, ProductType } from '../types/types';
 
 export const extractFilterSettings = (data: ProductType[]) : FilterSettingsType => {
   const productsSortedByPrice = data.slice().sort((a, b) => a.price - b.price);
+  const prices = productsSortedByPrice.slice().map((p) => p.price);
 
   return {
     minPrice: productsSortedByPrice[0].price,
     maxPrice: productsSortedByPrice[productsSortedByPrice.length - 1].price,
+    productsPrices: prices,
   };
 };
 
@@ -36,3 +38,6 @@ export const updateParamsWithValues = (searchParams: URLSearchParams, keyValuePa
   });
   return newSearchParams;
 };
+
+export const closestPrice = (price: number, prices: number[]): number =>
+  prices.reduce((a, b) => Math.abs(b - price) < Math.abs(a - price) ? b : a);

@@ -6,11 +6,12 @@ import { useAppDispatch } from '../../hooks/hooks';
 import { applyProductsFilter, clearProductFilters } from '../../store/actions/actions';
 import { getFilterState } from '../../store/reducers/products-filter/products-filter-selectors';
 import { getFilterSettings } from '../../store/reducers/products/products-selectors';
-import { appendParamWithValue, removeParam, removeParamWithValue, updateParamsWithValues } from '../../utils/utils';
+import { appendParamWithValue, closestPrice, removeParam, removeParamWithValue, updateParamsWithValues } from '../../utils/utils';
 
 function CatalogFilters(): JSX.Element {
 
   const filterSettings = useSelector(getFilterSettings);
+  const productsPrices = filterSettings?.productsPrices;
   const [searchParams, setSearchParams] = useSearchParams();
   const filterState = useSelector(getFilterState);
   const dispatch = useAppDispatch();
@@ -65,6 +66,9 @@ function CatalogFilters(): JSX.Element {
       if (parseInt(minValue, 10) > parseInt(filterState.priceMax, 10)) {
         minValue = filterState.priceMax;
       }
+      if (productsPrices && minValue !== '') {
+        minValue = closestPrice(parseInt(minValue, 10), productsPrices).toString();
+      }
       dispatch(applyProductsFilter({...filterState, [FilterNames.PriceMin]: minValue}));
 
       if (minValue === '') {
@@ -89,6 +93,9 @@ function CatalogFilters(): JSX.Element {
       }
       if (parseInt(maxValue, 10) < parseInt(filterState.priceMin, 10)) {
         maxValue = filterState.priceMin;
+      }
+      if (productsPrices && maxValue !== '') {
+        maxValue = closestPrice(parseInt(maxValue, 10), productsPrices).toString();
       }
       dispatch(applyProductsFilter({...filterState, [FilterNames.PriceMax]: maxValue}));
 

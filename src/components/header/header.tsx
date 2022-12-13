@@ -64,14 +64,14 @@ function Header() : JSX.Element {
               </svg>
               <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту" onChange={handleSearchChange} value={search}/>
             </label>
-            <ul className="form-search__select-list">
+            <ul className="form-search__select-list scroller">
               {
                 searchResultProducts.length > 0
                   ?
                   searchResultProducts.map((product, index) =>
                     (
-                      <Link key={product.id} to={{pathname: `${AppRoute.PRODUCTS}/${product.id}`}}>
-                        <li className="form-search__select-item" tabIndex={index}>{product.name}</li>
+                      <Link key={product.id} tabIndex={0} to={{pathname: `${AppRoute.PRODUCTS}/${product.id}`}}>
+                        <li className="form-search__select-item">{product.name}</li>
                       </Link>
                     )
                   )

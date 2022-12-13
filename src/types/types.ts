@@ -91,6 +91,7 @@ export type PostReviewType = {
 export type FilterSettingsType = {
   minPrice: number;
   maxPrice: number;
+  productsPrices: number[];
 }
 
 export type MapFilterNameToParamType = {

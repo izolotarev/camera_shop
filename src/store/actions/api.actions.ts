@@ -79,10 +79,10 @@ export const fetchProductsFromSearch = (input: string | null): ThunkActionResult
     }
   };
 
-export const fetchFilterSettings = (): ThunkActionResult =>
+export const fetchFilterSettings = (params: string | null = null): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const {data} = await api.get<ProductType[]>(APIRoute.PRODUCTS);
+      const {data} = await api.get<ProductType[]>(`${APIRoute.PRODUCTS}${params ? `?${params}` : ''}`);
       dispatch(loadFilterSettings(data));
     } catch(error) {
       handleError(error);

@@ -18,6 +18,7 @@ const products = [fakeProduct];
 const fakeFilterSettings: FilterSettingsType = {
   minPrice: 0,
   maxPrice: 0,
+  productsPrices: []
 };
 
 const history = createMemoryHistory();
