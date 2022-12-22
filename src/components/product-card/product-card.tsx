@@ -1,9 +1,11 @@
 import { MouseEvent } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { openAddItemPopup, selectProductToAddToBasket } from '../../store/actions/actions';
-import { ProductType } from '../../types/types';
+import { getProductInBasketStatus } from '../../store/reducers/basket/basket-selectors';
+import { ProductType, State } from '../../types/types';
 import RatingStar from '../rating-star/rating-star';
 
 type ProductProps = {
@@ -13,6 +15,8 @@ type ProductProps = {
 
 function ProductCard({product, isActive}:ProductProps): JSX.Element {
   const {id, name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, rating, price, reviewCount } = product;
+
+  const productInBasket = useSelector((state: State) => getProductInBasketStatus(state, id));
 
   const dispatch = useAppDispatch();
 
@@ -41,8 +45,19 @@ function ProductCard({product, isActive}:ProductProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button" onClick={handleBuyClick}>Купить
-        </button>
+        {
+          productInBasket
+            ?
+            <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to={AppRoute.BASKET}>
+              <svg width="16" height="16" aria-hidden="true">
+                <use xlinkHref="#icon-basket"></use>
+              </svg>В корзине
+            </Link>
+            :
+            <button className="btn btn--purple product-card__btn" type="button" onClick={handleBuyClick}>
+              Купить
+            </button>
+        }
         <Link className="btn btn--transparent" to={{pathname: `${AppRoute.PRODUCTS}/${id}`}}>Подробнее</Link>
       </div>
     </div>

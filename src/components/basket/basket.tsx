@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { AppRoute } from '../../const/const';
 import { BreadcrumbsType } from '../../types/types';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
@@ -5,6 +6,10 @@ import Footer from '../footer/footer';
 import Header from '../header/header';
 
 function Basket():JSX.Element {
+
+  useEffect(() => {
+    window.scroll(0,0);
+  }, []);
 
   const breadcrumbs: BreadcrumbsType[] =
   [

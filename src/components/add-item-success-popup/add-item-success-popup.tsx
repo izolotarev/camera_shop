@@ -24,9 +24,8 @@ function AddItemSuccessPopup():JSX.Element {
   };
 
   const handleNavigateToBasket = async () => {
-    await Promise.all([dispatch(closeAddItemSuccessPopup())]);
+    await dispatch(closeAddItemSuccessPopup());
     dispatch(redirectToRoute(AppRoute.BASKET));
-    window.scroll(0, 0);
   };
 
   useEscapeKey(handlePopupClose);
