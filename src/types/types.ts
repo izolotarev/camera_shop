@@ -23,6 +23,15 @@ export type ProductState = {
   filterSettingsLoaded: boolean,
 }
 
+export type BasketState = {
+  items: BasketItemType[],
+}
+
+export type BasketItemType = {
+  product: ProductType,
+  qty: number,
+}
+
 export type ProductType = {
   id: number,
   name: string,

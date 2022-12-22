@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { AppRoute, MAX_PRODUCT_RATING, ProductTabNames } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
-import { clearProductById, openAddItemPopup, selectProductAddToBasket } from '../../store/actions/actions';
+import { clearProductById, openAddItemPopup, selectProductToAddToBasket } from '../../store/actions/actions';
 import { fetchProductById, fetchReviews } from '../../store/actions/api.actions';
 import { getProductById } from '../../store/reducers/products/products-selectors';
 import { BreadcrumbsType } from '../../types/types';
@@ -54,7 +54,7 @@ function Product():JSX.Element {
 
   const handleAddToBasketClick = () => {
     if (!product) {return; }
-    dispatch(selectProductAddToBasket(product));
+    dispatch(selectProductToAddToBasket(product));
     dispatch(openAddItemPopup());
   };
 

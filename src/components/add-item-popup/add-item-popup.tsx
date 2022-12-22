@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
 import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
-import { closeAddItemPopup } from '../../store/actions/actions';
+import { addProductToBasket, closeAddItemPopup, openAddItemSuccessPopup } from '../../store/actions/actions';
 import { getAddItemPopupOpenedStatus, getProductToAddToBasket } from '../../store/reducers/products/products-selectors';
 import useTrapFocus from '../../hooks/useTrapFocus';
 
@@ -21,6 +21,13 @@ function AddItemPopup():JSX.Element {
   useEscapeKey(handlePopupClose);
 
   useTrapFocus(popupActive);
+
+  const handleAddToBasket = () => {
+    if (!productToAddToBasket) { return; }
+    dispatch(addProductToBasket(productToAddToBasket));
+    dispatch(closeAddItemPopup());
+    dispatch(openAddItemSuccessPopup());
+  };
 
   return (
     <div className={`modal ${popupActive ? 'is-active' : ''}`}>
@@ -47,7 +54,7 @@ function AddItemPopup():JSX.Element {
             </div>
           </div>
           <div className="modal__buttons">
-            <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button">
+            <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button" onClick={handleAddToBasket}>
               <svg width="24" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-add-basket"></use>
               </svg>Добавить в корзину

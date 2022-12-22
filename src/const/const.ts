@@ -5,7 +5,8 @@ export enum ActionType {
   ClearProducts = 'PRODUCTS/CLEAR_PRODUCTS',
   LoadProductsTotalCount = 'PRODUCTS/LOAD_PRODUCTS_TOTAL_COUNT',
   LoadPromo = 'PRODUCTS/LOAD_PROMO',
-  SelectProduct = 'PRODUCTS/SELECT_PRODUCT_TO_ADD_TO_BASKET',
+  SelectProductToAddToBasket = 'PRODUCTS/SELECT_PRODUCT_TO_ADD_TO_BASKET',
+  ClearProductAddToBasket = 'PRODUCTS/CLEAR_PRODUCT_TO_ADD_TO_BASKET',
   OpenAddItemPopup = 'PRODUCTS/OPEN_ADD_ITEM_POPUP',
   CloseAddItemPopup = 'PRODUCTS/CLOSE_ADD_ITEM_POPUP',
   OpenAddItemSuccessPopup = 'PRODUCTS/OPEN_ADD_ITEM_SUCCESS_POPUP',
@@ -32,6 +33,7 @@ export enum ActionType {
   ApplySortType = 'PRODUCTS/SORT_PRODUCTS_BY_TYPE',
   ApplySortOrder = 'PRODUCTS/SORT_PRODUCTS_BY_ORDER',
   ClearProductsSorting = 'PRODUCTS/CLEAR_SORT',
+  AddProductToBasket = 'BASKET/ADD_PRODUCT',
 }
 
 export const AppRoute = {
@@ -129,3 +131,5 @@ export const MapFilterNameToParam: MapFilterNameToParamType = {
   [FilterNames.NonProfessional] : { param: SearchParams.Level, value: CameraLevel.NonProfessional },
   [FilterNames.Professional] : { param: SearchParams.Level, value: CameraLevel.Professional },
 };
+
+export const SCROLL_LOCK_BODY_CLASS = 'scroll-lock';

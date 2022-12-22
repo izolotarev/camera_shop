@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType, CatalogSortOrder, CatalogSortType } from '../../const/const';
-import { ProductsFilterState, ProductType, PromoType, ReviewType } from '../../types/types';
+import { ProductsFilterState, ProductType, PromoType, ReviewType, } from '../../types/types';
 
 export const loadProducts = createAction(
   ActionType.LoadProducts,
@@ -31,14 +31,16 @@ export const loadPromo = createAction(
   }),
 );
 
-export const selectProductAddToBasket = createAction(
-  ActionType.SelectProduct,
+export const selectProductToAddToBasket = createAction(
+  ActionType.SelectProductToAddToBasket,
   (product: ProductType) => ({
     payload: {
       product,
     }
   })
 );
+
+export const clearProductToAddToBasket = createAction(ActionType.ClearProductAddToBasket);
 
 export const openAddItemPopup = createAction(ActionType.OpenAddItemPopup);
 export const closeAddItemPopup = createAction(ActionType.CloseAddItemPopup);
@@ -154,3 +156,12 @@ export const applySortOrder = createAction(
 );
 
 export const clearProductsSorting = createAction(ActionType.ClearProductsSorting);
+
+export const addProductToBasket = createAction(
+  ActionType.AddProductToBasket,
+  (product: ProductType) => ({
+    payload: {
+      product,
+    },
+  }),
+);

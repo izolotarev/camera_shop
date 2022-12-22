@@ -111,21 +111,21 @@ function CatalogFilters(): JSX.Element {
       return;
     }
 
-    if (evt.target.checked) {
-      if (evt.target.name === FilterNames.Videocamera &&
-          (filterState[FilterNames.Film] || filterState[FilterNames.Snapshot])) {
-        dispatch(applyProductsFilter({...filterState, [FilterNames.Film]: false, [FilterNames.Snapshot]: false, [FilterNames.Videocamera]: true,}));
-        const filmParam = MapFilterNameToParam[FilterNames.Film];
-        const snapParam = MapFilterNameToParam[FilterNames.Snapshot];
-        const videoParam = MapFilterNameToParam[FilterNames.Videocamera];
-        let params = searchParams;
-        params = removeParamWithValue(params, filmParam.param, filmParam.value);
-        params = removeParamWithValue(params, snapParam.param, snapParam.value);
-        params = appendParamWithValue(params, videoParam.param, videoParam.value);
-        setSearchParams(params);
-        return;
-      }
+    if (evt.target.checked && evt.target.name === FilterNames.Videocamera &&
+        (filterState[FilterNames.Film] || filterState[FilterNames.Snapshot])) {
+      dispatch(applyProductsFilter({...filterState, [FilterNames.Film]: false, [FilterNames.Snapshot]: false, [FilterNames.Videocamera]: true,}));
+      const filmParam = MapFilterNameToParam[FilterNames.Film];
+      const snapParam = MapFilterNameToParam[FilterNames.Snapshot];
+      const videoParam = MapFilterNameToParam[FilterNames.Videocamera];
+      let params = searchParams;
+      params = removeParamWithValue(params, filmParam.param, filmParam.value);
+      params = removeParamWithValue(params, snapParam.param, snapParam.value);
+      params = appendParamWithValue(params, videoParam.param, videoParam.value);
+      setSearchParams(params);
+      return;
+    }
 
+    if (evt.target.checked) {
       dispatch(applyProductsFilter({...filterState, [evt.target.name]: true}));
       const paramValue = MapFilterNameToParam[evt.target.name];
       setSearchParams(appendParamWithValue(searchParams, paramValue.param, paramValue.value));

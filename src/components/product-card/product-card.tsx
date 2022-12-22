@@ -2,7 +2,7 @@ import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
-import { openAddItemPopup, selectProductAddToBasket } from '../../store/actions/actions';
+import { openAddItemPopup, selectProductToAddToBasket } from '../../store/actions/actions';
 import { ProductType } from '../../types/types';
 import RatingStar from '../rating-star/rating-star';
 
@@ -18,7 +18,7 @@ function ProductCard({product, isActive}:ProductProps): JSX.Element {
 
   const handleBuyClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    dispatch(selectProductAddToBasket(product));
+    dispatch(selectProductToAddToBasket(product));
     dispatch(openAddItemPopup());
   };
 

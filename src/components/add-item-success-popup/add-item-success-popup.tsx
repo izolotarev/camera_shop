@@ -2,9 +2,11 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
 import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
-import { closeAddItemSuccessPopup } from '../../store/actions/actions';
+import { closeAddItemSuccessPopup, redirectToRoute } from '../../store/actions/actions';
 import { getAddItemSuccessPopupOpenedStatus } from '../../store/reducers/products/products-selectors';
 import useTrapFocus from '../../hooks/useTrapFocus';
+import { SyntheticEvent } from 'react';
+import { AppRoute } from '../../const/const';
 
 function AddItemSuccessPopup():JSX.Element {
   const popupActive = useSelector(getAddItemSuccessPopupOpenedStatus);
@@ -14,6 +16,17 @@ function AddItemSuccessPopup():JSX.Element {
 
   const handlePopupClose = () => {
     dispatch(closeAddItemSuccessPopup());
+  };
+
+  const handleContinueShopping = (evt: SyntheticEvent) => {
+    evt.preventDefault();
+    dispatch(closeAddItemSuccessPopup());
+  };
+
+  const handleNavigateToBasket = async () => {
+    await Promise.all([dispatch(closeAddItemSuccessPopup())]);
+    dispatch(redirectToRoute(AppRoute.BASKET));
+    window.scroll(0, 0);
   };
 
   useEscapeKey(handlePopupClose);
@@ -28,8 +41,9 @@ function AddItemSuccessPopup():JSX.Element {
           <svg className="modal__icon" width="86" height="80" aria-hidden="true">
             <use xlinkHref="#icon-success"></use>
           </svg>
-          <div className="modal__buttons"><a className="btn btn--transparent modal__btn" href="/#">Продолжить покупки</a>
-            <button className="btn btn--purple modal__btn modal__btn--fit-width">Перейти в корзину</button>
+          <div className="modal__buttons">
+            <a className="btn btn--transparent modal__btn" href="/#" onClick={handleContinueShopping}>Продолжить покупки</a>
+            <button className="btn btn--purple modal__btn modal__btn--fit-width" onClick={handleNavigateToBasket}>Перейти в корзину</button>
           </div>
           <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handlePopupClose}>
             <svg width="10" height="10" aria-hidden="true">
