@@ -24,7 +24,12 @@ describe('Component: AddItemPopup', () => {
         products: products,
         isPromoLoaded: true,
         promo: products[0],
-        isAddItemPopupOpened: true },
+        isAddItemPopupOpened: true
+      },
+      BASKET: {
+        items: [{ product: fakeProduct, qty: 1}],
+        productToAddToBasket: fakeProduct,
+      }
     });
 
     render (

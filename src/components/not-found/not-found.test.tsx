@@ -24,6 +24,10 @@ describe('Component: NotFound', () => {
         searchResultProducts: products,
         searchResultProductsLoaded: true,
       },
+      BASKET: {
+        items: [{ product: fakeProduct, qty: 1}],
+        productToAddToBasket: fakeProduct,
+      }
     });
 
     const fakeApp = (

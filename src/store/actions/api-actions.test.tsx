@@ -4,10 +4,10 @@ import thunk, { ThunkDispatch } from 'redux-thunk';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { State } from '../../types/types';
 import { Action } from 'redux';
-import { makeFakeProduct, makeFakeReview } from '../../utils/mocks';
+import { makeFakeCoupon, makeFakeOrder, makeFakeProduct, makeFakeReview } from '../../utils/mocks';
 import { APIRoute, AppRoute } from '../../const/const';
-import { fetchFilterSettings, fetchProductById, fetchProducts, fetchProductsFromSearch, fetchPromo, fetchReviews, fetchSimilarProducts, postReview } from './api.actions';
-import { loadFilterSettings, loadProducts, loadProductsFromSearch, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, redirectToRoute } from './actions';
+import { fetchFilterSettings, fetchProductById, fetchProducts, fetchProductsFromSearch, fetchPromo, fetchReviews, fetchSimilarProducts, postCoupon, postOrder, postReview } from './api.actions';
+import { loadFilterSettings, loadProducts, loadProductsFromSearch, loadPromo, loadReviews, loadSimilarProducts, openAddOrderSuccessPopup, postCouponAction, postOrderAction, postReviewAction, redirectToRoute } from './actions';
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -134,6 +134,38 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       loadFilterSettings(mockProducts),
+    ]);
+  });
+
+  it('should dispatch postCouponAction on POST /coupons', async () => {
+    const mockCoupon = makeFakeCoupon();
+    const mockSale = 1;
+
+    mockAPI
+      .onPost(`${APIRoute.COUPONS}`, mockCoupon)
+      .reply(201, mockSale);
+
+    const store = mockStore();
+    await store.dispatch(postCoupon(mockCoupon));
+
+    expect(store.getActions()).toEqual([
+      postCouponAction(mockSale),
+    ]);
+  });
+
+  it('should dispatch postOrderAction on POST /orders', async () => {
+    const mockOrder = makeFakeOrder();
+
+    mockAPI
+      .onPost(`${APIRoute.ORDERS}`, mockOrder)
+      .reply(201);
+
+    const store = mockStore();
+    await store.dispatch(postOrder(mockOrder));
+
+    expect(store.getActions()).toEqual([
+      postOrderAction(),
+      openAddOrderSuccessPopup()
     ]);
   });
 

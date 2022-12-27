@@ -3,46 +3,43 @@ import { makeFakeProduct } from '../../utils/mocks';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
+import { AppRoute } from '../../const/const';
 import { render, screen } from '@testing-library/react';
-import Header from './header';
+import AddOrderSuccessPopup from './add-order-success-popup';
 
 
 const mockStore = configureMockStore();
 const fakeProduct = makeFakeProduct();
+
 const products = [fakeProduct];
 
 const history = createMemoryHistory();
+history.push(AppRoute.ROOT);
 
-describe('Component: Header', () => {
-
-  it('should render "Header"', () => {
+describe('Component: AddOrderSuccessPopup', () => {
+  it('should render correctly', () => {
     const store = mockStore({
       PRODUCTS: {
         productsLoaded: true,
         products: products,
         isPromoLoaded: true,
         promo: products[0],
-        searchResultProducts: products,
-        searchResultProductsLoaded: true,
       },
       BASKET: {
-        items: [{ product: fakeProduct, qty: 1}],
-        productToAddToBasket: fakeProduct,
+        isOrderSuccessPopupOpened: true,
       }
     });
 
-    const fakeApp = (
+    render (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Header/>
+          <AddOrderSuccessPopup/>
         </HistoryRouter>
-      </Provider>
+      </Provider>,
     );
 
-    render(fakeApp);
-    expect(screen.getByText(/О компании/i)).toBeInTheDocument();
-    expect(screen.getByText(/Сбросить поиск/i)).toBeInTheDocument();
-    expect(screen.getByText(/Гарантии/i)).toBeInTheDocument();
+    expect(screen.getByText(/Спасибо за покупку/i)).toBeInTheDocument();
+
   });
 
 });

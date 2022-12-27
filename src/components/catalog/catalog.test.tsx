@@ -53,6 +53,10 @@ describe('Component: Catalog', () => {
         [FilterNames.Zero] : false,
         [FilterNames.NonProfessional] : false,
         [FilterNames.Professional] : false,
+      },
+      BASKET: {
+        items: [{ product: fakeProduct, qty: 1}],
+        productToAddToBasket: fakeProduct,
       }
     });
 

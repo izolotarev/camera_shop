@@ -38,6 +38,10 @@ describe('Component: SimilarProducts', () => {
         reviews: reviews,
         reviewsLoaded: true,
         isAddReviewPopupOpened:true
+      },
+      BASKET: {
+        items: [{ product: fakeProduct, qty: 1}],
+        productToAddToBasket: fakeProduct,
       }
     });
 

@@ -20,7 +20,11 @@ describe('Component: ProductCard', () => {
         productsLoaded: true,
         products: products,
         isPromoLoaded: true,
-        promo: fakeProduct },
+        promo: fakeProduct
+      },
+      BASKET: {
+        items: [{ product: fakeProduct, qty: 1}]
+      }
     });
 
     const fakeApp = (

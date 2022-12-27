@@ -1,4 +1,4 @@
-import { ProductType, ReviewType } from '../types/types';
+import { CouponType, OrderType, ProductType, ReviewType } from '../types/types';
 import { datatype, lorem, image, name } from 'faker';
 
 const { number } = datatype;
@@ -34,4 +34,13 @@ export const makeFakeReview = (): ReviewType => ({
   rating: number({ min: 1, max: 5}),
   createAt: '2022-07-31T21:00:07.282Z',
   cameraId: number(),
+});
+
+export const makeFakeCoupon = (): CouponType => ({
+  coupon: 'camera-333'
+});
+
+export const makeFakeOrder = (): OrderType => ({
+  camerasIds: [1, 3],
+  coupon: 'camera-333'
 });

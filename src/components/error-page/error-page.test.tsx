@@ -4,8 +4,7 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import Header from './header';
-
+import ErrorPage from './error-page';
 
 const mockStore = configureMockStore();
 const fakeProduct = makeFakeProduct();
@@ -13,15 +12,15 @@ const products = [fakeProduct];
 
 const history = createMemoryHistory();
 
-describe('Component: Header', () => {
+describe('Component: ErrorPage', () => {
 
-  it('should render "Header"', () => {
+  it('should render "ErrorPage"', () => {
     const store = mockStore({
       PRODUCTS: {
         productsLoaded: true,
         products: products,
         isPromoLoaded: true,
-        promo: products[0],
+        promo: makeFakeProduct(),
         searchResultProducts: products,
         searchResultProductsLoaded: true,
       },
@@ -34,15 +33,13 @@ describe('Component: Header', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Header/>
+          <ErrorPage/>
         </HistoryRouter>
       </Provider>
     );
 
     render(fakeApp);
-    expect(screen.getByText(/О компании/i)).toBeInTheDocument();
-    expect(screen.getByText(/Сбросить поиск/i)).toBeInTheDocument();
-    expect(screen.getByText(/Гарантии/i)).toBeInTheDocument();
+    expect(screen.getByText(/Упс. Что-то пошло не так.../i)).toBeInTheDocument();
   });
 
 });

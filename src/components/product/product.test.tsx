@@ -33,6 +33,10 @@ const store = mockStore({
   REVIEWS: {
     reviews: reviews,
     reviewsLoaded: true,
+  },
+  BASKET: {
+    items: [{ product: fakeProduct, qty: 1}],
+    productToAddToBasket: fakeProduct,
   }
 });
 

@@ -50,6 +50,10 @@ describe('Application Routing', () => {
         [FilterNames.Zero] : false,
         [FilterNames.NonProfessional] : false,
         [FilterNames.Professional] : false,
+      },
+      BASKET: {
+        items: [{ product: makeFakeProduct(), qty: 1}],
+        productToAddToBasket: makeFakeProduct(),
       }
     });
 

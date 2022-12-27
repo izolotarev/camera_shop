@@ -4,29 +4,28 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import Header from './header';
+import BasketList from './basket-list';
 
 
 const mockStore = configureMockStore();
 const fakeProduct = makeFakeProduct();
 const products = [fakeProduct];
+const fakeItems = [{ product: fakeProduct, qty: 1}];
 
 const history = createMemoryHistory();
 
-describe('Component: Header', () => {
+describe('Component: BasketList', () => {
 
-  it('should render "Header"', () => {
+  it('should render "BasketList"', () => {
     const store = mockStore({
       PRODUCTS: {
         productsLoaded: true,
         products: products,
         isPromoLoaded: true,
-        promo: products[0],
-        searchResultProducts: products,
-        searchResultProductsLoaded: true,
+        promo: fakeProduct
       },
       BASKET: {
-        items: [{ product: fakeProduct, qty: 1}],
+        items: fakeItems,
         productToAddToBasket: fakeProduct,
       }
     });
@@ -34,15 +33,14 @@ describe('Component: Header', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Header/>
+          <BasketList items={fakeItems}/>
         </HistoryRouter>
       </Provider>
     );
 
     render(fakeApp);
-    expect(screen.getByText(/О компании/i)).toBeInTheDocument();
-    expect(screen.getByText(/Сбросить поиск/i)).toBeInTheDocument();
-    expect(screen.getByText(/Гарантии/i)).toBeInTheDocument();
+    expect(products.length).toBe(1);
+    expect(screen.getByText(fakeProduct.name)).toBeInTheDocument();
   });
 
 });

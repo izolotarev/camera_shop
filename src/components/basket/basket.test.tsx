@@ -3,7 +3,6 @@ import { makeFakeProduct } from '../../utils/mocks';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
-import { AppRoute } from '../../const/const';
 import { render, screen } from '@testing-library/react';
 import Basket from './basket';
 
@@ -14,9 +13,10 @@ const fakeProduct = makeFakeProduct();
 const products = [fakeProduct];
 
 const history = createMemoryHistory();
+window.scroll = jest.fn();
 
 describe('Component: Basket', () => {
-  it('should render correctly', () => {
+  it('should render correctly', async () => {
     const store = mockStore({
       PRODUCTS: {
         productsLoaded: true,
@@ -25,6 +25,10 @@ describe('Component: Basket', () => {
         promo: products[0],
         searchResultProducts: products,
         searchResultProductsLoaded: true,
+      },
+      BASKET: {
+        items: [{ product: fakeProduct, qty: 1}],
+        productToAddToBasket: fakeProduct,
       }
     });
 
@@ -35,8 +39,6 @@ describe('Component: Basket', () => {
         </HistoryRouter>
       </Provider>,
     );
-
-    history.push(AppRoute.BASKET);
 
     expect(products.length).toBe(1);
     expect(screen.getByText(/Оформить заказ/i)).toBeInTheDocument();
