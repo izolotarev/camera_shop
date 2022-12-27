@@ -18,6 +18,7 @@ import SimilarProductSlider from '../similar-product-slider/similar-product-slid
 import AddItemSuccessPopup from '../add-item-success-popup/add-item-success-popup';
 import AddReviewPopup from '../add-review-popup/add-review-popup';
 import AddReviewSuccessPopup from '../add-review-success-popup/add-review-success-popup';
+import { toggleBodyScroll } from '../../utils/utils';
 
 
 type ProductParams = {
@@ -56,6 +57,7 @@ function Product():JSX.Element {
     if (!product) {return; }
     dispatch(selectProductToAddToBasket(product));
     dispatch(openAddItemPopup());
+    toggleBodyScroll(true);
   };
 
   const handleGoUp = () => {

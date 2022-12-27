@@ -1,3 +1,4 @@
+import { SCROLL_LOCK_BODY_CLASS } from '../const/const';
 import { FilterSettingsType, ProductType } from '../types/types';
 
 export const extractFilterSettings = (data: ProductType[]) : FilterSettingsType => {
@@ -41,3 +42,11 @@ export const updateParamsWithValues = (searchParams: URLSearchParams, keyValuePa
 
 export const closestPrice = (price: number, prices: number[]): number =>
   prices.reduce((a, b) => Math.abs(b - price) < Math.abs(a - price) ? b : a);
+
+export const toggleBodyScroll = (isPopupActive: boolean) => {
+  if (isPopupActive) {
+    document.body.classList.add(SCROLL_LOCK_BODY_CLASS);
+  } else {
+    document.body.classList.remove(SCROLL_LOCK_BODY_CLASS);
+  }
+};

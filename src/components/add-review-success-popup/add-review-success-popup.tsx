@@ -1,20 +1,20 @@
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
-import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { closeAddReviewSuccessPopup } from '../../store/actions/actions';
 import { getAddReviewSuccessPopupOpenedStatus } from '../../store/reducers/reviews/reviews-selectors';
 import useTrapFocus from '../../hooks/useTrapFocus';
+import { toggleBodyScroll } from '../../utils/utils';
 
 function AddReviewSuccessPopup():JSX.Element {
 
   const popupActive = useSelector(getAddReviewSuccessPopupOpenedStatus);
-  useChangeBodyClass(popupActive);
 
   const dispatch = useAppDispatch();
 
   const handlePopupClose = () => {
     dispatch(closeAddReviewSuccessPopup());
+    toggleBodyScroll(false);
   };
 
   useEscapeKey(handlePopupClose);

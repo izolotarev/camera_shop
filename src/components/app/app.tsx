@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
 import Basket from '../basket/basket';
 import Catalog from '../catalog/catalog';
+import ErrorPage from '../error-page/error-page';
 import NotFound from '../not-found/not-found';
 import Product from '../product/product';
 
@@ -12,6 +13,8 @@ function App(): JSX.Element {
       <Route path={`${AppRoute.CATALOG}/page_:id`} element={<Catalog />}/>
       <Route path={`${AppRoute.PRODUCTS}/:id`} element={<Product/>}/>
       <Route path={AppRoute.BASKET} element={<Basket/>}/>
+      <Route path={AppRoute.NOT_FOUND} element={<NotFound/>}/>
+      <Route path={AppRoute.ERROR} element={<ErrorPage/>}/>
       <Route path={'*'} element={<NotFound/>}/>
     </Routes>
   );

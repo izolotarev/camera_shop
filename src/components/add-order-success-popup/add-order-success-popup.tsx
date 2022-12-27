@@ -1,22 +1,22 @@
+import { SyntheticEvent } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import useEscapeKey from '../../hooks/useEscapeKey';
-import { closeAddItemSuccessPopup } from '../../store/actions/actions';
-import { getAddItemSuccessPopupOpenedStatus } from '../../store/reducers/products/products-selectors';
 import useTrapFocus from '../../hooks/useTrapFocus';
-import { SyntheticEvent } from 'react';
-import { AppRoute } from '../../const/const';
+import { closeAddOrderSuccessPopup } from '../../store/actions/actions';
+import { getAddOrderSuccessPopupOpenedStatus } from '../../store/reducers/basket/basket-selectors';
 import { toggleBodyScroll } from '../../utils/utils';
-import { useNavigate } from 'react-router-dom';
 
-function AddItemSuccessPopup():JSX.Element {
-  const popupActive = useSelector(getAddItemSuccessPopupOpenedStatus);
+function AddOrderSuccessPopup():JSX.Element {
+  const popupActive = useSelector(getAddOrderSuccessPopupOpenedStatus);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handlePopupClose = () => {
-    dispatch(closeAddItemSuccessPopup());
+    dispatch(closeAddOrderSuccessPopup());
     toggleBodyScroll(false);
   };
 
@@ -24,11 +24,6 @@ function AddItemSuccessPopup():JSX.Element {
     evt.preventDefault();
     handlePopupClose();
     navigate(`${AppRoute.CATALOG}/page_1`);
-  };
-
-  const handleNavigateToBasket = () => {
-    handlePopupClose();
-    navigate(AppRoute.BASKET);
   };
 
   useEscapeKey(handlePopupClose);
@@ -39,13 +34,13 @@ function AddItemSuccessPopup():JSX.Element {
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={handlePopupClose}></div>
         <div className="modal__content">
-          <p className="title title--h4">Товар успешно добавлен в корзину</p>
-          <svg className="modal__icon" width="86" height="80" aria-hidden="true">
-            <use xlinkHref="#icon-success"></use>
+          <p className="title title--h4">Спасибо за покупку</p>
+          <svg className="modal__icon" width="80" height="78" aria-hidden="true">
+            <use xlinkHref="#icon-review-success"></use>
           </svg>
           <div className="modal__buttons">
-            <a className="btn btn--transparent modal__btn" href="/#" onClick={handleContinueShopping}>Продолжить покупки</a>
-            <button className="btn btn--purple modal__btn modal__btn--fit-width" onClick={handleNavigateToBasket}>Перейти в корзину</button>
+            <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button" onClick={handleContinueShopping}>Вернуться к покупкам
+            </button>
           </div>
           <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handlePopupClose}>
             <svg width="10" height="10" aria-hidden="true">
@@ -58,4 +53,4 @@ function AddItemSuccessPopup():JSX.Element {
   );
 }
 
-export default AddItemSuccessPopup;
+export default AddOrderSuccessPopup;

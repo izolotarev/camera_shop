@@ -4,6 +4,7 @@ import { REVIEW_CARDS_PER_STEP } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { openAddReviewPopup } from '../../store/actions/actions';
 import { getReviewsDateDsc } from '../../store/reducers/reviews/reviews-selectors';
+import { toggleBodyScroll } from '../../utils/utils';
 import ReviewListEmpty from '../review-list-empty/review-list-empty';
 import ReviewList from '../review-list/review-list';
 import ShowMoreReviews from '../show-more-reviews/show-more-reviews';
@@ -19,6 +20,7 @@ function Reviews():JSX.Element {
 
   const handleOpenAddReviewPopup = () => {
     dispatch(openAddReviewPopup());
+    toggleBodyScroll(true);
   };
 
   return (

@@ -6,6 +6,7 @@ import { useAppDispatch } from '../../hooks/hooks';
 import { useDebounce } from '../../hooks/useDebounce';
 import { clearProductFilters, clearProductsFromSearch, clearProductsSorting } from '../../store/actions/actions';
 import { fetchProductsFromSearch } from '../../store/actions/api.actions';
+import { getNumberOfProductsInBasket } from '../../store/reducers/basket/basket-selectors';
 import { getSearchResultProducts } from '../../store/reducers/products/products-selectors';
 
 function Header() : JSX.Element {
@@ -35,6 +36,8 @@ function Header() : JSX.Element {
     dispatch(clearProductsSorting());
     dispatch(clearProductFilters());
   };
+
+  const numberOfProductsInBasket = useSelector(getNumberOfProductsInBasket);
 
   return (
     <header className="header" id="header">
@@ -90,6 +93,13 @@ function Header() : JSX.Element {
           <svg width="16" height="16" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>
+          {
+            numberOfProductsInBasket > 0
+              ?
+              <span className="header__basket-count">{numberOfProductsInBasket}</span>
+              :
+              ''
+          }
         </Link>
       </div>
     </header>

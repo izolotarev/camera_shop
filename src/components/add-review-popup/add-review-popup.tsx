@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MIN_REVIEW_LENGTH } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
-import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { clearPostReviewError, clearPostReviewStatus, closeAddReviewPopup, openAddReviewSuccessPopup } from '../../store/actions/actions';
 import { fetchReviews, postReview } from '../../store/actions/api.actions';
 import { getAddReviewPopupOpenedStatus, getReviewPostError, getReviewPostStatus } from '../../store/reducers/reviews/reviews-selectors';
 import { PostReviewType } from '../../types/types';
 import useTrapFocus from '../../hooks/useTrapFocus';
+import { toggleBodyScroll } from '../../utils/utils';
 
 type AddReviewPopupParams = {
   id: string;
@@ -25,12 +25,12 @@ function AddReviewPopup():JSX.Element {
   const [disabledForm, setDisabledForm] = useState(false);
 
   const popupActive = useSelector(getAddReviewPopupOpenedStatus);
-  useChangeBodyClass(popupActive);
 
   const dispatch = useAppDispatch();
 
   const handlePopupClose = () => {
     dispatch(closeAddReviewPopup());
+    toggleBodyScroll(false);
   };
 
   useEscapeKey(handlePopupClose);

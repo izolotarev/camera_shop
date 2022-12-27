@@ -10,7 +10,6 @@ export type ProductState = {
   productsLoaded: boolean,
   promo?: PromoType,
   isPromoLoaded: boolean,
-  productToAddtoBasket?: ProductType,
   isAddItemPopupOpened: boolean,
   isAddItemSuccessPopupOpened: boolean,
   product?: ProductType,
@@ -25,6 +24,15 @@ export type ProductState = {
 
 export type BasketState = {
   items: BasketItemType[],
+  productToAddtoBasket?: ProductType,
+  productToRemoveFromBasket?: ProductType,
+  isRemoveItemPopupOpened: boolean,
+  salePercent: number,
+  postCouponSuccess: boolean,
+  postCouponError: boolean,
+  postOrderSuccess: boolean,
+  postOrderError: boolean,
+  isOrderSuccessPopupOpened: boolean,
 }
 
 export type BasketItemType = {
@@ -130,3 +138,12 @@ export type ProductsSortingState = {
   catalogSortType: CatalogSortType,
   catalogSortOrder: CatalogSortOrder,
 }
+
+export type CouponType = {
+  coupon: string,
+}
+
+export type OrderType = {
+  camerasIds: number[],
+  coupon: string | null,
+};

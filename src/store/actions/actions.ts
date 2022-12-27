@@ -40,12 +40,21 @@ export const selectProductToAddToBasket = createAction(
   })
 );
 
-export const clearProductToAddToBasket = createAction(ActionType.ClearProductAddToBasket);
+export const selectProductToRemoveFromBasket = createAction(
+  ActionType.SelectProductToRemoveFromBasket,
+  (product: ProductType) => ({
+    payload: {
+      product,
+    }
+  })
+);
 
 export const openAddItemPopup = createAction(ActionType.OpenAddItemPopup);
 export const closeAddItemPopup = createAction(ActionType.CloseAddItemPopup);
 export const openAddItemSuccessPopup = createAction(ActionType.OpenAddItemSuccessPopup);
 export const closeAddItemSuccessPopup = createAction(ActionType.CloseAddItemSuccessPopup);
+export const openRemoveItemPopup = createAction(ActionType.OpenRemoveItemPopup);
+export const closeRemoveItemPopup = createAction(ActionType.CloseRemoveItemPopup);
 
 export const loadProductById = createAction(
   ActionType.LoadProductById,
@@ -97,7 +106,7 @@ export const postReviewAction = createAction(
   }),
 );
 
-export const postReviewError = createAction(ActionType.PostError);
+export const postReviewError = createAction(ActionType.PostReviewError);
 
 export const clearPostReviewStatus = createAction(ActionType.ClearPostReviewStatus);
 
@@ -165,3 +174,44 @@ export const addProductToBasket = createAction(
     },
   }),
 );
+
+export const setProductQtyInBasket = createAction(
+  ActionType.SetProductQtyInBasket,
+  (product: ProductType, qty: number) => ({
+    payload: {
+      product,
+      qty
+    }
+  })
+);
+
+export const removeProductFromBasket = createAction(
+  ActionType.RemoveProductFromBasket,
+  (product: ProductType) => ({
+    payload: {
+      product
+    }
+  })
+);
+
+export const postCouponAction = createAction(
+  ActionType.PostCoupon,
+  (salePercent: number) => ({
+    payload: {
+      salePercent,
+    }
+  })
+);
+
+export const clearSalePercent = createAction(ActionType.ClearSalePercent);
+
+export const postCouponError = createAction(ActionType.PostCouponError);
+export const clearPostCouponStatus = createAction(ActionType.ClearPostCouponStatus);
+export const clearPostCouponError = createAction(ActionType.ClearPostCouponError);
+
+export const postOrderAction = createAction(ActionType.PostOrder);
+export const postOrderError = createAction(ActionType.PostOrderError);
+export const clearPostOrderStatus = createAction(ActionType.ClearPostOrderStatus);
+export const clearPostOrderError = createAction(ActionType.ClearPostOrderError);
+export const openAddOrderSuccessPopup = createAction(ActionType.OpenOrderSuccessPopup);
+export const closeAddOrderSuccessPopup = createAction(ActionType.CloseOrderSuccessPopup);

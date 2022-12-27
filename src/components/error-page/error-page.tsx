@@ -4,11 +4,11 @@ import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 
-function NotFound():JSX.Element {
+function ErrorPage():JSX.Element {
   const breadcrumbs: BreadcrumbsType[] =
   [
     {name: 'Главная', url: AppRoute.ROOT},
-    {name: 'Не найдено'}
+    {name: 'Ошибка'}
   ];
 
   return (
@@ -17,7 +17,7 @@ function NotFound():JSX.Element {
       <main>
         <div className="page-content">
           <Breadcrumbs crumbs={breadcrumbs}/>
-          <h1 style={{textAlign: 'center'}}>404 Страница не найдена</h1>
+          <h1 style={{textAlign: 'center'}}>Упс. Что-то пошло не так...</h1>
         </div>
       </main>
       <Footer/>
@@ -25,4 +25,4 @@ function NotFound():JSX.Element {
   );
 }
 
-export default NotFound;
+export default ErrorPage;

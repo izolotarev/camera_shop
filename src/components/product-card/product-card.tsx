@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { openAddItemPopup, selectProductToAddToBasket } from '../../store/actions/actions';
-import { getProductInBasketStatus } from '../../store/reducers/basket/basket-selectors';
+import { getProductInBasket } from '../../store/reducers/basket/basket-selectors';
 import { ProductType, State } from '../../types/types';
+import { toggleBodyScroll } from '../../utils/utils';
 import RatingStar from '../rating-star/rating-star';
 
 type ProductProps = {
@@ -16,7 +17,7 @@ type ProductProps = {
 function ProductCard({product, isActive}:ProductProps): JSX.Element {
   const {id, name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, rating, price, reviewCount } = product;
 
-  const productInBasket = useSelector((state: State) => getProductInBasketStatus(state, id));
+  const productInBasket = useSelector((state: State) => getProductInBasket(state, id));
 
   const dispatch = useAppDispatch();
 
@@ -24,6 +25,7 @@ function ProductCard({product, isActive}:ProductProps): JSX.Element {
     evt.preventDefault();
     dispatch(selectProductToAddToBasket(product));
     dispatch(openAddItemPopup());
+    toggleBodyScroll(true);
   };
 
   return (

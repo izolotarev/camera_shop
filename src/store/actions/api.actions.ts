@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import { APIRoute, AppRoute } from '../../const/const';
-import { PostReviewType, ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
-import { loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadReviews, loadSimilarProducts, postReviewAction, postReviewError, redirectToRoute } from './actions';
+import { APIRoute, AppRoute, INVALID_COUPON_ERROR, STATUS_CREATED_CODE } from '../../const/const';
+import { CouponType, OrderType, PostReviewType, ProductType, PromoType, ReviewType, ThunkActionResult } from '../../types/types';
+import { loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadReviews, loadSimilarProducts, openAddOrderSuccessPopup, postCouponAction, postCouponError, postOrderAction, postOrderError, postReviewAction, postReviewError, redirectToRoute } from './actions';
 
 
 export const fetchProducts = (params: string | null = null): ThunkActionResult =>
@@ -61,7 +61,7 @@ export const fetchReviews = (id: number): ThunkActionResult =>
 export const postReview = (review: PostReviewType): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const {data} = await api.post<ReviewType>(`${APIRoute.REVIEWS}`, review);
+      const {data} = await api.post<ReviewType>(APIRoute.REVIEWS, review);
       dispatch(postReviewAction(data));
     } catch(error) {
       handleError(error);
@@ -86,6 +86,35 @@ export const fetchFilterSettings = (params: string | null = null): ThunkActionRe
       dispatch(loadFilterSettings(data));
     } catch(error) {
       handleError(error);
+    }
+  };
+
+export const postCoupon = (coupon: CouponType): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.post<number>(APIRoute.COUPONS, coupon);
+      dispatch(postCouponAction(data));
+    } catch(error) {
+      if (axios.isAxiosError(error) &&
+          error.response?.data.messages[0] === INVALID_COUPON_ERROR) {
+        dispatch(postCouponError());
+        return;
+      }
+      handleError(error);
+    }
+  };
+
+export const postOrder = (order: OrderType): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const response = await api.post<number>(APIRoute.ORDERS, order);
+      if (response.status === STATUS_CREATED_CODE) {
+        dispatch(postOrderAction());
+        dispatch(openAddOrderSuccessPopup());
+      }
+    } catch(error) {
+      dispatch(postOrderError());
+      dispatch(redirectToRoute(AppRoute.ERROR));
     }
   };
 

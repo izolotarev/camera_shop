@@ -5,8 +5,8 @@ export enum ActionType {
   ClearProducts = 'PRODUCTS/CLEAR_PRODUCTS',
   LoadProductsTotalCount = 'PRODUCTS/LOAD_PRODUCTS_TOTAL_COUNT',
   LoadPromo = 'PRODUCTS/LOAD_PROMO',
-  SelectProductToAddToBasket = 'PRODUCTS/SELECT_PRODUCT_TO_ADD_TO_BASKET',
-  ClearProductAddToBasket = 'PRODUCTS/CLEAR_PRODUCT_TO_ADD_TO_BASKET',
+  SelectProductToAddToBasket = 'BASKET/SELECT_PRODUCT_TO_ADD_TO_BASKET',
+  SelectProductToRemoveFromBasket = 'BASKET/SELECT_PRODUCT_TO_REMOVE_FROM_BASKET',
   OpenAddItemPopup = 'PRODUCTS/OPEN_ADD_ITEM_POPUP',
   CloseAddItemPopup = 'PRODUCTS/CLOSE_ADD_ITEM_POPUP',
   OpenAddItemSuccessPopup = 'PRODUCTS/OPEN_ADD_ITEM_SUCCESS_POPUP',
@@ -19,12 +19,14 @@ export enum ActionType {
   CloseAddReviewPopup = 'REVIEWS/CLOSE_ADD_REVIEW_POPUP',
   OpenAddReviewSuccessPopup = 'REVIEWS/OPEN_ADD_REVIEW_SUCCESS_POPUP',
   CloseAddReviewSuccessPopup = 'REVIEWS/CLOSE_ADD_REVIEW_SUCCESS_POPUP',
+  OpenRemoveItemPopup = 'BASKET/OPEN_REMOVE_ITEM_POPUP',
+  CloseRemoveItemPopup = 'BASKET/CLOSE_REMOVE_ITEM_POPUP',
   LoadProductById = 'PRODUCTS/LOAD_PRODUCT_BY_ID',
   ClearProductById = 'PRODUCTS/CLEAR_PRODUCT',
   LoadSimilarProducts = 'PRODUCTS/LOAD_SIMILAR_PRODUCTS',
   LoadReviews = 'REVIEWS/LOAD_REVIEWS',
   PostReview = 'REVIEWS/POST_REVIEW',
-  PostError = 'REVIEWS/POST_REVIEW_ERROR',
+  PostReviewError = 'REVIEWS/POST_REVIEW_ERROR',
   ClearPostReviewStatus = 'REVIEWS/CLEAR_POST_REVIEW_STATUS',
   ClearPostReviewError = 'REVIEWS/CLEAR_POST_REVIEW_ERROR',
   RedirectToRoute = 'USER/REDIRECT',
@@ -34,6 +36,19 @@ export enum ActionType {
   ApplySortOrder = 'PRODUCTS/SORT_PRODUCTS_BY_ORDER',
   ClearProductsSorting = 'PRODUCTS/CLEAR_SORT',
   AddProductToBasket = 'BASKET/ADD_PRODUCT',
+  SetProductQtyInBasket = 'BASKET/SET_PRODUCT_QUANTITY',
+  RemoveProductFromBasket = 'BASKET/REMOVE_PRODUCT',
+  PostCoupon = 'BASKET/POST_COUPON',
+  PostCouponError = 'BASKET/POST_COUPON_ERROR',
+  ClearPostCouponStatus = 'BASKET/CLEAR_POST_COUPON_STATUS',
+  ClearPostCouponError = 'BASKET/CLEAR_POST_COUPON_ERROR',
+  ClearSalePercent = 'BASKET/CLEAR_SALE_PERCENT',
+  PostOrder = 'BASKET/POST_ORDER',
+  PostOrderError = 'BASKET/POST_ORDER_ERROR',
+  ClearPostOrderStatus = 'BASKET/CLEAR_POST_ORDER_STATUS',
+  ClearPostOrderError = 'BASKET/CLEAR_POST_ORDER_ERROR',
+  OpenOrderSuccessPopup = 'BASKET/OPEN_ORDER_SUCCESS_POPUP',
+  CloseOrderSuccessPopup = 'BASKET/CLOSE_ORDER_SUCCESS_POPUP',
 }
 
 export const AppRoute = {
@@ -42,12 +57,15 @@ export const AppRoute = {
   PRODUCTS: '/cameras',
   BASKET: '/basket',
   NOT_FOUND: '/not-found',
+  ERROR: '/error',
 };
 
 export const APIRoute = {
   PRODUCTS: '/cameras',
   PROMO: '/promo',
   REVIEWS: '/reviews',
+  COUPONS: '/coupons',
+  ORDERS: '/orders',
 };
 
 export const MAX_PRODUCT_RATING = 5;
@@ -133,3 +151,10 @@ export const MapFilterNameToParam: MapFilterNameToParamType = {
 };
 
 export const SCROLL_LOCK_BODY_CLASS = 'scroll-lock';
+
+export const MIN_PRODUCT_QTY = 1;
+export const MAX_PRODUCT_QTY = 99;
+
+export const INVALID_COUPON_ERROR = 'Invalid Value';
+
+export const STATUS_CREATED_CODE = 201;

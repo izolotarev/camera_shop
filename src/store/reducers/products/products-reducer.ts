@@ -2,7 +2,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { ProductState } from '../../../types/types';
 import { extractFilterSettings } from '../../../utils/utils';
-import { clearFilterSettings, clearProductById, clearProducts, clearProductsFromSearch, clearProductToAddToBasket, closeAddItemPopup, closeAddItemSuccessPopup, loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup, selectProductToAddToBasket } from '../../actions/actions';
+import { clearFilterSettings, clearProductById, clearProducts, clearProductsFromSearch, closeAddItemPopup, closeAddItemSuccessPopup, loadFilterSettings, loadProductById, loadProducts, loadProductsFromSearch, loadProductsTotalCount, loadPromo, loadSimilarProducts, openAddItemPopup, openAddItemSuccessPopup } from '../../actions/actions';
 
 export const initialState: ProductState = {
   products: [],
@@ -10,7 +10,6 @@ export const initialState: ProductState = {
   productsLoaded: false,
   promo: undefined,
   isPromoLoaded: false,
-  productToAddtoBasket: undefined,
   isAddItemPopupOpened: false,
   isAddItemSuccessPopupOpened: false,
   product: undefined,
@@ -39,12 +38,6 @@ export const productsData = createReducer(initialState, (builder) => {
     .addCase(loadPromo, (state, action) => {
       state.promo = action.payload.promo;
       state.isPromoLoaded = true;
-    })
-    .addCase(selectProductToAddToBasket, (state, action) => {
-      state.productToAddtoBasket = action.payload.product;
-    })
-    .addCase(clearProductToAddToBasket, (state, action) => {
-      state.productToAddtoBasket = initialState.productToAddtoBasket;
     })
     .addCase(openAddItemPopup, (state, action) => {
       state.isAddItemPopupOpened = true;

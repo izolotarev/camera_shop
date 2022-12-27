@@ -1,21 +1,21 @@
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
-import useChangeBodyClass from '../../hooks/useChangeBodyClass';
 import useEscapeKey from '../../hooks/useEscapeKey';
 import { addProductToBasket, closeAddItemPopup, openAddItemSuccessPopup } from '../../store/actions/actions';
-import { getAddItemPopupOpenedStatus, getProductToAddToBasket } from '../../store/reducers/products/products-selectors';
+import { getAddItemPopupOpenedStatus } from '../../store/reducers/products/products-selectors';
 import useTrapFocus from '../../hooks/useTrapFocus';
+import { toggleBodyScroll } from '../../utils/utils';
+import { getProductToAddToBasket } from '../../store/reducers/basket/basket-selectors';
 
 function AddItemPopup():JSX.Element {
   const popupActive = useSelector(getAddItemPopupOpenedStatus);
   const productToAddToBasket = useSelector(getProductToAddToBasket);
 
-  useChangeBodyClass(popupActive);
-
   const dispatch = useAppDispatch();
 
   const handlePopupClose = () => {
     dispatch(closeAddItemPopup());
+    toggleBodyScroll(false);
   };
 
   useEscapeKey(handlePopupClose);
