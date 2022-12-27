@@ -34,7 +34,6 @@ function Basket():JSX.Element {
     setDisabledForm(false);
     if (postCouponError) {
       dispatch(clearSalePercent());
-      setCoupon('');
     }
 
   }, [dispatch, postCouponSuccess, postCouponError]);
@@ -57,7 +56,7 @@ function Basket():JSX.Element {
     dispatch(postOrder(
       {
         camerasIds,
-        coupon: coupon === '' ? null : coupon
+        coupon: coupon === '' || postCouponError ? null : coupon
       }
     ));
   };
