@@ -39,8 +39,6 @@ function Catalog():JSX.Element {
   const promoId = promo?.id ?? 0;
   const productsTotalCount = useSelector(getProductsTotalCount);
   const filterState = useSelector(getFilterState);
-  // const filterSettings = useSelector(getFilterSettings);
-  // const filterSettingsLoaded = useSelector(getFilterSettingsLoadingStatus);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const catalogSortType = useSelector(getCatalogSortType);
