@@ -16,22 +16,17 @@ export const getProductInBasket = createSelector(getItems, getProductId,
   (items, id) => findProductInBasket(items, id));
 
 export const getNumberOfProductsInBasket = createSelector(getItems,
-  (items) => items.reduce((acc, item) => {
-    if (!item || !item.qty) { return acc + 0; }
-    return acc + item.qty;
-  }, 0));
+  (items) => items.reduce((acc, item) => acc + (item.qty ? item.qty : 1), 0));
 
 export const getBasketTotalPrice = createSelector(getItems, (items) =>
-  items.reduce((acc, item) => {
-    if (!item || !item.qty) { return acc + 0; }
-    return acc + item.product.price * item.qty;
-  }, 0));
+  items.reduce((acc, item) => acc + item.product.price * (item.qty ? item.qty : 1), 0));
 
 export const getProductInBasketTotal = createSelector(getProductInBasket,
   (item) => {
-    if (!item || !item.qty) { return 0; }
-    return item.product.price * item.qty;
-  });
+    if (!item) { return 0; }
+    return item.product.price * (item.qty ? item.qty : 1);
+  }
+);
 
 export const getSalePercent = (state: State): number => state[NameSpace.basket].salePercent;
 export const getSale = createSelector(getBasketTotalPrice, getSalePercent, (totalPrice, salePercent) => salePercent * totalPrice / 100);
