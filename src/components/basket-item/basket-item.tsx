@@ -30,7 +30,7 @@ function BasketItem({basketItem}: BasketItemProps): JSX.Element {
 
   const handleQuantityChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const productQty = parseInt(evt.target.value, 10);
-    if (productQty < MIN_PRODUCT_QTY || productQty > MAX_PRODUCT_QTY || !productQty) { return; }
+    if (productQty < MIN_PRODUCT_QTY || productQty > MAX_PRODUCT_QTY) { return; }
     dispatch(setProductQtyInBasket(product, productQty));
   };
 
@@ -62,14 +62,14 @@ function BasketItem({basketItem}: BasketItemProps): JSX.Element {
       </div>
       <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
       <div className="quantity">
-        <button className="btn-icon btn-icon--prev" aria-label="уменьшить количество товара" onClick={handleDecreaseQtyClick}>
+        <button className="btn-icon btn-icon--prev" aria-label="уменьшить количество товара" onClick={handleDecreaseQtyClick} disabled={qty === MIN_PRODUCT_QTY}>
           <svg width="7" height="12" aria-hidden="true">
             <use xlinkHref="#icon-arrow"></use>
           </svg>
         </button>
         <label className="visually-hidden" htmlFor="counter1"></label>
         <input type="number" id="counter1" value={qty} min={MIN_PRODUCT_QTY} max={MAX_PRODUCT_QTY} aria-label="количество товара" onChange={handleQuantityChange}/>
-        <button className="btn-icon btn-icon--next" aria-label="увеличить количество товара" onClick={handleIncreaseQtyClick}>
+        <button className="btn-icon btn-icon--next" aria-label="увеличить количество товара" onClick={handleIncreaseQtyClick} disabled={qty === MAX_PRODUCT_QTY}>
           <svg width="7" height="12" aria-hidden="true">
             <use xlinkHref="#icon-arrow"></use>
           </svg>
