@@ -28,7 +28,7 @@ export const basketData = createReducer(initialState, (builder) => {
     })
     .addCase(addProductToBasket, (state, action) => {
       const basketItem = findProductInBasket(state.items, action.payload.product.id);
-      if (basketItem) {
+      if (basketItem && basketItem.qty) {
         basketItem.qty += 1;
       } else {
         state.items.push({ product: action.payload.product, qty: 1});

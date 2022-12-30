@@ -15,13 +15,21 @@ export const findProductInBasket = (items: BasketItemType[], id: number) =>
 export const getProductInBasket = createSelector(getItems, getProductId,
   (items, id) => findProductInBasket(items, id));
 
-export const getNumberOfProductsInBasket = createSelector(getItems, (items) => items.reduce((acc, item) => acc + item.qty, 0));
+export const getNumberOfProductsInBasket = createSelector(getItems,
+  (items) => items.reduce((acc, item) => {
+    if (!item || !item.qty) { return acc + 0; }
+    return acc + item.qty;
+  }, 0));
 
-export const getBasketTotalPrice = createSelector(getItems, (items) => items.reduce((acc, item) => acc + item.product.price * item.qty, 0));
+export const getBasketTotalPrice = createSelector(getItems, (items) =>
+  items.reduce((acc, item) => {
+    if (!item || !item.qty) { return acc + 0; }
+    return acc + item.product.price * item.qty;
+  }, 0));
 
 export const getProductInBasketTotal = createSelector(getProductInBasket,
   (item) => {
-    if (!item) { return 0; }
+    if (!item || !item.qty) { return 0; }
     return item.product.price * item.qty;
   });
 

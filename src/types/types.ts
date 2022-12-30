@@ -37,7 +37,7 @@ export type BasketState = {
 
 export type BasketItemType = {
   product: ProductType,
-  qty: number,
+  qty?: number,
 }
 
 export type ProductType = {

@@ -19,12 +19,12 @@ function BasketItem({basketItem}: BasketItemProps): JSX.Element {
   const total = useSelector((state: State) => getProductInBasketTotal(state, product.id));
 
   const handleDecreaseQtyClick = () => {
-    if (qty === MIN_PRODUCT_QTY) { return; }
+    if (qty === MIN_PRODUCT_QTY || !qty) { return; }
     dispatch(setProductQtyInBasket(product, qty - 1));
   };
 
   const handleIncreaseQtyClick = () => {
-    if (qty === MAX_PRODUCT_QTY) { return; }
+    if (qty === MAX_PRODUCT_QTY || !qty) { return; }
     dispatch(setProductQtyInBasket(product, qty + 1));
   };
 
